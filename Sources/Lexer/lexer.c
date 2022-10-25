@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/25 14:44:58 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/25 15:57:02 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,3 +77,11 @@ void	create_lexer_string(char *line, t_lex *lex)
 		i++;
 	}
 }
+
+
+// void	create_lexer_string(char *line, t_par *par)
+// {
+// 	t_lex *p;
+// 	p = par->lex;
+// 	p->lexer
+// }
