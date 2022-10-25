@@ -3,20 +3,21 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+         #
+#    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/10/25 12:30:59 by amechain         ###   ########.fr        #
+#    Updated: 2022/10/25 14:15:57 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -lreadline
+CFLAGS = -lreadline #-Wall -Werror -Wextra
 
 NAME =  minishell
 
-M_SRC = ./x/minishell.c \
+M_SRC = Set_up/minishell.c \
+		Lexer/lexer.c
 
 M_SRCS = $(addprefix ./Sources/, $(M_SRC))
 
