@@ -6,57 +6,64 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/26 15:05:42 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/26 16:32:59 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	create_input_table(t_lex *lex, t_child *child)
+char	*fill_redirection_table(t_lex *lex, t_child *child)
 {
 	int	i;
+	int j;
 
 	i = 0;
-	while (lex->lexer[lex->counter] != "|" && lex->lexer[lex->counter])  /* If we never enter the condition, then child->parser_redirect[0] remains NULL */
+	j = 0;
+	while (ft_strcmp(lex->lexer[lex->counter], "|") && lex->lexer[lex->counter])  /* If we never enter the condition, then child->parser_redirect[0] remains NULL */
 	{
-		if (lex->lexer[lex->counter] == "<" || lex->lexer[lex->counter] == "<<")
+		if (!ft_strcmp(lex->lexer[lex->counter], "<") || !ft_strcmp(lex->lexer[lex->counter], "<<"))
 		{
 			child->parser_redirect_input[i++] = lex->lexer[lex->counter++];
 			child->parser_redirect_input[i++] = lex->lexer[lex->counter];
 		}
+		else if (!ft_strcmp(lex->lexer[lex->counter], ">") || !ft_strcmp(lex->lexer[lex->counter], ">>"))
+		{
+			child->parser_redirect_output[j++] = lex->lexer[lex->counter++];
+			child->parser_redirect_output[j++] = lex->lexer[lex->counter];
+		}
 		lex->counter++;
 	}
+	child->parser_redirect_input[i] = NULL;
+	child->parser_redirect_output[j] = NULL;
+	if (i > 2)
+		return ("Multiple input");
+	else if (j > 2)
+		return ("Multiple output");
+	else
+		return (NULL);
 }
 
-void	create_output_table(t_lex *lex, t_child *child)
+void	is_multiple_input(t_lex *lex, t_child *child)
 {
 	int	i;
 
 	i = 0;
-	while (lex->lexer[lex->counter] != "|" && lex->lexer[lex->counter])  /* If we never enter the condition, then child->parser_redirect[0] remains NULL */
-	{
-		if (lex->lexer[lex->counter] == ">" || lex->lexer[lex->counter] == ">>")
-		{
-			child->parser_redirect_output[i++] = lex->lexer[lex->counter++];
-			child->parser_redirect_output[i++] = lex->lexer[lex->counter];
-		}
-		lex->counter++;
-	}
 }
 
-void	parse_redirection(t_lex *lex, t_child **child)
+void	parser_redirection(t_lex *lex, t_child **child)
 {
 	int	i;
 
 	i = 0;
 	while (child[i]) /* t_child **child needs to be NULL terminated */
 	{
-		create_input_table(lex, child[k]);
-		create_output_table(lex, child[k]);
+		if (fill_redirection_table(lex, child[i]) == 1)
+			create_redirection_table();
+		lex->counter++;
+		i++;
 	}
-	i++;
+	create_redirection_table(lex, child[i]);
 }
-
 
 lex->lexer[0] = <<       			child->parser_redirect_input[0] = <<
 lex->lexer[1] = eof					child->parser_redirect_input[1] = eof
