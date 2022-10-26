@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:51:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/26 11:55:24 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:02:42 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_lex
 {
 	char	*line2;
 	char	**lexer;
+	int		nbr_tokens;
+	int		counter;
 }	t_lex;
 
 /* parser_redirect[0] = infile <

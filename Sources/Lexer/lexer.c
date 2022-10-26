@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/25 15:57:02 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:12:08 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
