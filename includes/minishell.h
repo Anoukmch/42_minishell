@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:51:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/25 16:52:08 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:55:24 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ typedef struct s_lex
 typedef struct s_child
 {
 	char	**parser_cmd;
-	char	**parser_redirect;
+	char	**parser_redirect_input;
+	char	**parser_redirect_output;
 }	t_child;
 
 

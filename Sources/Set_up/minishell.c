@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 09:42:42 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/25 16:28:34 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:21:38 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,5 @@ int main(void)
     // giving line to lexer
     return (0);
 }
+
+/* Initialize the struct */

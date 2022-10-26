@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/25 17:14:06 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/26 12:53:08 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,12 @@ static void builtins_commands()
 // 	exit(EXIT_FAILURE);
 // }
 
-void parser(t_lex *lex, t_child *child)
+void parser(t_lex *lex, t_child **child)
 {
 	int	i;
 
 	i = 0;
+	t_child **child;
 	//  IN CASE OF PIPE --> CHANGE PROCESS NUMBER
 	while (lex->lexer[i])
 	{
