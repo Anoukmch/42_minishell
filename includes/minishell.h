@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:51:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/26 15:39:35 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/26 16:51:05 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_lex
 	char	*line2;
 	char	**lexer;
 	int		counter;
+	int		noofpipes;
 }	t_lex;
 
 /* parser_redirect[0] = infile <
@@ -47,8 +48,12 @@ typedef struct s_child
 	char	**parser_redirect_output;
 }	t_child;
 
-
+// LEXER
 void	create_lexer_string(char *line, t_lex *lex);
-void parser(t_lex *lex, t_child *child);
+void	errorexit(char *message);
+
+// PARSER
+void	parser(t_lex *lex, t_child **child);
+void	parse_commands(t_lex *lex, t_child **child);
 
 #endif

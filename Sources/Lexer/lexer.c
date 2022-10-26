@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/26 15:12:08 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/26 17:07:55 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ void	errorexit(char *message)
 	exit(EXIT_FAILURE);
 }
 
+// double quote & single quote must be handled differently
 /* inserts spaces when sign & filename should be seperated
 ASCII 39 = single quote*/
-static void insert_spaces_lexer(char *line, t_lex *lex)
+static void calloc_line2_withspaces(char *line, t_lex *lex)
 {
 	int	count;
 	int	i;
@@ -51,7 +52,7 @@ void	create_lexer_string(char *line, t_lex *lex)
 
 	j = 0;
 	i = 0;
-	insert_spaces_lexer(line, lex);
+	calloc_line2_withspaces(line, lex);
 	while (line[i])
 	{
 		if ((line[i] == '<' || line[i] == '>')
@@ -68,6 +69,7 @@ void	create_lexer_string(char *line, t_lex *lex)
 		j++;
 		i++;
 	}
+	// HANDLE DOUBLE QUOTES WITH SPACES IN IT!!
 	lex->lexer = ft_split(lex->line2, ' ');
 	// CHECK LEXER BELOW
 	i = 0;

@@ -6,18 +6,20 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/10/25 14:15:57 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/10/26 17:54:40 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -lreadline #-Wall -Werror -Wextra
+CFLAGS = -lreadline  #-fsanitize=address -g #-Wall -Werror -Wextra
 
 NAME =  minishell
 
 M_SRC = Set_up/minishell.c \
-		Lexer/lexer.c
+		Lexer/lexer.c \
+		Parser/parser.c \
+		Parser/parser_command.c
 
 M_SRCS = $(addprefix ./Sources/, $(M_SRC))
 
