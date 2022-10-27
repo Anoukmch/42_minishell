@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/26 17:07:55 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:12:31 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,44 @@ void	errorexit(char *message)
 	exit(EXIT_FAILURE);
 }
 
+static void	lexer_count_spaces(char *line, int i, t_lex *lex)
+{
+	if (line[i] != ' ' && line[i + 1] == '|')
+		lex->counter++;
+	if ((line[i] != ' ' && line[i] != '<')
+		&& line[i + 1] == '<')
+		lex->counter++;
+	if ((line[i] != ' ' && line[i] != '>')
+		&& line[i + 1] == '>')
+		lex->counter++;
+	if (line[i] == '<' && (line[i + 1] != '<' && line[i + 1] != ' '))
+		lex->counter++;
+	if (line[i] == '>' && (line[i + 1] != '>' && line[i + 1] != ' '))
+		lex->counter++;
+}
+
 // double quote & single quote must be handled differently
 /* inserts spaces when sign & filename should be seperated
 ASCII 39 = single quote*/
-static void calloc_line2_withspaces(char *line, t_lex *lex)
+static void	calloc_line2_withspaces(char *line, t_lex *lex)
 {
-	int	count;
 	int	i;
 
-	count = 0;
 	i = 0;
-	while(line[i])
+	lex->counter = 0;
+	while (line && line[i])
 	{
-		if ((line[i] == '<' || line[i] == '>'
-			|| line[i] == '"' || line[i] == 39)
-			&& (ft_isalpha(line[i + 1]) == 0
-				|| ft_isdigit(line[i + 1]) == 0))
-			count++;
+		lexer_count_spaces(line, i, lex);
 		i++;
 	}
-	lex->line2 = ft_calloc(ft_strlen(line) + count,
-			(ft_strlen(line) + count) * sizeof(char));
+	lex->line2 = ft_calloc(ft_strlen(line) + lex->counter,
+			(ft_strlen(line) + lex->counter) * sizeof(char));
 	if (lex->line2 == NULL)
 		errorexit("malloc error line2");
 }
 
+// HANDLE DOUBLE QUOTES WITH SPACES IN IT!!
+// cat<<Makefile grep"hello world"| cat>>outfile
 // < "Makefile" cat >outfile
 /* takes input string and splits it into tokens*/
 void	create_lexer_string(char *line, t_lex *lex)
@@ -53,11 +66,13 @@ void	create_lexer_string(char *line, t_lex *lex)
 	j = 0;
 	i = 0;
 	calloc_line2_withspaces(line, lex);
-	while (line[i])
+	while (line && line[i])
 	{
-		if ((line[i] == '<' || line[i] == '>')
-			&& (ft_isalpha(line[i + 1]) == 0
-				|| ft_isdigit(line[i + 1]) == 0))
+		if ((line[i] != ' ' && line[i + 1] == '|')
+			|| ((line[i] != ' ' || line[i] != '<') && line[i + 1] == '<')
+			|| ((line[i] != ' ' || line[i] != '>') && line[i + 1] == '>')
+			|| (line[i] == '<' && (line[i + 1] != '<' || line[i + 1] != ' '))
+			|| (line[i] == '>' && (line[i + 1] != '>' || line[i + 1] != ' ')))
 		{
 			lex->line2[j] = line[i];
 			j++;
@@ -69,9 +84,16 @@ void	create_lexer_string(char *line, t_lex *lex)
 		j++;
 		i++;
 	}
-	// HANDLE DOUBLE QUOTES WITH SPACES IN IT!!
 	lex->lexer = ft_split(lex->line2, ' ');
-	// CHECK LEXER BELOW
+	print_lexer(lex);
+	exit (0);
+}
+
+// CHECKING LEXER
+void	print_lexer(t_lex *lex)
+{
+	int	i;
+
 	i = 0;
 	while (lex->lexer[i])
 	{
@@ -79,11 +101,3 @@ void	create_lexer_string(char *line, t_lex *lex)
 		i++;
 	}
 }
-
-
-// void	create_lexer_string(char *line, t_par *par)
-// {
-// 	t_lex *p;
-// 	p = par->lex;
-// 	p->lexer
-// }

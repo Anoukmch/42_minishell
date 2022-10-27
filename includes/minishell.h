@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:51:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/26 16:51:05 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/27 16:20:55 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_lex
 	char	**lexer;
 	int		counter;
 	int		noofpipes;
+	int		spaces;
 }	t_lex;
 
 /* parser_redirect[0] = infile <
@@ -56,4 +57,8 @@ void	errorexit(char *message);
 void	parser(t_lex *lex, t_child **child);
 void	parse_commands(t_lex *lex, t_child **child);
 
+void	count_new_spaces(char *line, t_lex *lex);
+
+// CHECKING LEXER
+void print_lexer(t_lex *lex);
 #endif

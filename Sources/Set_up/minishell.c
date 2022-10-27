@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 09:42:42 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/26 17:30:17 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:50:05 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ int main(void)
 {
     t_lex   *lex;
     t_child **child;
+
+    lex = NULL;
+    child = NULL;
     static char *line = (char *)NULL;
     while (1)
     {

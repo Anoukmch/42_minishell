@@ -6,18 +6,19 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/10/26 17:54:40 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/10/27 17:50:36 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -lreadline  #-fsanitize=address -g #-Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra #-lreadline  #-fsanitize=address -g
 
 NAME =  minishell
 
 M_SRC = Set_up/minishell.c \
 		Lexer/lexer.c \
+		Lexer/test_lexer.c \
 		Parser/parser.c \
 		Parser/parser_command.c
 
@@ -34,7 +35,7 @@ all: $(NAME)
 bonus : $(BONUS)
 
 $(NAME): $(M_OBJS) $(LIBS_DIR)/$(LIBS_NAME)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ -lreadline
 
 $(LIBS_DIR)/$(LIBS_NAME):
 	make -sC $(LIBS_DIR)
