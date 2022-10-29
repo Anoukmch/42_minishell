@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:51:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/27 16:20:55 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/29 16:13:55 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,11 @@ typedef struct s_child
 	char	**parser_redirect_output;
 }	t_child;
 
+// INIT
+void count_pipes(t_lex *lex);
 // LEXER
 void	create_lexer_string(char *line, t_lex *lex);
+char	**split_lexer(char const *s, char c);
 void	errorexit(char *message);
 
 // PARSER

@@ -6,7 +6,7 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/10/27 17:50:36 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/10/29 16:12:59 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME =  minishell
 
 M_SRC = Set_up/minishell.c \
 		Lexer/lexer.c \
-		Lexer/test_lexer.c \
+		Lexer/lexer_split.c \
 		Parser/parser.c \
 		Parser/parser_command.c
 
