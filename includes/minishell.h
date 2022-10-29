@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:51:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/29 15:30:35 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/29 19:58:37 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,14 @@ typedef struct s_child
 	char	**parser_redirect_output;
 	int		fd_in;
 	int		fd_out;
-	
+
 }	t_child;
 
+// INIT
+void count_pipes(t_lex *lex);
 // LEXER
 void	create_lexer_string(char *line, t_lex *lex);
+char	**split_lexer(char const *s, char c);
 void	errorexit(char *message);
 
 // PARSER
