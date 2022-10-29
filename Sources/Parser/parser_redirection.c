@@ -6,13 +6,13 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/26 16:32:59 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/29 19:51:29 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*fill_redirection_table(t_lex *lex, t_child *child)
+void	fill_redirection_table(t_lex *lex, t_child *child)
 {
 	int	i;
 	int j;
@@ -33,21 +33,114 @@ char	*fill_redirection_table(t_lex *lex, t_child *child)
 		}
 		lex->counter++;
 	}
-	child->parser_redirect_input[i] = NULL;
+	child->parser_redirect_input[i] = NULL; /* Allocation should be minimum ONE char * for NULL */
 	child->parser_redirect_output[j] = NULL;
-	if (i > 2)
-		return ("Multiple input");
-	else if (j > 2)
-		return ("Multiple output");
-	else
-		return (NULL);
 }
 
-void	is_multiple_input(t_lex *lex, t_child *child)
+void	here_doc(char *limiter, int i, int nbr_elements)
+{
+	int		file;
+	char	*line;
+	char	*temp;
+
+	file = open("heredoc", O_CREAT | O_WRONLY
+			| O_TRUNC, 0644);
+	if (file < 0)
+		error("Open heredoc failed");
+	temp = ft_strjoin(limiter, "\n");
+	ft_printf("Heredoc>");
+	line = get_next_line(STDIN_FILENO);
+	if (!line)
+		ft_printf("Get_next_line failed");
+	while (ft_strncmp(line, temp, (ft_strlen(temp) + 1)))
+	{
+		if (i == nbr_elements - 2)
+			ft_putstr_fd(line, file);
+		free(line);
+		ft_printf("Heredoc>");
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			error("Get_next_line failed");
+	}
+	free(line);
+	free(temp);
+	close(file);
+}
+
+void	check_redirection_table(char **parser_redirect_input, int i, int j)
 {
 	int	i;
 
 	i = 0;
+	if (ft_strcmp(parser_redirect_input[i], "<") && ft_strcmp(parser_redirect_input[i], "<<"))
+		error("Wrong redirection input");
+	/* Check filename*/
+}
+
+void	get_outfile(t_child *child)
+{
+	int	i;
+	int nbr_elements;
+
+	i = 0;
+	nbr_elements = 0;
+	while (child->parser_redirect_output[nbr_elements])
+		nbr_elements++;
+	while (child->parser_redirect_output[i])
+	{
+		//check_redirection_table(child->parser_redirect_output, i, i + 1);
+		if (!ft_strcmp(child->parser_redirect_output[i], ">"))
+		{
+			child->fd_out = open(ag, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			if (child->fd_out < 0)
+				error ("Open outfile failed");
+			if (i < nbr_elements - 2)
+				close(child->fd_out);
+		}
+		else if (!ft_strcmp(child->parser_redirect_output[i], "<<"))
+		{
+			child->fd_out = open(ag, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (child->fd_out < 0)
+				error ("Open outfile failed");
+			if (i < nbr_elements - 2)
+				close(child->fd_out);
+		}
+		i += 2;
+	}
+}
+
+void	get_infile(t_child *child)
+{
+	int	i;
+	int nbr_elements;
+
+	i = 0;
+	nbr_elements = 0;
+	while (child->parser_redirect_input[nbr_elements])
+		nbr_elements++;
+	while (child->parser_redirect_input[i])
+	{
+		//check_redirection_table(child->parser_redirect_input, i, i + 1);
+		if (!ft_strcmp(child->parser_redirect_input[i], "<"))
+		{
+			child->fd_in = open(child->parser_redirect_input[i + 1], O_RDONLY);
+			if (child->fd_in < 0)
+				error ("Open infile failed");
+			if (i < nbr_elements - 2)
+				close(child->fd_in);
+		}
+		else if (!ft_strcmp(child->parser_redirect_input[i], "<<"))
+		{
+			here_doc(child->parser_redirect_input[i + 1], i, nbr_elements);
+			if (i == nbr_elements - 2)
+			{
+				child->fd_in = open("heredoc", O_RDONLY);
+				if (child->fd_in < 0)
+					error ("Open infile heredoc failed");
+			}
+		}
+		i += 2;
+	}
 }
 
 void	parser_redirection(t_lex *lex, t_child **child)
@@ -57,29 +150,12 @@ void	parser_redirection(t_lex *lex, t_child **child)
 	i = 0;
 	while (child[i]) /* t_child **child needs to be NULL terminated */
 	{
-		if (fill_redirection_table(lex, child[i]) == 1)
-			create_redirection_table();
+		fill_redirection_table(lex, child[i]);
+		if (child[i]->parser_redirect_input[0] != NULL)
+			get_infile(child[i]);
+		if (child[i]->parser_redirect_output[0] != NULL)
+			get_outfile(child[i]);
 		lex->counter++;
 		i++;
 	}
-	create_redirection_table(lex, child[i]);
 }
-
-lex->lexer[0] = <<       			child->parser_redirect_input[0] = <<
-lex->lexer[1] = eof					child->parser_redirect_input[1] = eof
-lex->lexer[2] = <					child->parser_redirect_input[2] = <
-lex->lexer[3] = "Makefile"			child->parser_redirect_input[3] = "Makefile"
-lex->lexer[4] = <<					child->parser_redirect_input[4] = <<
-lex->lexer[5] = eof					child->parser_redirect_input[5] = eof
-lex->lexer[6] = ls
-lex->lexer[7] = -al
-lex->lexer[8] = >
-lex->lexer[9] = outfile
-lex->lexer[10] = |
-lex->lexer[11] = grep
-lex->lexer[12] = libs
-lex->lexer[13] = >
-lex->lexer[14] = outfile
-
-char **child->parser_redirect;
-child->parser_redirect[i];

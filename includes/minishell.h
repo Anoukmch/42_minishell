@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:51:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/27 16:20:55 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/29 15:30:35 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ typedef struct s_child
 	char	**parser_cmd;
 	char	**parser_redirect_input;
 	char	**parser_redirect_output;
+	int		fd_in;
+	int		fd_out;
+	
 }	t_child;
 
 // LEXER
