@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/29 17:55:25 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/30 20:02:10 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	calloc_line2_withspaces(char *line, t_lex *lex)
 	}
 	lex->line2 = ft_calloc(ft_strlen(line) + lex->counter,
 			(ft_strlen(line) + lex->counter) * sizeof(char));
+	printf("%d\n", lex->counter);
 	if (lex->line2 == NULL)
 		errorexit("malloc error line2");
 }

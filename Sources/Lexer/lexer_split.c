@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:05:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/29 18:46:57 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/30 20:06:22 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,22 @@ static size_t	wordcounter(char const *s, char c)
 	{
 		while (s[i] == c && s[i] != '\0')
 			i++;
+		if (s[i] == '"')
+		{
+			i++;
+			while (s[i] != '"')
+				i++;
+		}
+		if (s[i] == 39)
+		{
+			i++;
+			while (s[i] != 39)
+				i++;
+		}
 		if (s[i] != '\0')
 			counter++;
 		while (s[i] != c && s[i] != '\0')
-		{
-			// COUNT RIGHT BECAUSE OF QUOTES
 			i++;
-		}
 	}
 	return (counter);
 }
