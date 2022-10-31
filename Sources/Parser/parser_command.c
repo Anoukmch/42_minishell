@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:18:25 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/30 20:35:47 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/31 14:33:45 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,129 +15,50 @@
 /*
 grep "hello world" >outfile | 'my name is' > infile
 */
-void	parse_commands(t_lex *lex, t_child **child)
+static void	commands(t_lex *lex, t_child **child, int k)
 {
-	int	i;
+	int	j;
 
-	i = 0;
-	while (lex->lexer[i])
+	j = 0;
+	while (lex->lexer[lex->iter]
+		&& (ft_strncmp(lex->lexer[lex->iter], "|", 2) != 0))
 	{
-		while (lex->lexer[i] && (ft_strncmp(lex->lexer[i],"<", 2) == 0 || ft_strncmp(lex->lexer[i],"<<", 3) == 0
-			|| ft_strncmp(lex->lexer[i],">", 2) == 0 || ft_strncmp(lex->lexer[i],">>", 3) == 0))
-				i += 2;
-		if (lex->lexer[i] && ft_strncmp(lex->lexer[i],"|", 2) == 0)
+		while (lex->lexer[lex->iter]
+			&& (ft_strncmp(lex->lexer[lex->iter], "<", 2) == 0
+				|| ft_strncmp(lex->lexer[lex->iter], "<<", 3) == 0
+				|| ft_strncmp(lex->lexer[lex->iter], ">", 2) == 0
+				|| ft_strncmp(lex->lexer[lex->iter], ">>", 3) == 0))
 		{
-			i++;
-			// allocate
-			// z = 0
-			// next child
-			// z = 0;
+			if (!lex->lexer[lex->iter + 2])
+			{
+				lex->iter++;
+				return ;
+			}
+			else
+				lex->iter += 2;
 		}
-		printf("STR: %s\n", lex->lexer[i]);
-		i++;
+		free(lex->lexer[lex->iter]);
+		child[k]->parser_cmd[j] = ft_substr(lex->lexer[lex->iter],
+				0, ft_strlen(lex->lexer[lex->iter]));
+		// PRINT PARSER_COMMANDS
+		printf("CMD[%d][%d]: %s\n", k, j, child[k]->parser_cmd[j] = lex->lexer[lex->iter]);
+		j++;
+		lex->iter++;
 	}
-	exit (0);
-	lex->lexer[i] = NULL;
-	child = NULL;
-	// fill_parser_cmd(lex, child);
 }
 
-// static void allocate_cmd_space(t_lex *lex, int i, t_child **child, int k)
-// {
-// 	int	z;
+void	parse_commands(t_lex *lex, t_child **child)
+{
+	int	k;
 
-// 	z = 0;
-// 	printf("CMD");
-// 	while(ft_strncmp(lex->lexer[i],"<", 2) == 0 && ft_strncmp(lex->lexer[i],"<<", 3) == 0
-// 			&& ft_strncmp(lex->lexer[i],">", 2) == 0 && ft_strncmp(lex->lexer[i],">>", 3) == 0
-// 			&& ft_strncmp(lex->lexer[i],"|", 2) == 0)
-// 		i += 2;
-// 	z++;
-// 	i++;
-// 	printf("NUMBER OF CMD: %d\n", z);
-// 	child[k]->parser_cmd = malloc(z * sizeof(char *));
-// 	if (child[k]->parser_cmd == NULL)
-// 		errorexit("check parser_cmd allocation");
-// 	exit(0);
-// }
-
-// static void	fill_parser_cmd(t_lex *lex, t_child **child)
-// {
-// 	int	i;
-// 	int j;
-// 	int	k;
-
-// 	i = 0;
-// 	j = 0;
-// 	k = 0;
-// 	while (k <= lex->noofpipes + 2)
-// 	{
-// 		while (ft_strncmp(lex->lexer[i], "|", 2) != 0 && lex->lexer[i] && lex->lexer)
-// 		{
-// 			while(ft_strncmp(lex->lexer[i],"<", 2) == 0 || ft_strncmp(lex->lexer[i],"<<", 3) == 0
-// 				|| ft_strncmp(lex->lexer[i],">", 2) == 0 || ft_strncmp(lex->lexer[i],">>", 3) == 0)
-// 				i += 2;
-// 			child[k]->parser_cmd[j] = lex->lexer[i];
-// 			i++;
-// 		}
-// 		j = 0;
-// 		i = 0;
-// 		k++;
-// 	}
-// 	exit (0);
-// }
-
-// void	parse_commands(t_lex *lex, t_child **child)
-// {
-// 	int	i;
-// 	int	k;
-// 	int z;
-
-// 	i = 0;
-// 	k = 0;
-// 	z = 0;
-// 	while (k <= (lex->noofpipes + 2) && lex->lexer)
-// 	{
-// 		while (ft_strncmp(lex->lexer[i], "|", 2) != 0 && lex->lexer[i])
-// 		{
-// 			while (lex->lexer[i] && lex->lexer && (ft_strncmp(lex->lexer[i],"<", 2) == 0 || ft_strncmp(lex->lexer[i],"<<", 3) == 0
-// 				|| ft_strncmp(lex->lexer[i],">", 2) == 0 || ft_strncmp(lex->lexer[i],">>", 3) == 0))
-// 			{
-// 					printf("KLAPPT\n");
-// 					i += 2;
-// 			}		
-// 			printf("str: %s\n", lex->lexer[i]);
-// 			z++;
-// 			i++;
-// 			// printf("Here: %d\n", lex->noofpipes);
-// 		}
-// 		printf("NUMBER OF CMD: %d\n", z);
-// 		// allocate_cmd_space(lex, i, child, k);
-// 		// child[k]->parser_cmd = malloc(z * sizeof(char *));
-// 		// if (child[k]->parser_cmd == NULL)
-// 		// 	errorexit("check parser_cmd allocation");
-// 		z = 0;
-// 		i++;
-// 		k++;
-// 	}
-// 	exit (0);
-// 	fill_parser_cmd(lex, child);
-// }
-
-
-// 	k = 0;
-// 	j = 0;
-// 	while(child && k <= lex->noofpipes + 2)
-// 	{
-// 		while((*child)->parser_cmd[j])
-// 		{
-// 			printf("WORKS\n");
-// 			printf("child %d: %s\n", k, (*child)->parser_cmd[j]);
-// 			j++;
-// 		}
-// 		j = 0;
-// 		(*child)++;
-// 		k++;
-// 	}
-// 	exit (0);
-// }
+	k = 0;
+	lex->iter = 0;
+	while (k <= lex->no_processes)
+	{
+		commands(lex, child, k);
+		lex->iter++;
+		k++;
+	}
+	child[k] = NULL;
+	exit(0);
+}

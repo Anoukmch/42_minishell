@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   freeing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 15:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/31 13:21:55 by jmatheis         ###   ########.fr       */
+/*   Created: 2022/10/31 13:40:08 by jmatheis          #+#    #+#             */
+/*   Updated: 2022/10/31 13:42:40 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	parser(t_lex *lex)
+void	free_doublepointer (char **str)
 {
-	t_child	**child;
+	int	i;
 
-	child = NULL;
-	child = init_child(lex, child);
-	parse_commands(lex, child);
-	exit(0);
+	i = 0;
+	while (str && str[i])
+	{
+		free (str[i]);
+		i++;
+	}
+	free (str);
 }
-
-//  grep "hello world" >outfile
