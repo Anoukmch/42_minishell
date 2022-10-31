@@ -6,7 +6,7 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/10/29 16:12:59 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/10/31 13:42:19 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,10 @@ NAME =  minishell
 M_SRC = Set_up/minishell.c \
 		Lexer/lexer.c \
 		Lexer/lexer_split.c \
+		Lexer/freeing.c \
 		Parser/parser.c \
-		Parser/parser_command.c
+		Parser/parser_command.c \
+		Parser/parser_init.c
 
 M_SRCS = $(addprefix ./Sources/, $(M_SRC))
 

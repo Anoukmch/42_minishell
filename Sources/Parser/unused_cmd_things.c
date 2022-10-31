@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_command.c                                   :+:      :+:    :+:   */
+/*   unused_cmd_things.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:18:25 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/26 17:53:40 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/31 13:20:06 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	parse_commands(t_lex *lex, t_child **child)
 	// {
 	// 	printf("WORKS\n");
 	// }
-	while (k <= lex->noofpipes + 2)
+	while (k <= lex->no_processes + 2)
 	{
 		while (ft_strncmp(lex->lexer[i], "|", 2) != 0 && lex->lexer[i])
 		{
@@ -147,7 +147,7 @@ void	parse_commands(t_lex *lex, t_child **child)
 	}
 	k = 0;
 	j = 0;
-	while(child && k <= lex->noofpipes + 2)
+	while(child && k <= lex->no_processes + 2)
 	{
 		while((*child)->parser_cmd[j])
 		{

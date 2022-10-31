@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:51:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/29 19:58:37 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/31 13:42:43 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ typedef struct s_lex
 	char	*line2;
 	char	**lexer;
 	int		counter;
-	int		noofpipes;
+	int		no_processes;
 	int		spaces;
+	int		iter;
 }	t_lex;
 
 /* parser_redirect[0] = infile <
@@ -45,6 +46,7 @@ typedef struct s_lex
 typedef struct s_child
 {
 	char	**parser_cmd;
+	int		no_cmd_opt;
 	char	**parser_redirect_input;
 	char	**parser_redirect_output;
 	int		fd_in;
@@ -58,10 +60,17 @@ void count_pipes(t_lex *lex);
 void	create_lexer_string(char *line, t_lex *lex);
 char	**split_lexer(char const *s, char c);
 void	errorexit(char *message);
+// LEXER FREEING
+void	free_doublepointer (char **str);
 
 // PARSER
-void	parser(t_lex *lex, t_child **child);
+void	parser(t_lex *lex);
 void	parse_commands(t_lex *lex, t_child **child);
+// PARSER INIT
+t_child **init_child(t_lex *lex, t_child **child);
+void	count_pipes(t_lex *lex);
+
+
 
 void	count_new_spaces(char *line, t_lex *lex);
 

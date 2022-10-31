@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/30 20:02:10 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/31 13:48:10 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,32 +50,10 @@ static void	calloc_line2_withspaces(char *line, t_lex *lex)
 	}
 	lex->line2 = ft_calloc(ft_strlen(line) + lex->counter,
 			(ft_strlen(line) + lex->counter) * sizeof(char));
-	printf("%d\n", lex->counter);
 	if (lex->line2 == NULL)
 		errorexit("malloc error line2");
 }
 
-static void	quotings(t_lex *lex)
-{
-	int	i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while (lex->lexer && lex->lexer[i])
-	{
-		if (lex->lexer[i][0] == '"')
-		{
-			j = ft_strlen(lex->lexer[i]) - 1;
-			// if (lex->lexer[i][j] != '"')
-			// {
-			// 	// INSERT SPACE
-			// 	printf("DOUBLE");
-			// }
-		}
-		i++;
-	}
-}
 // HANDLE DOUBLE QUOTES WITH SPACES IN IT!!
 // cat<<Makefile grep"hello world"| cat>>outfile
 // < "Makefile" cat >outfile
@@ -107,8 +85,10 @@ void	create_lexer_string(char *line, t_lex *lex)
 		j++;
 		i++;
 	}
+	free(line);
 	lex->lexer = split_lexer(lex->line2, ' ');
-	quotings(lex);
+	free_doublepointer(split_lexer(lex->line2, ' '));
+	free(lex->line2);
 	print_lexer(lex);
 }
 
