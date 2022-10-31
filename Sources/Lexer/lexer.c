@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/31 13:48:10 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/31 16:06:22 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,5 @@ void	print_lexer(t_lex *lex)
 		printf("%s\n", lex->lexer[i]);
 		i++;
 	}
+	printf("%s\n", lex->lexer[i]);
 }

@@ -36,7 +36,9 @@ typedef struct s_child
 	char	**parser_cmd;
 	int		no_cmd_opt;
 	char	**parser_redirect_input;
+	int 	input_counter;
 	char	**parser_redirect_output;
+	int 	output_counter;
 	int		fd_in;
 	int		fd_out;
 	int		id;

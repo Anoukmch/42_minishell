@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 11:16:46 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/31 13:20:55 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/10/31 16:43:34 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,36 @@ static void	count_processes(t_lex *lex)
 
 static void	init_cmds(t_lex *lex, t_child **child, int k)
 {
-	while (lex->lexer[lex->iter]
-		&& (ft_strncmp(lex->lexer[lex->iter], "|", 2) != 0))
+	while (ft_strcmp(lex->lexer[lex->counter], "|") && lex->lexer[lex->counter])
 	{
-		while (lex->lexer[lex->iter + 2]
-			&& (ft_strncmp(lex->lexer[lex->iter], "<", 2) == 0
-				|| ft_strncmp(lex->lexer[lex->iter], "<<", 3) == 0
-				|| ft_strncmp(lex->lexer[lex->iter], ">", 2) == 0
-				|| ft_strncmp(lex->lexer[lex->iter], ">>", 3) == 0))
-				lex->iter += 2;
-		if (!lex->lexer[lex->iter + 2]
-			&& (ft_strncmp(lex->lexer[lex->iter], "<", 2) == 0
-				|| ft_strncmp(lex->lexer[lex->iter], "<<", 3) == 0
-				|| ft_strncmp(lex->lexer[lex->iter], ">", 2) == 0
-				|| ft_strncmp(lex->lexer[lex->iter], ">>", 3) == 0))
-		{
-			lex->iter++;
-			break ;
-		}
-		(child[k]->no_cmd_opt)++;
+		// while (lex->lexer[lex->iter + 2]
+		// 	&& (ft_strncmp(lex->lexer[lex->iter], "<", 2) == 0
+		// 		|| ft_strncmp(lex->lexer[lex->iter], "<<", 3) == 0
+		// 		|| ft_strncmp(lex->lexer[lex->iter], ">", 2) == 0
+		// 		|| ft_strncmp(lex->lexer[lex->iter], ">>", 3) == 0))
+		// 		{
+		// 			lex->iter += 2;
+		// 		}
+		// if (!lex->lexer[lex->iter + 2]
+		// 	&& (ft_strncmp(lex->lexer[lex->iter], "<", 2) == 0
+		// 		|| ft_strncmp(lex->lexer[lex->iter], "<<", 3) == 0
+		// 		|| ft_strncmp(lex->lexer[lex->iter], ">", 2) == 0
+		// 		|| ft_strncmp(lex->lexer[lex->iter], ">>", 3) == 0))
+		// {
+		// 	lex->iter++;
+		// 	break ;
+		// }
+		// child[k]->no_cmd_opt++;
+		// lex->iter++;
+
+		if (ft_strncmp(lex->lexer[lex->iter], "<", 2) == 0
+				|| ft_strncmp(lex->lexer[lex->iter], "<<", 3) == 0)
+			child[k]->input_counter += 2;
+		else if (ft_strncmp(lex->lexer[lex->iter], ">", 2) == 0
+				|| ft_strncmp(lex->lexer[lex->iter], ">>", 3) == 0)
+			child[k]->output_counter += 2;
+		else
+			child[k]->no_cmd_opt++;
 		lex->iter++;
 	}
 }
@@ -69,11 +80,18 @@ t_child	**init_child(t_lex *lex, t_child **child)
 		if (child[k] == NULL)
 			errorexit("check initializiation of structs");
 		child[k]->no_cmd_opt = 0;
+		child[k]->input_counter = 0;
+		child[k]->output_counter = 0;
 		init_cmds(lex, child, k);
 		lex->iter++;
 		child[k]->parser_cmd
 			= ft_calloc(child[k]->no_cmd_opt + 1, sizeof(char *));
-		if (child[k]->parser_cmd == NULL)
+		child[k]->parser_redirect_input
+			= ft_calloc(child[k]->input_counter + 1, sizeof(char *));
+		child[k]->parser_redirect_output
+			= ft_calloc(child[k]->output_counter + 1, sizeof(char *));
+		if (child[k]->parser_redirect_output == NULL || child[k]->parser_redirect_input == NULL
+			|| child[k]->parser_cmd == NULL)
 			errorexit("check initializiation of structs");
 		k++;
 	}
