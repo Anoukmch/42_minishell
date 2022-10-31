@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 16:51:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/29 19:58:37 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/31 10:57:44 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,17 @@ typedef struct s_child
 	char	**parser_redirect_output;
 	int		fd_in;
 	int		fd_out;
+	int		id;
 
 }	t_child;
+
+typedef struct s_executor
+{
+	char	**envp_path;
+	char	*envp_line;
+
+}	t_executor;
+
 
 // INIT
 void count_pipes(t_lex *lex);

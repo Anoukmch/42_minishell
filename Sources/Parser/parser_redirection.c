@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/29 19:51:29 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/31 15:28:54 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	get_outfile(t_child *child)
 		//check_redirection_table(child->parser_redirect_output, i, i + 1);
 		if (!ft_strcmp(child->parser_redirect_output[i], ">"))
 		{
-			child->fd_out = open(ag, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			child->fd_out = open(child->parser_redirect_output[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (child->fd_out < 0)
 				error ("Open outfile failed");
 			if (i < nbr_elements - 2)
@@ -99,7 +99,7 @@ void	get_outfile(t_child *child)
 		}
 		else if (!ft_strcmp(child->parser_redirect_output[i], "<<"))
 		{
-			child->fd_out = open(ag, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			child->fd_out = open(child->parser_redirect_output[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (child->fd_out < 0)
 				error ("Open outfile failed");
 			if (i < nbr_elements - 2)
@@ -148,13 +148,10 @@ void	parser_redirection(t_lex *lex, t_child **child)
 	int	i;
 
 	i = 0;
+	lex->counter = 0;
 	while (child[i]) /* t_child **child needs to be NULL terminated */
 	{
 		fill_redirection_table(lex, child[i]);
-		if (child[i]->parser_redirect_input[0] != NULL)
-			get_infile(child[i]);
-		if (child[i]->parser_redirect_output[0] != NULL)
-			get_outfile(child[i]);
 		lex->counter++;
 		i++;
 	}

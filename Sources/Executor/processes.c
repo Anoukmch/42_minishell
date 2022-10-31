@@ -6,63 +6,57 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 13:53:57 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/25 17:24:48 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/31 12:50:56 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_infile()
+void	switch_put(t_child *child, int *end)
 {
-	int	fd_in;
-
-	if (parser_redirect[0] && parser_redirect[1] == NULL)
+	if (child->parser_redirect_input[0] != NULL)
 	{
-		fd_in = open(parser_redirect[0], O_RDONLY);
-		if (fd_in < 0)
-			error ("Open failed", NULL);
+		if (dup2(child->fd_in, STDIN_FILENO) < 0)
+			error ("Dup2 infile failed");
 	}
-	else if (parser_redirect[0] && parser_redirect[1])
+	else if (child->parser_redirect_input[0] == NULL && child->id != 0)
 	{
-		fd_in = open(parser_redirect[0], O_RDONLY);
-		if (fd_in < 0)
-			error ("Open failed", NULL);
+		if (dup2(end[0], STDIN_FILENO) < 0)
+			error ("Dup2 infile failed");
 	}
-	else if (parser_redirect[0] == NULL && parser_redirect[1])
+	if (child->parser_redirect_output[0] != NULL)
 	{
-		here_doc();
-		fd_in = open(parser_redirect[0], O_RDONLY);
-		if (fd_in < 0)
-			error ("Open failed", NULL);
+		if (dup2(child->fd_out, STDOUT_FILENO) < 0)
+			error ("Dup2 outfile failed");
 	}
-	else
-		return (STDIN_FILENO);
-	return (fd_in);
+	else if (child->parser_redirect_output[0] == NULL && child->id != /* Last process */)
+	{
+		if (dup2(end[1], STDOUT_FILENO) < 0)
+			error ("Dup2 outfile failed");
+	}
+	/* Close pipe */
 }
 
-int	get_outfile()
-{
-	int	fd_out;
-
-	return (fd_out);
-}
-
-
-
-void	processes()
+void	processes(t_child *child)
 {
 	int		end[2];
 	pid_t	child;
+	int		i;
 
+	i = 0;
 	/* Conditional if we have the pipe symbol */
 	if (pipe(end) < 0)
-		error ("Pipex fail", NULL);
+		error ("Pipe fail", NULL);
 	child = fork();
 	if (child < 0)
 		error("Fork fail", NULL);
 	else if (child == 0)
 	{
-		fd_in = get_infile();
-		fd_out = get_outfile();
+		if (child->parser_redirect_input[0] != NULL)
+			get_infile(child);
+		if (child->parser_redirect_output[0] != NULL)
+			get_outfile(child);
+		switch_put(child, end);
 	}
+	/* !!! Close fd !!! */
 }
