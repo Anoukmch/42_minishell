@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/31 16:06:22 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/31 18:46:48 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,11 @@ void	print_lexer(t_lex *lex)
 	int	i;
 
 	i = 0;
-	while (lex->lexer[i])
+	lex->iter = 0;
+	while (lex->lexer[lex->iter])
 	{
-		printf("%s\n", lex->lexer[i]);
-		i++;
+		printf("%s\n", lex->lexer[lex->iter]);
+		lex->iter++;
 	}
-	printf("%s\n", lex->lexer[i]);
+	printf("%s\n", lex->lexer[lex->iter]);
 }

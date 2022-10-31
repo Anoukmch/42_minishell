@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/31 15:28:54 by amechain         ###   ########.fr       */
+/*   Updated: 2022/10/31 19:53:59 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,21 @@ void	fill_redirection_table(t_lex *lex, t_child *child)
 	{
 		if (!ft_strcmp(lex->lexer[lex->counter], "<") || !ft_strcmp(lex->lexer[lex->counter], "<<"))
 		{
-			child->parser_redirect_input[i++] = lex->lexer[lex->counter++];
+			child->parser_redirect_input[i] = ft_calloc(2 + 1, sizeof(char));
+			child->parser_redirect_input[i++] = lex->lexer[lex->counter++]; /* Can I do that ? Or character by character ? */
+			child->parser_redirect_input[i] = ft_calloc(ft_strlen(lex->lexer[lex->counter]) + 1, sizeof(char));
 			child->parser_redirect_input[i++] = lex->lexer[lex->counter];
 		}
 		else if (!ft_strcmp(lex->lexer[lex->counter], ">") || !ft_strcmp(lex->lexer[lex->counter], ">>"))
 		{
+			child->parser_redirect_input[i] = ft_calloc(2 + 1, sizeof(char));
 			child->parser_redirect_output[j++] = lex->lexer[lex->counter++];
+			child->parser_redirect_input[i] = ft_calloc(ft_strlen(lex->lexer[lex->counter]) + 1, sizeof(char));
 			child->parser_redirect_output[j++] = lex->lexer[lex->counter];
 		}
 		lex->counter++;
 	}
-	child->parser_redirect_input[i] = NULL; /* Allocation should be minimum ONE char * for NULL */
+	child->parser_redirect_input[i] = NULL;
 	child->parser_redirect_output[j] = NULL;
 }
 
@@ -143,6 +147,11 @@ void	get_infile(t_child *child)
 	}
 }
 
+void	init_redirection_string()
+{
+	while ()
+}
+
 void	parser_redirection(t_lex *lex, t_child **child)
 {
 	int	i;
@@ -151,6 +160,8 @@ void	parser_redirection(t_lex *lex, t_child **child)
 	lex->counter = 0;
 	while (child[i]) /* t_child **child needs to be NULL terminated */
 	{
+		init_redirection_string
+		lex->counter = 0;
 		fill_redirection_table(lex, child[i]);
 		lex->counter++;
 		i++;
