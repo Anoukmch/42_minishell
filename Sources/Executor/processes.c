@@ -6,11 +6,11 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 13:53:57 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/31 12:50:56 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/02 14:00:51 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 void	switch_put(t_child *child, int *end)
 {
