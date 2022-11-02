@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/02 15:57:35 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/02 17:20:36 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
 
 void	parser(t_lex *lex, t_child	**child)
 {
@@ -38,7 +39,6 @@ void	parser(t_lex *lex, t_child	**child)
             printf("parser output for child %d : %s\n", k, child[k]->parser_redirect_output[i++]);
         k++;
     }
-	exit(0);
 }
 
 //  grep "hello world" >outfile

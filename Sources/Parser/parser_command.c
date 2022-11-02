@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:18:25 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/02 15:57:19 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:51:38 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

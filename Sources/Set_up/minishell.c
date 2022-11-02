@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 09:42:42 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/02 15:59:57 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/02 18:07:27 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int main(int ac, char **ag, char **envp)
         if (lex->line && *(lex->line))
             add_history(lex->line);
         parser(lex, child);
+        executor(lex, child, exec);
     }
     // as soon as ^D --> signal (find needle in haystack function?)
     // giving line to lexer

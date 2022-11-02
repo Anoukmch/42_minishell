@@ -77,7 +77,9 @@ void	parser_redirection(t_lex *lex, t_child **child);
 t_child **init_child(t_lex *lex, t_child **child);
 void	count_pipes(t_lex *lex);
 
-
+// EXECUTOR
+void	executor(t_lex *lex, t_child **child, t_exec *exec);
+void    command_path(t_lex *lex, t_child **child, t_exec *exec);
 
 void	count_new_spaces(char *line, t_lex *lex);
 
