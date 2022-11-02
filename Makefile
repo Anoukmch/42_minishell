@@ -6,7 +6,7 @@
 #    By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/11/02 11:13:16 by amechain         ###   ########.fr        #
+#    Updated: 2022/11/02 15:47:35 by amechain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,9 @@ CFLAGS = -Wall -Werror -Wextra #-lreadline  #-fsanitize=address -g
 NAME =  minishell
 
 M_SRC = Set_up/minishell.c \
+		Set_up/initialize_child.c \
+		Set_up/initialize_exec.c \
+		Set_up/initialize_lex.c \
 		Lexer/lexer.c \
 		Lexer/lexer_split.c \
 		Lexer/freeing.c \

@@ -3,39 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 09:42:42 by amechain          #+#    #+#             */
-/*   Updated: 2022/10/31 10:44:56 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:59:57 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int main(void)
+//char *exit_string;
+
+void	print_lexer(t_lex *lex)
 {
+	int	i;
 
+	i = 0;
+	lex->iter = 0;
+	while (lex->lexer[lex->iter])
+	{
+		printf("%s\n", lex->lexer[lex->iter]);
+		lex->iter++;
+	}
+	printf("%s\n", lex->lexer[lex->iter]);
+}
+
+int main(int ac, char **ag, char **envp)
+{
     t_lex   *lex;
-    // t_child **child;
-    static char *line = (char *)NULL;
+    t_child **child;
+    t_exec  *exec;
 
-    lex = ft_calloc(1, sizeof(t_lex));
-    // child = ft_calloc(1, sizeof(t_child *));
-    if (lex == NULL)
-        errorexit("check initializiation of structs");
+    if (ac != 1 || !ag[0])
+        errorexit("Wrong number of arguments");
     while (1)
     {
-        line = readline("input: ");
-        if (line && *line)
-            add_history(line);
-        create_lexer_string(line, lex);
-        parser(lex);
-        if (line == NULL)
-            exit(0);
+        lex = initialize_lex();
+        child = initialize_child(lex);
+        exec = initialize_exec(lex, envp);
+        if (lex->line && *(lex->line))
+            add_history(lex->line);
+        parser(lex, child);
     }
     // as soon as ^D --> signal (find needle in haystack function?)
     // giving line to lexer
     return (0);
 }
 
-/* Initialize the struct */

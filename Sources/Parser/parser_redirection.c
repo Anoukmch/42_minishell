@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/02 13:27:16 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:59:11 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	fill_redirection_table(t_lex *lex, t_child *child)
 	i = 0;
 	j = 0;
 	lex = (void *)lex;
-	while (lex->lexer[lex->counter] && ft_strcmp(lex->lexer[lex->counter], "|"))  /* If we never enter the condition, then child->parser_redirect[0] remains NULL */
+	while (lex->lexer[lex->counter] && ft_strcmp(lex->lexer[lex->counter], "|"))
 	{
 		if (!ft_strcmp(lex->lexer[lex->counter], "<") || !ft_strcmp(lex->lexer[lex->counter], "<<"))
 		{
@@ -152,7 +152,7 @@ void	parser_redirection(t_lex *lex, t_child **child)
 
 	i = 0;
 	lex->counter = 0;
-	while (child[i]) /* t_child **child needs to be NULL terminated */
+	while (child[i])
 	{
 		fill_redirection_table(lex, child[i]);
 		i++;

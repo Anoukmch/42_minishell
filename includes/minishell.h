@@ -19,11 +19,11 @@
 
 typedef struct s_lex
 {
+	char	*line;
 	char	*line2;
 	char	**lexer;
 	int		counter;
 	int		no_processes;
-	int		spaces;
 	int		iter;
 }	t_lex;
 
@@ -42,28 +42,35 @@ typedef struct s_child
 	int		fd_in;
 	int		fd_out;
 	int		id;
+	char	*command;
 
 }	t_child;
 
-typedef struct s_executor
+typedef struct s_exec
 {
+	char 	**envp_bis;
 	char	**envp_path;
 	char	*envp_line;
+	int		nbr_process;
 
-}	t_executor;
+}	t_exec;
 
 
 // INIT
 void count_pipes(t_lex *lex);
+t_lex *initialize_lex();
+t_child **initialize_child(t_lex *lex);
+t_exec *initialize_exec(t_lex *lex, char **envp);
+
 // LEXER
-void	create_lexer_string(char *line, t_lex *lex);
+char	**create_lexer_string(t_lex *lex);
 char	**split_lexer(char const *s, char c);
 void	errorexit(char *message);
 // LEXER FREEING
 void	free_doublepointer (char **str);
 
 // PARSER
-void	parser(t_lex *lex);
+void	parser(t_lex *lex, t_child	**child);
 void	parse_commands(t_lex *lex, t_child **child);
 void	parser_redirection(t_lex *lex, t_child **child);
 // PARSER INIT

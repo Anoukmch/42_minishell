@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:18:25 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/02 13:44:34 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:57:19 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ static void	commands(t_lex *lex, t_child **child, int k)
 				0, ft_strlen(lex->lexer[lex->iter]));
 			if (!child[k]->parser_cmd[j])
 				errorexit("Allocation failed");
-			//printf("CMD[%d][%d]: %s\n", k, j, child[k]->parser_cmd[j] = lex->lexer[lex->iter]);
+			printf("CMD[%d][%d]: %s\n", k, j, child[k]->parser_cmd[j] = lex->lexer[lex->iter]);
 			j++;
 			lex->iter++;
 		}
 	}
+	child[k]->parser_cmd[j] = NULL;
 }
 
 void	parse_commands(t_lex *lex, t_child **child)
