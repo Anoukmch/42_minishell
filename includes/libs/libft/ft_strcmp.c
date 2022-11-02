@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 17:39:36 by amechain          #+#    #+#             */
-/*   Updated: 2022/08/25 12:12:41 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/02 13:23:49 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ int	ft_strcmp(char *s1, char *s2)
 	int	i;
 
 	i = 0;
+	if (!s1 && !s2)
+		return (0);
+	if (!s1 && s2 || s1 && !s2)
+		return (1);
 	while (s1[i] == s2[i] && s1[i] && s2[i])
 		i++;
 	return (s1[i] - s2[i]);

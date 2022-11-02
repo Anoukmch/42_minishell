@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/31 13:21:55 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/02 13:43:41 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,32 @@
 void	parser(t_lex *lex)
 {
 	t_child	**child;
+	int k;
+	int i;
 
+	i = 0;
+	k = 0;
 	child = NULL;
 	child = init_child(lex, child);
 	parse_commands(lex, child);
+	parser_redirection(lex, child);
+	while (child[k])
+	{
+		i = 0;
+		while (i < child[k]->no_cmd_opt)
+			printf("parser cmd for child %d : %s\n", k, child[k]->parser_cmd[i++]);
+		i = 0;
+		if (!child[k]->input_counter)
+			printf("No redirection input\n");
+		while (i < child[k]->input_counter)
+			printf("parser input for child %d : %s\n", k, child[k]->parser_redirect_input[i++]);
+		i = 0;
+		if (!child[k]->output_counter)
+			printf("No redirection output\n");
+		while (i < child[k]->output_counter)
+			printf("parser output for child %d : %s\n", k, child[k]->parser_redirect_output[i++]);
+		k++;
+	}
 	exit(0);
 }
 

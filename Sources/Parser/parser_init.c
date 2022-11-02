@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 10:50:14 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/02 10:54:27 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/02 11:41:35 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_child	**init_child(t_lex *lex, t_child **child)
 	child = ft_calloc(lex->no_processes + 1, sizeof(t_child *));
 	if (child == NULL)
 		errorexit("check initializiation of structs");
-	child[lex->no_processes + 1] = NULL;
+	child[lex->no_processes] = NULL;
 	lex->iter = 0;
 	while (k < lex->no_processes)
 	{
@@ -88,3 +88,5 @@ t_child	**init_child(t_lex *lex, t_child **child)
 	}
 	return (child);
 }
+
+//< Makefile grep "Hello world" | grep .o > outfile

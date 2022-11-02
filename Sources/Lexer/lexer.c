@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/31 18:46:48 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/02 13:26:48 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,20 +89,20 @@ void	create_lexer_string(char *line, t_lex *lex)
 	lex->lexer = split_lexer(lex->line2, ' ');
 	free_doublepointer(split_lexer(lex->line2, ' '));
 	free(lex->line2);
-	print_lexer(lex);
+	//print_lexer(lex);
 }
 
 // CHECKING LEXER
-void	print_lexer(t_lex *lex)
-{
-	int	i;
+// void	print_lexer(t_lex *lex)
+// {
+// 	int	i;
 
-	i = 0;
-	lex->iter = 0;
-	while (lex->lexer[lex->iter])
-	{
-		printf("%s\n", lex->lexer[lex->iter]);
-		lex->iter++;
-	}
-	printf("%s\n", lex->lexer[lex->iter]);
-}
+// 	i = 0;
+// 	lex->iter = 0;
+// 	while (lex->lexer[lex->iter])
+// 	{
+// 		printf("%s\n", lex->lexer[lex->iter]);
+// 		lex->iter++;
+// 	}
+// 	printf("%s\n", lex->lexer[lex->iter]);
+// }

@@ -65,6 +65,7 @@ void	free_doublepointer (char **str);
 // PARSER
 void	parser(t_lex *lex);
 void	parse_commands(t_lex *lex, t_child **child);
+void	parser_redirection(t_lex *lex, t_child **child);
 // PARSER INIT
 t_child **init_child(t_lex *lex, t_child **child);
 void	count_pipes(t_lex *lex);
