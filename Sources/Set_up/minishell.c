@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 09:42:42 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/02 15:59:57 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:33:56 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int main(int ac, char **ag, char **envp)
     t_child **child;
     t_exec  *exec;
 
+    int child_info;
+
     if (ac != 1 || !ag[0])
         errorexit("Wrong number of arguments");
     while (1)
@@ -41,6 +43,13 @@ int main(int ac, char **ag, char **envp)
         lex = initialize_lex();
         child = initialize_child(lex);
         exec = initialize_exec(lex, envp);
+        //executed children (fork, pipe, call execve)
+        while (waitpid(-1, &child_info, 0) != -1)
+            continue ;
+        if (WIFEXITED(child_info))
+        {
+            printf("%d\n", WEXITSTATUS(child_info));
+        }
         if (lex->line && *(lex->line))
             add_history(lex->line);
         parser(lex, child);
