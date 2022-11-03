@@ -52,6 +52,8 @@ typedef struct s_exec
 	char	**envp_path;
 	char	*envp_line;
 	int		nbr_process;
+	int		end[2];
+	int		buffer[1];
 
 }	t_exec;
 

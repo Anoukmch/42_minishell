@@ -6,13 +6,13 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 13:53:57 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/02 14:00:51 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:55:59 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	switch_put(t_child *child, int *end)
+void	switch_put(t_child *child, t_exec *exec)
 {
 	if (child->parser_redirect_input[0] != NULL)
 	{
@@ -21,7 +21,7 @@ void	switch_put(t_child *child, int *end)
 	}
 	else if (child->parser_redirect_input[0] == NULL && child->id != 0)
 	{
-		if (dup2(end[0], STDIN_FILENO) < 0)
+		if (dup2(exec->buffer[0], STDIN_FILENO) < 0)
 			error ("Dup2 infile failed");
 	}
 	if (child->parser_redirect_output[0] != NULL)
@@ -29,24 +29,39 @@ void	switch_put(t_child *child, int *end)
 		if (dup2(child->fd_out, STDOUT_FILENO) < 0)
 			error ("Dup2 outfile failed");
 	}
-	else if (child->parser_redirect_output[0] == NULL && child->id != /* Last process */)
+	else if (child->parser_redirect_output[0] == NULL && child->id != (exec->nbr_process - 1))
 	{
-		if (dup2(end[1], STDOUT_FILENO) < 0)
+		if (dup2(exec->end[1], STDOUT_FILENO) < 0)
 			error ("Dup2 outfile failed");
 	}
-	/* Close pipe */
 }
 
-void	processes(t_child *child)
+void	close_pipe(t_exec *exec, t_child *child)
 {
-	int		end[2];
+	if (exec->nbr_process > 1)
+	{
+		close(exec->end[0]);
+		close(exec->end[1]);
+		if (child->id != 0 && child->id != (exec->nbr_process - 1))
+			close(exec->buffer[0]);
+	}
+	if (child->parser_redirect_input[0] != NULL)
+		close(child->fd_in);
+	if (child->parser_redirect_output[0] != NULL)
+		close(child->fd_out);
+}
+
+void	processes(t_child *child, t_exec *exec)
+{
 	pid_t	child;
 	int		i;
 
 	i = 0;
-	/* Conditional if we have the pipe symbol */
-	if (pipe(end) < 0)
-		error ("Pipe fail", NULL);
+	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
+	{
+		if (pipe(exec->end) < 0)
+			error ("Pipe fail", NULL);
+	}
 	child = fork();
 	if (child < 0)
 		error("Fork fail", NULL);
@@ -56,7 +71,8 @@ void	processes(t_child *child)
 			get_infile(child);
 		if (child->parser_redirect_output[0] != NULL)
 			get_outfile(child);
-		switch_put(child, end);
+		switch_put(child, exec);
+		close_pipe(exec, child);
+		exec->buffer[0] = exec->end[0];
 	}
-	/* !!! Close fd !!! */
 }

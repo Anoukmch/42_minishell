@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_exec.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:44:13 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/02 17:33:53 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:04:01 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,8 @@ t_exec *initialize_exec(t_lex *lex, char **envp)
     }
 	if (!exec->envp_path)
 		 errorexit("check initializiation of structs");
+    exec->end[0] = 0;
+    exec->end[1] = 0;
+    exec->buffer[0] = 0;
 	return(exec);
 }
