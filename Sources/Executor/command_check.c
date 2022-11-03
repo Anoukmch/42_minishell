@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/02 18:04:57 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:18:57 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,27 @@ static void	check_path(t_lex *lex, t_child **child, t_exec *exec)
 	child[lex->iter]->command = NULL;
 }
 
+static void	check_builtins(t_lex *lex, t_child **child)
+{
+	if (ft_strncmp("echo", child[lex->iter]->parser_cmd[0], 5) == 0)
+		child[lex->iter]->command = ft_substr("echo", 0, 5);
+	else if (ft_strncmp("cd", child[lex->iter]->parser_cmd[0], 3) == 0)
+		child[lex->iter]->command = ft_substr("cd", 0, 3);
+	else if (ft_strncmp("pwd", child[lex->iter]->parser_cmd[0], 4) == 0)
+		child[lex->iter]->command = ft_substr("pwd", 0, 4);
+	else if (ft_strncmp("export", child[lex->iter]->parser_cmd[0], 7) == 0)
+		child[lex->iter]->command = ft_substr("export", 0, 7);
+	else if (ft_strncmp("unset", child[lex->iter]->parser_cmd[0], 6) == 0)
+		child[lex->iter]->command = ft_substr("unset", 0, 6);
+	else if (ft_strncmp("env", child[lex->iter]->parser_cmd[0], 4) == 0)
+		child[lex->iter]->command = ft_substr("env", 0, 4);
+	else if (ft_strncmp("exit", child[lex->iter]->parser_cmd[0], 5) == 0)
+		child[lex->iter]->command = ft_substr("exit", 0, 5);
+}
 static void	check_commands(t_lex *lex, t_child **child, t_exec *exec)
 {
-	if (ft_strncmp("echo", child[lex->iter]->parser_cmd[0], 5) == 0
-		|| ft_strncmp("cd", child[lex->iter]->parser_cmd[0], 3) == 0
-		|| ft_strncmp("pwd", child[lex->iter]->parser_cmd[0], 4) == 0
-		|| ft_strncmp("export", child[lex->iter]->parser_cmd[0], 7) == 0
-		|| ft_strncmp("unset", child[lex->iter]->parser_cmd[0], 6) == 0
-		|| ft_strncmp("env", child[lex->iter]->parser_cmd[0], 4) == 0
-		|| ft_strncmp("exit", child[lex->iter]->parser_cmd[0], 5) == 0)
-		child[lex->iter]->command = ft_substr("builtin", 0, 8);
-	else
+	check_builtins(lex, child);
+	if (child[lex->iter]->command == NULL)
 		check_path(lex, child, exec);
 }
 

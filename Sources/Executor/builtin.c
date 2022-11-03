@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/03 18:48:04 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/03 18:51:21 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	command_echo(t_child *child)
 		ft_putstr_fd(child->parser_cmd[i], child->fd_out);
 		i++;
 	}
-echo ~ : getenv("HOME")
+	echo ~ : getenv("HOME")
 	/* if nothing then print nothing */
 }
 
