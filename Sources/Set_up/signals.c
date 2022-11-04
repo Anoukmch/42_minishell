@@ -6,12 +6,11 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:57 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/04 12:51:09 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:31:27 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 static void	control_c(int signum)
 {
@@ -19,11 +18,28 @@ static void	control_c(int signum)
 	{
 		printf("\n");
 		rl_on_new_line();
-		rl_replace_line(" ", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
 
+/*
+	ECHOCTL: controls characters with '^'?  echo control chars as ^(Char)
+	followed by the corresponding text character
+	&= ~ --> HIDE characters/ turn off
+	|= --> ENABLE characters
+	c_lflag --> local modes, echo in c_lflag controls whether input is
+	immediately reechoed as output
+	tcgetattr --> get the parameters associated with the terminal,
+		stores them in termios struct
+	tcsetattr--> set the parameters associated with the terminal
+		from termios struct
+	TCSANOW --> make change immediately
+
+	SIGINT --> CTRL-C
+	SIGABRT --> CTRL-BACKSLASH
+	SIGQUIT --> CTRL-D
+*/
 void	handle_signals(void)
 {
 	struct sigaction	sa;
@@ -35,5 +51,6 @@ void	handle_signals(void)
 	sa.sa_handler = &control_c;
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGABRT, SIG_IGN);
 }
+// signal(SIGQUIT, SIG_IGN); NOT WORKING ATM

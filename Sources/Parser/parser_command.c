@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:18:25 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/02 16:51:38 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:52:30 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,9 @@ static void	commands(t_lex *lex, t_child **child, int k)
 		else
 		{
 			child[k]->parser_cmd[j] = ft_substr(lex->lexer[lex->iter],
-				0, ft_strlen(lex->lexer[lex->iter]));
+					0, ft_strlen(lex->lexer[lex->iter]));
 			if (!child[k]->parser_cmd[j])
 				errorexit("Allocation failed");
-			printf("CMD[%d][%d]: %s\n", k, j, child[k]->parser_cmd[j] = lex->lexer[lex->iter]);
 			j++;
 			lex->iter++;
 		}

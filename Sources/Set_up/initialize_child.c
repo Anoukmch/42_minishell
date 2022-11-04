@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:32:34 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/02 16:49:16 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/04 13:51:42 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ static void	init_cmds(t_lex *lex, t_child **child, int k)
 	lex->iter++;
 }
 
-t_child **initialize_child(t_lex *lex)
+t_child	**initialize_child(t_lex *lex)
 {
-    int k;
-	t_child **child;
+	t_child	**child;
+	int		k;
 
-    k = 0;
-    count_processes(lex);
-    child = ft_calloc(lex->no_processes + 1, sizeof(t_child *));
+	k = 0;
+	count_processes(lex);
+	child = ft_calloc(lex->no_processes + 1, sizeof(t_child *));
 	if (child == NULL)
 		errorexit("check initializiation of structs");
 	while (k < lex->no_processes)
@@ -90,5 +90,5 @@ t_child **initialize_child(t_lex *lex)
 		k++;
 	}
 	child[lex->no_processes] = NULL;
-    return (child);
+	return (child);
 }
