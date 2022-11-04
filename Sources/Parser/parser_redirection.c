@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/03 14:19:03 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/04 12:49:48 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

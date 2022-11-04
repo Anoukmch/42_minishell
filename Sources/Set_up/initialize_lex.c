@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_lex.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:20:11 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/02 15:48:10 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/04 12:45:38 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

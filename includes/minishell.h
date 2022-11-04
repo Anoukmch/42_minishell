@@ -14,6 +14,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+# include <termios.h>
 
 # include "../includes/libs/libs.h"
 
@@ -63,6 +64,9 @@ void count_pipes(t_lex *lex);
 t_lex *initialize_lex();
 t_child **initialize_child(t_lex *lex);
 t_exec *initialize_exec(t_lex *lex, char **envp);
+
+// SIGNALS
+void	handle_signals(void);
 
 // LEXER
 char	**create_lexer_string(t_lex *lex);
