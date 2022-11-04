@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/04 13:24:03 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:26:50 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,23 +72,23 @@ void	fill_redirection_table(t_lex *lex, t_child *child)
 // 	close(file);
 // }
 
-// void	check_redirection_table(char **parser_redirect_input, int i, int j)
-// {
-// 	int	k;
+void	check_redirection_table(char **parser_redirect_input, int i, int j)
+{
+	int	k;
 
-// 	k = 0;
-// 	if (ft_strcmp(parser_redirect_input[i], "<") && ft_strcmp(parser_redirect_input[i], "<<"))
-// 		errorexit("Wrong redirection input");
-// 	while(parser_redirect_input[j][k])
-// 	{
-// 		if (parser_redirect_input[j][k] == '|' || parser_redirect_input[j][k] == '&'
-// 			parser_redirect_input[j][k] == ';' || parser_redirect_input[j][k] == '('
-// 			parser_redirect_input[j][k] == ')' || parser_redirect_input[j][k] == '<'
-// 			parser_redirect_input[j][k] == '>' || parser_redirect_input[j][k] == '$')
-// 			errorexit("Wrong token filename");
-// 		k++;
-// 	}
-// }
+	k = 0;
+	if (ft_strcmp(parser_redirect_input[i], "<") && ft_strcmp(parser_redirect_input[i], "<<"))
+		errorexit("Wrong redirection input");
+	while(parser_redirect_input[j][k])
+	{
+		if (parser_redirect_input[j][k] == '|' || parser_redirect_input[j][k] == '&'
+			parser_redirect_input[j][k] == ';' || parser_redirect_input[j][k] == '('
+			parser_redirect_input[j][k] == ')' || parser_redirect_input[j][k] == '<'
+			parser_redirect_input[j][k] == '>' || parser_redirect_input[j][k] == '$')
+			errorexit("Wrong token filename");
+		k++;
+	}
+}
 
 // void	get_outfile(t_child *child)
 // {
