@@ -6,13 +6,13 @@
 #    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/11/07 10:48:54 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/11/07 15:42:46 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline  #-fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -I  /goinfre/$(USER)/.brew/opt/readline/include #-lreadline  -fsanitize=address -g
 
 NAME =  minishell
 

@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:57 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/04 13:31:27 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 15:04:56 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void	control_c(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	// else if (signum == SIGABRT)
+	// 	errorexit("CTRL-D");
 }
 
 /*
@@ -35,7 +37,6 @@ static void	control_c(int signum)
 	tcsetattr--> set the parameters associated with the terminal
 		from termios struct
 	TCSANOW --> make change immediately
-
 	SIGINT --> CTRL-C
 	SIGABRT --> CTRL-BACKSLASH
 	SIGQUIT --> CTRL-D
@@ -51,6 +52,7 @@ void	handle_signals(void)
 	sa.sa_handler = &control_c;
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
-	signal(SIGABRT, SIG_IGN);
+	// sigaction(SIGABRT, &sa, NULL);
+	// signal(SIGQUIT, SIG_IGN);
 }
 // signal(SIGQUIT, SIG_IGN); NOT WORKING ATM

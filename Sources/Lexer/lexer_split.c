@@ -6,13 +6,38 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:05:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/10/31 15:56:04 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 16:17:08 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 //counting the words to reserve the storage with malloc
+static int	skipquotes(char const *s, int i)
+{
+	if (s[i] == '"')
+	{
+		i++;
+		while (s[i] != '"' && s[i] != '\0')
+		{
+			if (s[i] == '\0')
+				errorexit("DOUBLE QUOTES NOT CLOSED");
+			i++;
+		}
+	}
+	if (s[i] == 39)
+	{
+		i++;
+		while (s[i] != 39 && s[i] != '\0')
+		{
+			if (s[i] == 39)
+				errorexit("SINGLE QUOTES NOT CLOSED");
+			i++;
+		}
+	}
+	return (i);	
+}
+
 static size_t	wordcounter(char const *s, char c)
 {
 	size_t	i;
@@ -24,22 +49,16 @@ static size_t	wordcounter(char const *s, char c)
 	{
 		while (s[i] == c && s[i] != '\0')
 			i++;
-		if (s[i] == '"')
-		{
-			i++;
-			while (s[i] != '"')
-				i++;
-		}
-		if (s[i] == 39)
-		{
-			i++;
-			while (s[i] != 39)
-				i++;
-		}
+		i = skipquotes(s, i);
 		if (s[i] != '\0')
 			counter++;
 		while (s[i] != c && s[i] != '\0')
+		{
+			// if (s[i] == '=')
+			// 	counter++;
+			i = skipquotes(s, i);
 			i++;
+		}
 	}
 	return (counter);
 }
@@ -51,18 +70,36 @@ static size_t	wordcounter(char const *s, char c)
 //difference from strchr & &s[start]-->string to return/length
 static size_t	endsofsubs(char const *s, char c, size_t start)
 {
-	if (ft_strchr(s + start, c) == NULL)
-		return (ft_strlen(&s[start]));
-	// else if(s[start] == '"' && ft_strchr(s + start + 1, '"') == 0)
-	// 	errorexit("NO CLOSING DOUBLE QUOTES");
+	// size_t	i;
+
+	// i = 0;
+	// while(s[start + i] != '\0' && s[start + i] != c)
+	// {
+	// 	if (s[start + i] == '=')
+	// 		return (ft_strchr(s + i + 1, '=') - &s[start] + 1);
+	// 	i++;
+	// }
+	if (s[start] == '"')
+	{
+		if (!ft_strchr(s + start + 1, '"'))
+			errorexit("DOUBLE QUOTES NOT CLOSED");
+		if (ft_strchr(s + start, c) == NULL)
+			return (ft_strlen(&s[start]));
+		return (ft_strchr(s + start + 1, '"') - &s[start] + 1);
+	}
+	else if (s[start] == 39)
+	{
+		if (!ft_strchr(s + start + 1, 39))
+			errorexit("SINGLE QUOTES NOT CLOSED");
+		if (ft_strchr(s + start, c) == NULL)
+			return (ft_strlen(&s[start]));	
+		return (ft_strchr(s + start + 1, 39) - &s[start] + 1);
+	}
 	else
 	{
-		if (s[start] == '"')
-			return (ft_strchr(s + start + 1, '"') - &s[start] + 1);
-		else if (s[start] == 39)
-			return (ft_strchr(s + start + 1, 39) - &s[start] + 1);
-		else
-			return (ft_strchr(s + start, c) - &s[start]);
+		if (ft_strchr(s + start, c) == NULL)
+			return (ft_strlen(&s[start]));			
+		return (ft_strchr(s + start, c) - &s[start]);
 	}
 }
 

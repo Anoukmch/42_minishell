@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 13:56:46 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 11:52:02 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 18:05:14 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,41 +19,66 @@
 	use unset to remove some of them
 	check the result with env
 */
+// static int	no_equalsign(char **cmd)
+// {
+// 	int	i;
+// 	int	j;
 
-int	unvalid_identifier(char **cmd)
+// 	i = 0;
+// 	j = 0;
+// 	while(cmd[j])
+// 	{
+// 		while(cmd[j][i])
+// 		{
+// 			if (cmd[j][i] == '=')
+// 				return (0);
+// 			i++;
+// 		}
+// 		i = 0;
+// 		j++;
+// 	}
+// 	return (1);
+// }
+
+static char	*delete_quotes(char *str)
+{
+	if (ft_strtrim(str, "\"") != NULL)
+		str = ft_strtrim(str, "\"");
+	if (ft_strtrim(str, "'") != NULL)
+		str = ft_strtrim(str, "'");
+	return (str);
+}
+
+// NOT WORKING:
+	// export ''=''
+	// export ""=""
+	// 
+/*
+	bool = 1 --> single quotes
+	bool = 2 --> double quotes
+	"\"" --> string with one double quote
+*/
+static int	invalid_identifier(char **cmd)
 {
 	int	i;
 	int	j;
 
 	i = 1;
 	j = 0;
-	// char *test = NULL;
-	// char *test1 = NULL;
-	// char *test2 = NULL;
-	// test =  ft_strchr(cmd[i], '"');
-	// test1 = ft_strrchr(cmd[i], '"');
-	// test2 = ft_strtrim(cmd[i], "\"");
-	// printf("strchr: %s\n", test);
-	// printf("strrchr: %s\n", test1);
-	// printf("strtrim: %s\n", test2);
 	while (cmd && cmd[i])
 	{
-		// DELETE QUOTES IF THEY ARE CLOSED BEFORE WHILE LOOP
-		// if ((ft_strtrim(cmd[i], "\"") == NULL && ft_strchr(cmd[i], '"') != NULL)
-		// 	|| (ft_strtrim(cmd[i], "'") == NULL && ft_strchr(cmd[i], 39) != NULL))
-		// 	errorexit("quotes not closed");
-		while (cmd[i][j])
-		{
-			// printf("CHAR: %c\n", cmd[i][j]);
-			if ((ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
-				|| (ft_isalnum(cmd[i][j]) == 0)) && (cmd[i][j] != '_'
+		cmd[i] = delete_quotes(cmd[i]);
+		while (cmd[i][j] != '\0')
+		{	
+			if (cmd[i][0] == '=')
+				printf("WORKS HERE\n");
+			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
+				|| ((ft_isalnum(cmd[i][j]) == 0) && cmd[i][j] != '_'
 					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
 			{
 				printf("export: '%s': not a valid identifier\n", cmd[i]);
 				return (1);
 			}
-			if (cmd[i][j] == '=')
-				break ;
 			j++;
 		}
 		j = 0;
@@ -62,37 +87,64 @@ int	unvalid_identifier(char **cmd)
 	return (0);
 }
 
-//cmd[0] = "export";
-// IMPORTANT: Last string = NULL
-void	command_export (char **cmd)
+static void	export_variable(char *str)
 {
-	if (cmd[1] == NULL)
-	{
-		printf("declare -x\n"); //print whole env with declare -x in front
-		return ;
-	}
-	// delete quotes
-	if (unvalid_identifier(cmd) != 0)
-		return ;
-	// while (cmd[i] && cmd)
-	// {
-	// 	if (ft_strchr(cmd[i], '=') == NULL)
-	// 	i++
-	// }
-	
-	
+	printf("EXPORT\n");
+	char	*variable;
+
+	variable = NULL;
+	variable = str;
+	// ADD IT TO EXPORT
+	printf("variable: %s\n", variable);
 }
 
-// int main (void)
-// {
-// 	char **test;
-// 	test[0] = "export";
-// 	test[1] = "export";
-// 	// test[2] = "te";
-// 	test[2] = NULL;
-// 	command_export(test);
-// 	return(0);
-// }
+static void	env_variable(char *str)
+{
+	char	*variablename;
+	char	*content;
+
+	printf("ENV\n");
+	variablename = NULL;
+	content = NULL;
+	variablename = ft_substr(str, 0,
+			ft_strlen(str) - ft_strlen(ft_strchr(str, '=')));
+	content = ft_substr(str, ft_strlen(variablename) + 1,
+			ft_strlen(ft_strchr(str, '=')) + 1);
+	content = delete_quotes(content);
+	if (ft_strlen(content) == 0)
+		content = "";
+	// ADD IT TO ENV
+	printf("variablename: %s\n", variablename);
+	printf("content: %s\n", content);
+}
+
+//cmd[0] = "export";
+// IMPORTANT: Last string = NULL
+void	command_export(char **cmd)
+{
+	int	i;
+
+	i = 1;
+	if (cmd[i] == NULL)
+	{
+		printf("declare -x\n");
+		//print whole env with declare -x in front
+		return ;
+	}
+	if (invalid_identifier(cmd) != 0)
+	{
+		printf("error occured\n");
+		return ;
+	}
+	while (cmd[i] && cmd)
+	{
+		if (ft_strchr(cmd[i], '=') != NULL)
+			env_variable(cmd[i]);
+		else
+			export_variable(cmd[i]);
+		i++;
+	}
+}
 
 /*
 	export: `=============123': not a valid identifier
