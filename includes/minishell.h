@@ -15,6 +15,8 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <termios.h>
+# include <stdbool.h>
+# include <limits.h>
 
 # include "../includes/libs/libs.h"
 
