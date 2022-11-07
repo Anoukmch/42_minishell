@@ -38,12 +38,13 @@ int	main(int ac, char **ag, char **envp)
 		parser(lex, child);
 		int	i;
 		i = 0;
-		while (child[0]->parser_cmd[i])
-		{
-			printf("PARSER CMD: %s\n", child[0]->parser_cmd[i]);
-			i++;
-		}
+		// while (child[0]->parser_cmd[i])
+		// {
+		// 	printf("PARSER CMD: %s\n", child[0]->parser_cmd[i]);
+		// 	i++;
+		// }
 		executor(lex, child, exec);
+		/* close pipe */
 		while (waitpid(-1, &child_info, 0) != -1)
 			continue ;
 		// if (WIFEXITED(child_info))

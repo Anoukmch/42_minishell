@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
+#    By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/11/07 18:09:02 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/11/07 18:56:23 by amechain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ M_SRC = Set_up/minishell.c \
 		Parser/parser_redirection.c \
 		Executor/command_check.c \
 		Executor/executor.c \
+		Executor/processes.c \
 		Executor/builtin.c \
 		Executor/builtin_export_and_unset.c
 

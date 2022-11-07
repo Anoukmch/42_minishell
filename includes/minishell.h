@@ -89,6 +89,7 @@ void	count_pipes(t_lex *lex);
 void	executor(t_lex *lex, t_child **child, t_exec *exec);
 void    command_path(t_lex *lex, t_child **child, t_exec *exec);
 void	command_export (char **cmd);
+void	processes(t_child *child, t_exec *exec);
 
 // BUILTIN
 void	command_echo(t_child *child);

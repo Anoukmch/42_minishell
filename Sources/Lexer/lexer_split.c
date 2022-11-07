@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:05:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 16:17:08 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 19:08:56 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	skipquotes(char const *s, int i)
 			i++;
 		}
 	}
-	return (i);	
+	return (i);
 }
 
 static size_t	wordcounter(char const *s, char c)
@@ -71,7 +71,6 @@ static size_t	wordcounter(char const *s, char c)
 static size_t	endsofsubs(char const *s, char c, size_t start)
 {
 	// size_t	i;
-
 	// i = 0;
 	// while(s[start + i] != '\0' && s[start + i] != c)
 	// {
@@ -92,13 +91,13 @@ static size_t	endsofsubs(char const *s, char c, size_t start)
 		if (!ft_strchr(s + start + 1, 39))
 			errorexit("SINGLE QUOTES NOT CLOSED");
 		if (ft_strchr(s + start, c) == NULL)
-			return (ft_strlen(&s[start]));	
+			return (ft_strlen(&s[start]));
 		return (ft_strchr(s + start + 1, 39) - &s[start] + 1);
 	}
 	else
 	{
 		if (ft_strchr(s + start, c) == NULL)
-			return (ft_strlen(&s[start]));			
+			return (ft_strlen(&s[start]));
 		return (ft_strchr(s + start, c) - &s[start]);
 	}
 }
@@ -152,6 +151,3 @@ char	**split_lexer(char const *s, char c)
 	buffer[i] = NULL;
 	return (buffer);
 }
-
-
-//  grep "hello world" >outfile

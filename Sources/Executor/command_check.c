@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 18:09:20 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 19:04:47 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,16 @@ void	command_path(t_lex *lex, t_child **child, t_exec *exec)
 	lex->iter = 0;
 	while (child[lex->iter])
 	{
-		check_commands (lex, child, exec);
+		check_commands(lex, child, exec);
 		if (child[lex->iter]->command == NULL)
 			errorexit ("invalid command!");
 		lex->iter++;
 	}
 	// PRINT COMMAND PATHS
-	int k = 0;
-	while (child[k])
-	{
-		printf ("child %d, commandpath: %s\n", k, child[k]->command);
-		k++;
-	}
+	// int k = 0;
+	// while (child[k])
+	// {
+	// 	printf ("child %d, commandpath: %s\n", k, child[k]->command);
+	// 	k++;
+	// }
 }

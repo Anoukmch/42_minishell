@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/07 17:36:49 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/07 18:10:50 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,3 @@ void	command_exit(t_child *child)
 		errorexit("Too many arguments for exit function"); /* This shouldn't exit but just return to a newline */
 	exit(status);
 }
-
-/* Rework all the error message */
-/* Check if the exit function has well modified the $? value */
-/* What if ENVP is disabled ? */
-

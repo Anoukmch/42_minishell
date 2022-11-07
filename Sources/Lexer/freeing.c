@@ -6,13 +6,13 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 13:40:08 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/02 15:20:55 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/07 19:07:21 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	free_doublepointer (char **str)
+void	free_doublepointer(char **str)
 {
 	int	i;
 
