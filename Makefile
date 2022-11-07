@@ -1,14 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/11/07 18:09:02 by jmatheis         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 CC = gcc
 
@@ -30,7 +19,7 @@ M_SRC = Set_up/minishell.c \
 		Executor/command_check.c \
 		Executor/executor.c \
 		Executor/builtin.c \
-		Executor/builtin_export_and_unset.c
+		Executor/builtin_export.c
 
 M_SRCS = $(addprefix ./Sources/, $(M_SRC))
 
