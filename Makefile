@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+         #
+#    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/11/07 19:10:28 by amechain         ###   ########.fr        #
+#    Updated: 2022/11/07 19:12:46 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ M_SRC = Set_up/minishell.c \
 		Executor/executor.c \
 		Executor/processes.c \
 		Executor/builtin.c \
-		Executor/builtin_export.c
+		Executor/builtin_export.c \
+		Executor/builtin_unset.c
 
 M_SRCS = $(addprefix ./Sources/, $(M_SRC))
 

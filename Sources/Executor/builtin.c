@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/07 18:10:50 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/07 19:18:14 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,10 +138,10 @@ void	command_pwd()
 
 /* unset with no options */
 
-void	command_unset()
-{
+// void	command_unset()
+// {
 
-}
+// }
 
 /* env with no options or arguments */
 

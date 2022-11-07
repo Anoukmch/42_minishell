@@ -96,6 +96,7 @@ void	command_echo(t_child *child);
 void	command_cd(t_child *child);
 void	command_pwd();
 void	command_exit(t_child *child);
+void	command_unset(char **cmd);
 
 void	count_new_spaces(char *line, t_lex *lex);
 
