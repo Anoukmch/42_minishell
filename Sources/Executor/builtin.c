@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/07 12:25:03 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/07 17:36:49 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	ft_atoilong(long long int *buffer, const char *str)
 {
 	char			*s;
-	unsigned long long int	res;
+	unsigned long long	res;
 	int				sign;
 	int				c;
 
@@ -37,10 +37,18 @@ bool	ft_atoilong(long long int *buffer, const char *str)
 		res = (res * 10) + (s[c] - '0');
 		c++;
 	}
-	if ((res == (LONG_MAX + 1) && sign == 1) || res > (LONG_MAX + 1))
+	if ((res == ((unsigned long long)LLONG_MAX + 1) && sign == 1) || res > ((unsigned long long)LLONG_MAX + 1))
 		return(true);
 	*buffer = (long long int)res * sign;
 	return (false);
+}
+
+static void delete_quotes(char **cmd)
+{
+    if (ft_strtrim(*cmd, "\"") != NULL)
+        *cmd = ft_strtrim(*cmd, "\"");
+    if (ft_strtrim(*cmd, "'") != NULL)
+        *cmd = ft_strtrim(*cmd, "'");
 }
 
 /* /!\/!\/!\ Are we already checking these in the parser ? /!\/!\/!\ */
@@ -67,50 +75,52 @@ void	command_echo(t_child *child)
 {
 	int	i;
 	bool newline;
-
-	i = 1; /* TO ADD : child->fd_out = 1, in the initialize */
+	/* Handle echo in lower and upper case, every single letter */
+	i = 1;
 	newline = true;
-	if (child->parser_cmd[1] == NULL)
-	{
-		write(child->fd_out, '\n', 1);
-		return ;
-	}
-	if (!ft_strcmp(child->parser_cmd[1], "- n")
+	while (child->parser_cmd[i])
+		delete_quotes(&child->parser_cmd[i++]);
+	i = 1;
+	while (child->parser_cmd[i] != NULL && !ft_strcmp(child->parser_cmd[i], "-n"))
 	{
 		newline = false;
 		i++;
 	}
 	while (child->parser_cmd[i])
 	{
-		if (!ft_strcmp(child->parser_cmd[1], "~")
+		if (!ft_strcmp(child->parser_cmd[1], "~"))
 			ft_putstr_fd(getenv("HOME"), child->fd_out);
 		else
 			ft_putstr_fd(child->parser_cmd[i], child->fd_out);
-		if (newline == true)
-			ft_putstr_fd("\n", child->fd_out);
+		if (child->parser_cmd[i + 1] != NULL)
+			ft_putstr_fd(" ", child->fd_out);
 		i++;
 	}
+	if (newline == true)
+		ft_putstr_fd("\n", child->fd_out);
 }
 
 /* cd with only a relative or absolute path */
 
 void	command_cd(t_child *child)
 {
+	if (child->parser_cmd[1] != NULL)
+		delete_quotes(&child->parser_cmd[1]);
 	if (child->parser_cmd[1] == NULL || !ft_strcmp(child->parser_cmd[1], "~"))
 	{
 		if (chdir(getenv("HOME")) != 0)
-			errorexit("Chdir fail");
+			errorexit("No such file or directory");
 	}
 	else
 	{
 		if (chdir(child->parser_cmd[1]) != 0)
-			errorexit("Chdir fail");
+			errorexit("No such file or directory");
 	}
 }
 
 /* pwd with no options */
 
-void	command_pwd(t_child *child)
+void	command_pwd()
 {
 	char *s;
 	s = getcwd(NULL, 0);
@@ -121,10 +131,10 @@ void	command_pwd(t_child *child)
 
 /* export with no options */
 
-void	command_export()
-{
+// void	command_export()
+// {
 
-}
+// }
 
 /* unset with no options */
 

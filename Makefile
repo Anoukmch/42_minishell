@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
+#    By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/11/07 10:48:54 by jmatheis         ###   ########.fr        #
+#    Updated: 2022/11/07 15:16:58 by amechain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,10 +26,10 @@ M_SRC = Set_up/minishell.c \
 		Lexer/freeing.c \
 		Parser/parser.c \
 		Parser/parser_command.c \
-		Parser/parser_init.c \
 		Parser/parser_redirection.c \
 		Executor/command_check.c \
 		Executor/executor.c \
+		Executor/builtin.c \
 		Executor/builtin_export_and_unset.c
 
 M_SRCS = $(addprefix ./Sources/, $(M_SRC))

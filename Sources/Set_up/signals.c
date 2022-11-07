@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:57 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/04 13:31:27 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 14:46:50 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ void	handle_signals(void)
 	sa.sa_handler = &control_c;
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
-	signal(SIGABRT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
 // signal(SIGQUIT, SIG_IGN); NOT WORKING ATM
