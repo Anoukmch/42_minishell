@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_child.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:32:34 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/07 11:49:46 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 12:29:55 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_child	**initialize_child(t_lex *lex)
 			errorexit("check initializiation of structs");
 		child[k]->command = NULL;
 		child[k]->fd_in = 0;
-		child[k]->fd_out = 0;
+		child[k]->fd_out = 1;
 		child[k]->id = k;
 		k++;
 	}

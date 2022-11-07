@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 15:49:40 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 18:09:20 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	command_path(t_lex *lex, t_child **child, t_exec *exec)
 	int k = 0;
 	while (child[k])
 	{
-		printf ("commandpath for child %d: %s\n", k, child[k]->command);
+		printf ("child %d, commandpath: %s\n", k, child[k]->command);
 		k++;
 	}
 }

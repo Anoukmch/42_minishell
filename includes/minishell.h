@@ -90,8 +90,14 @@ void	executor(t_lex *lex, t_child **child, t_exec *exec);
 void    command_path(t_lex *lex, t_child **child, t_exec *exec);
 void	command_export (char **cmd);
 
+// BUILTIN
+void	command_echo(t_child *child);
+void	command_cd(t_child *child);
+void	command_pwd();
+void	command_exit(t_child *child);
+
 void	count_new_spaces(char *line, t_lex *lex);
 
 // CHECKING LEXER
-void print_lexer(t_lex *lex);
+//void print_lexer(t_lex *lex);
 #endif

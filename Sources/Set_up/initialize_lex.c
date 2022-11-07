@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_lex.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:20:11 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/04 13:50:09 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 15:18:54 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**create_lexer_string(t_lex *lex)
 	lex->lexer = split_lexer(lex->line2, ' ');
 	free_doublepointer(split_lexer(lex->line2, ' '));
 	free(lex->line2);
-	print_lexer(lex);
+//	print_lexer(lex);
 	return (lex->lexer);
 }
 // CHECK LEXER:
