@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 13:56:46 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/04 15:22:58 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 11:52:02 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,6 @@
 	use unset to remove some of them
 	check the result with env
 */
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
-
-int	ft_isalpha(int c)
-{
-	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-	{
-		return (1);
-	}
-	return (0);
-}
-
-int	ft_isalnum(int c)
-{
-	if (ft_isalpha(c) == 1 || ft_isdigit(c) == 1)
-		return (1);
-	return (0);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	c;
-	char	*str;
-
-	c = 0;
-	str = (char *)s;
-	while (str[c])
-		c++;
-	return (c);
-}
 
 int	unvalid_identifier(char **cmd)
 {
@@ -61,15 +27,27 @@ int	unvalid_identifier(char **cmd)
 
 	i = 1;
 	j = 0;
+	// char *test = NULL;
+	// char *test1 = NULL;
+	// char *test2 = NULL;
+	// test =  ft_strchr(cmd[i], '"');
+	// test1 = ft_strrchr(cmd[i], '"');
+	// test2 = ft_strtrim(cmd[i], "\"");
+	// printf("strchr: %s\n", test);
+	// printf("strrchr: %s\n", test1);
+	// printf("strtrim: %s\n", test2);
 	while (cmd && cmd[i])
 	{
 		// DELETE QUOTES IF THEY ARE CLOSED BEFORE WHILE LOOP
+		// if ((ft_strtrim(cmd[i], "\"") == NULL && ft_strchr(cmd[i], '"') != NULL)
+		// 	|| (ft_strtrim(cmd[i], "'") == NULL && ft_strchr(cmd[i], 39) != NULL))
+		// 	errorexit("quotes not closed");
 		while (cmd[i][j])
 		{
-			printf("CHAR: %c\n", cmd[i][j]);
-			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
-				|| (ft_isalnum(cmd[i][j]) == 0) && cmd[i][j] != '_'
-					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"')
+			// printf("CHAR: %c\n", cmd[i][j]);
+			if ((ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
+				|| (ft_isalnum(cmd[i][j]) == 0)) && (cmd[i][j] != '_'
+					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
 			{
 				printf("export: '%s': not a valid identifier\n", cmd[i]);
 				return (1);
@@ -88,9 +66,6 @@ int	unvalid_identifier(char **cmd)
 // IMPORTANT: Last string = NULL
 void	command_export (char **cmd)
 {
-	int	i;
-
-	i = 0;
 	if (cmd[1] == NULL)
 	{
 		printf("declare -x\n"); //print whole env with declare -x in front
@@ -108,16 +83,16 @@ void	command_export (char **cmd)
 	
 }
 
-int main (void)
-{
-	char **test;
-	test[0] = "export";
-	test[1] = "export";
-	// test[2] = "te";
-	test[2] = NULL;
-	command_export(test);
-	return(0);
-}
+// int main (void)
+// {
+// 	char **test;
+// 	test[0] = "export";
+// 	test[1] = "export";
+// 	// test[2] = "te";
+// 	test[2] = NULL;
+// 	command_export(test);
+// 	return(0);
+// }
 
 /*
 	export: `=============123': not a valid identifier

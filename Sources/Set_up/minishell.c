@@ -33,16 +33,23 @@ int	main(int ac, char **ag, char **envp)
 		child = initialize_child(lex);
 		exec = initialize_exec(lex, envp);
 		//executed children (fork, pipe, call execve)
+		if (lex->line && *(lex->line))
+			add_history(lex->line);
+		parser(lex, child);
+		int	i;
+		i = 0;
+		while (child[0]->parser_cmd[i])
+		{
+			printf("PARSER CMD: %s\n", child[0]->parser_cmd[i]);
+			i++;
+		}
+		executor(lex, child, exec);
 		while (waitpid(-1, &child_info, 0) != -1)
 			continue ;
 		if (WIFEXITED(child_info))
 		{
 			printf("%d\n", WEXITSTATUS(child_info));
 		}
-		if (lex->line && *(lex->line))
-			add_history(lex->line);
-		parser(lex, child);
-		executor(lex, child, exec);
 	}
 	return (0);
 }

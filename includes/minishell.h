@@ -86,6 +86,7 @@ void	count_pipes(t_lex *lex);
 // EXECUTOR
 void	executor(t_lex *lex, t_child **child, t_exec *exec);
 void    command_path(t_lex *lex, t_child **child, t_exec *exec);
+void	command_export (char **cmd);
 
 void	count_new_spaces(char *line, t_lex *lex);
 

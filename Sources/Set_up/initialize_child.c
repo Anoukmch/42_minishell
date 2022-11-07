@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:32:34 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/04 13:51:42 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 11:49:46 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	init_cmds(t_lex *lex, t_child **child, int k)
 	child[k]->input_counter = 0;
 	child[k]->output_counter = 0;
 	while (lex->lexer[lex->iter]
-		&& (ft_strncmp(lex->lexer[lex->iter], "|", 2) != 0))
+		&& ft_strncmp(lex->lexer[lex->iter], "|", 2) != 0)
 	{
 		if (ft_strncmp(lex->lexer[lex->iter], "<", 2) == 0
 			|| ft_strncmp(lex->lexer[lex->iter], "<<", 3) == 0)
@@ -50,7 +50,7 @@ static void	init_cmds(t_lex *lex, t_child **child, int k)
 		}
 		else
 		{
-			(child[k]->no_cmd_opt)++;
+			child[k]->no_cmd_opt++;
 			lex->iter++;
 		}
 	}
@@ -67,6 +67,7 @@ t_child	**initialize_child(t_lex *lex)
 	child = ft_calloc(lex->no_processes + 1, sizeof(t_child *));
 	if (child == NULL)
 		errorexit("check initializiation of structs");
+	lex->iter = 0;
 	while (k < lex->no_processes)
 	{
 		child[k] = ft_calloc(1, sizeof(t_child));

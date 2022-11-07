@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/04 15:26:50 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 10:43:59 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ void	check_redirection_table(char **parser_redirect_input, int i, int j)
 	while(parser_redirect_input[j][k])
 	{
 		if (parser_redirect_input[j][k] == '|' || parser_redirect_input[j][k] == '&'
-			parser_redirect_input[j][k] == ';' || parser_redirect_input[j][k] == '('
-			parser_redirect_input[j][k] == ')' || parser_redirect_input[j][k] == '<'
-			parser_redirect_input[j][k] == '>' || parser_redirect_input[j][k] == '$')
+			|| parser_redirect_input[j][k] == ';' || parser_redirect_input[j][k] == '('
+			|| parser_redirect_input[j][k] == ')' || parser_redirect_input[j][k] == '<'
+			|| parser_redirect_input[j][k] == '>' || parser_redirect_input[j][k] == '$')
 			errorexit("Wrong token filename");
 		k++;
 	}
