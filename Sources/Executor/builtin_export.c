@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_export_and_unset.c                         :+:      :+:    :+:   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 13:56:46 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 18:05:14 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/07 18:10:51 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,6 @@ static char	*delete_quotes(char *str)
 	return (str);
 }
 
-// NOT WORKING:
-	// export ''=''
-	// export ""=""
-	// 
 /*
 	bool = 1 --> single quotes
 	bool = 2 --> double quotes
