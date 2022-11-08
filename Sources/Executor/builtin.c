@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/07 19:18:14 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/08 12:42:44 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	command_echo(t_child *child)
 	}
 	if (newline == true)
 		ft_putstr_fd("\n", child->fd_out);
+	exit(0);
 }
 
 /* cd with only a relative or absolute path */

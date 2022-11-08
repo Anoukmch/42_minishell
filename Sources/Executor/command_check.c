@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 19:04:47 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:15:32 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 static void	check_path(t_lex *lex, t_child **child, t_exec *exec)
 {
 	int	i;
+	int j;
 
+	j = 0;
 	i = 0;
 	if (exec->envp_bis == NULL || exec->envp_path == NULL
 		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
@@ -70,6 +72,9 @@ void	command_path(t_lex *lex, t_child **child, t_exec *exec)
 	lex->iter = 0;
 	while (child[lex->iter])
 	{
+		// ft_putnbr_fd(lex->iter, 2);
+		// ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
+		// ft_putstr_fd("\n", 2);
 		check_commands(lex, child, exec);
 		if (child[lex->iter]->command == NULL)
 			errorexit ("invalid command!");

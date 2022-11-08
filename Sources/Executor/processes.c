@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 13:53:57 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/07 19:02:56 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:02:43 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,6 @@ void	close_pipe(t_exec *exec, t_child *child)
 
 void	execute_command(t_child *child, t_exec *exec)
 {
-	if (access(child->command, 0) == 0)
-		return ;
 	if (!ft_strcmp(child->command, "pwd"))
 		command_pwd();
 	else if (!ft_strcmp(child->command, "echo"))
@@ -169,9 +167,7 @@ void	execute_command(t_child *child, t_exec *exec)
 	// else if (!ft_strcmp(child->command, "env"))
 	// 	command_env(child);
 	else if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
-	{
-		errorexit("Execve failed");
-	}
+		errorexit("execve fail");
 }
 
 void	processes(t_child *child, t_exec *exec)

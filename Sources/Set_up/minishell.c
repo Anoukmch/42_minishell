@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/07 19:19:33 by amechain          #+#    #+#             */
+/*   Updated: 2022/11/08 13:04:44 by amechain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -17,6 +28,28 @@
 // 	printf("%s\n", lex->lexer[lex->iter]);
 // }
 
+void	close_pipe_bis(t_child	**child, t_exec	*exec)
+{
+	int	i;
+
+	i = 0;
+	while (child[i])
+	{
+		if (exec->nbr_process > 1)
+		{
+			close(exec->end[0]);
+			close(exec->end[1]);
+			if (child[i]->id != 0 && child[i]->id != (exec->nbr_process - 1))
+				close(exec->buffer[0]);
+		}
+		if (child[i]->parser_redirect_input[0] != NULL)
+			close(child[i]->fd_in);
+		if (child[i]->parser_redirect_output[0] != NULL)
+			close(child[i]->fd_out);
+		i++;
+	}
+}
+
 int	main(int ac, char **ag, char **envp)
 {
 	t_lex	*lex;
@@ -32,25 +65,21 @@ int	main(int ac, char **ag, char **envp)
 		lex = initialize_lex();
 		child = initialize_child(lex);
 		exec = initialize_exec(lex, envp);
-		//executed children (fork, pipe, call execve)
 		if (lex->line && *(lex->line))
 			add_history(lex->line);
 		parser(lex, child);
-		int	i;
-		i = 0;
-		// while (child[0]->parser_cmd[i])
-		// {
-		// 	printf("PARSER CMD: %s\n", child[0]->parser_cmd[i]);
-		// 	i++;
-		// }
 		executor(lex, child, exec);
-		/* close pipe */
-		while (waitpid(-1, &child_info, 0) != -1)
-			continue ;
+		close_pipe_bis(child, exec);
+ 		while (waitpid(-1, &child_info, 0) != -1)
+         continue ;
+        // waitpid(-1, NULL, 0);
+        // while (wait(NULL) != -1)
+        //  continue ;
 		// if (WIFEXITED(child_info))
 		// {
-		// 	printf("%d\n", WEXITSTATUS(child_info)); /* if i remember correctly, WEXITSTATUS(child_info) = $? */
+		// 	printf("%d\n", WEXITSTATUS(child_info));
+		/* if i remember correctly, WEXITSTATUS(child_info) = $? */
 		// }
 	}
-	return (0);
+	return(0);
 }

@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:20:11 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/07 15:18:54 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/08 12:20:46 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	**create_lexer_string(t_lex *lex)
 //	print_lexer(lex);
 	return (lex->lexer);
 }
-// CHECK LEXER:
 
 int	lexer_count_spaces(t_lex *lex)
 {
@@ -76,10 +75,10 @@ t_lex	*initialize_lex(void)
 
 	lex = ft_calloc(1, sizeof(t_lex));
 	if (lex == NULL)
-		errorexit("check initializiation of structs");
+		errorexit("check initializiation of lex");
 	lex->line = readline("input: ");
-	if (lex->line == NULL)
-		errorexit("check initializiation of structs");
+	if (ft_strlen(lex->line) <= 0)
+        errorexit("check initializiation of lex->line");
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;
 	lex->no_processes = 0;
