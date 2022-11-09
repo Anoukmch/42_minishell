@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 19:19:33 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 13:04:44 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/08 18:32:17 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,45 @@
 // 	printf("%s\n", lex->lexer[lex->iter]);
 // }
 
-void	close_pipe_bis(t_child	**child, t_exec	*exec)
+void	free_array(char **array)
 {
 	int	i;
 
 	i = 0;
+	if (!array)
+		return ;
+	while (array[i])
+		free(array[i++]);
+	free(array);
+}
+
+void	freeing(t_lex *lex, t_child	**child, t_exec	*exec)
+{
+	int	i;
+
+	i = 0;
+	free_array(lex->lexer);
+	free(lex);
 	while (child[i])
 	{
-		if (exec->nbr_process > 1)
-		{
-			close(exec->end[0]);
-			close(exec->end[1]);
-			if (child[i]->id != 0 && child[i]->id != (exec->nbr_process - 1))
-				close(exec->buffer[0]);
-		}
-		if (child[i]->parser_redirect_input[0] != NULL)
-			close(child[i]->fd_in);
-		if (child[i]->parser_redirect_output[0] != NULL)
-			close(child[i]->fd_out);
+		free_array(child[i]->parser_cmd);
+		free_array(child[i]->parser_redirect_input);
+		free_array(child[i]->parser_redirect_output);
+		free(child[i]->command);
+		free(child[i]);
 		i++;
+	}
+	free(child);
+	free_array(exec->envp_path);
+	free(exec);
+}
+
+void	close_piping(t_exec	*exec)
+{
+	if (exec->nbr_process > 1)
+	{
+		close(exec->end[0]);
+		close(exec->end[1]);
 	}
 }
 
@@ -69,9 +89,10 @@ int	main(int ac, char **ag, char **envp)
 			add_history(lex->line);
 		parser(lex, child);
 		executor(lex, child, exec);
-		close_pipe_bis(child, exec);
- 		while (waitpid(-1, &child_info, 0) != -1)
-         continue ;
+		close_piping(exec);
+ 		while (waitpid(0, &child_info, 0) != -1)
+        	continue ;
+		freeing(lex, child, exec);
         // waitpid(-1, NULL, 0);
         // while (wait(NULL) != -1)
         //  continue ;

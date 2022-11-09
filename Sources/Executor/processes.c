@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 13:53:57 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 13:02:43 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/08 18:31:13 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,9 +190,9 @@ void	processes(t_child *child, t_exec *exec)
 			get_infile(child);
 		if (child->parser_redirect_output[0] != NULL)
 			get_outfile(child);
+		exec->buffer[0] = exec->end[0];
 		switch_put(child, exec);
 		close_pipe(exec, child);
-		exec->buffer[0] = exec->end[0];
 		execute_command(child, exec);
 	}
 }

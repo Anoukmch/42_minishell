@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:20:11 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 12:20:46 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/08 17:10:53 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_lex	*initialize_lex(void)
 	if (lex == NULL)
 		errorexit("check initializiation of lex");
 	lex->line = readline("input: ");
-	if (ft_strlen(lex->line) <= 0)
+	if (lex->line == NULL)
         errorexit("check initializiation of lex->line");
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;
