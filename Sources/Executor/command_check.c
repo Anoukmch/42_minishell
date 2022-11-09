@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/08 11:15:32 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 11:40:42 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static void	check_path(t_lex *lex, t_child **child, t_exec *exec)
 	{
 		child[lex->iter]->command = ft_strjoin(exec->envp_path[i],
 				child[lex->iter]->parser_cmd[0]);
+		if (!child[lex->iter]->command)
+			errorexit("child[lex->iter]->command allocation fail");
 		if (access(child[lex->iter]->command, 0) == 0)
 			return ;
 		free(child[lex->iter]->command);
@@ -59,6 +61,7 @@ static void	check_builtins(t_lex *lex, t_child **child)
 		child[lex->iter]->command = ft_substr("env", 0, 4);
 	else if (ft_strncmp("exit", child[lex->iter]->parser_cmd[0], 5) == 0)
 		child[lex->iter]->command = ft_substr("exit", 0, 5);
+	/* Proteger les retours MALLOC */
 }
 static void	check_commands(t_lex *lex, t_child **child, t_exec *exec)
 {

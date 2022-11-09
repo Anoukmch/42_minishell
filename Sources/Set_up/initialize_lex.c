@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:20:11 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 17:10:53 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 13:20:13 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ char	**create_lexer_string(t_lex *lex)
 		}
 		lex->line2[j++] = lex->line[i++];
 	}
-	free(lex->line);
 	lex->lexer = split_lexer(lex->line2, ' ');
 	free_doublepointer(split_lexer(lex->line2, ' '));
 	free(lex->line2);
@@ -78,7 +77,9 @@ t_lex	*initialize_lex(void)
 		errorexit("check initializiation of lex");
 	lex->line = readline("input: ");
 	if (lex->line == NULL)
-        errorexit("check initializiation of lex->line");
+    	errorexit("check initializiation of lex->line");
+	else if (!lex->line[0])
+		return (lex);
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;
 	lex->no_processes = 0;
@@ -87,5 +88,8 @@ t_lex	*initialize_lex(void)
 	if (lex->line2 == NULL)
 		errorexit("malloc error line2");
 	lex->lexer = create_lexer_string(lex);
+	if (!lex->lexer)
+		errorexit("lex->lexer allocation failed");
+	fprintf(stderr, "Test");
 	return (lex);
 }

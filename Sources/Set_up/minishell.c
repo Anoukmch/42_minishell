@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 19:19:33 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 18:32:17 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 13:30:57 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,11 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	freeing(t_lex *lex, t_child	**child, t_exec	*exec)
+void	freeing(t_child	**child, t_exec	*exec)
 {
 	int	i;
 
 	i = 0;
-	free_array(lex->lexer);
-	free(lex);
 	while (child[i])
 	{
 		free_array(child[i]->parser_cmd);
@@ -83,16 +81,21 @@ int	main(int ac, char **ag, char **envp)
 	{
 		handle_signals();
 		lex = initialize_lex();
-		child = initialize_child(lex);
-		exec = initialize_exec(lex, envp);
-		if (lex->line && *(lex->line))
+		if (lex->line && lex->line[0])
+		{
 			add_history(lex->line);
-		parser(lex, child);
-		executor(lex, child, exec);
-		close_piping(exec);
- 		while (waitpid(0, &child_info, 0) != -1)
-        	continue ;
-		freeing(lex, child, exec);
+			child = initialize_child(lex);
+			exec = initialize_exec(lex, envp);
+			parser(lex, child);
+			executor(lex, child, exec);
+			close_piping(exec);
+ 			while (waitpid(0, &child_info, 0) != -1)
+        		continue ;
+			freeing(child, exec);
+		}
+		free(lex->line);
+		free_array(lex->lexer);
+		free(lex);
         // waitpid(-1, NULL, 0);
         // while (wait(NULL) != -1)
         //  continue ;

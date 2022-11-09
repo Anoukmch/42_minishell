@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/07 19:17:27 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:39:07 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,6 @@ void	fill_redirection_table(t_lex *lex, t_child *child)
 	}
 	child->parser_redirect_input[i] = NULL;
 	child->parser_redirect_output[j] = NULL;
-}
-
-void	check_redirection_table(char **parser_redirect_input, int i, int j)
-{
-	int	k;
-
-	k = 0;
-	if (ft_strcmp(parser_redirect_input[i], "<")
-		&& ft_strcmp(parser_redirect_input[i], "<<"))
-		errorexit("Wrong redirection input");
-	while (parser_redirect_input[j][k])
-	{
-		if (parser_redirect_input[j][k] == '|'
-			|| parser_redirect_input[j][k] == '&'
-			|| parser_redirect_input[j][k] == ';'
-			|| parser_redirect_input[j][k] == '('
-			|| parser_redirect_input[j][k] == ')'
-			|| parser_redirect_input[j][k] == '<'
-			|| parser_redirect_input[j][k] == '>'
-			|| parser_redirect_input[j][k] == '$')
-			errorexit("Wrong token filename");
-		k++;
-	}
 }
 
 void	parser_redirection(t_lex *lex, t_child **child)

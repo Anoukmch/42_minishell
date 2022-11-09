@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 12:42:44 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:05:51 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ bool	ft_atoilong(long long int *buffer, const char *str)
 	return (false);
 }
 
-static void delete_quotes(char **cmd)
+void delete_quotes(char **cmd)
 {
-    if (ft_strtrim(*cmd, "\"") != NULL)
-        *cmd = ft_strtrim(*cmd, "\"");
-    if (ft_strtrim(*cmd, "'") != NULL)
-        *cmd = ft_strtrim(*cmd, "'");
+	*cmd = ft_strtrim(*cmd, "\"");
+	if (!*cmd)
+		errorexit("delete double quote string allocation fail");
+	*cmd = ft_strtrim(*cmd, "'");
+	if (!*cmd)
+		errorexit("delete single quote string allocation fail");
 }
 
 /* /!\/!\/!\ Are we already checking these in the parser ? /!\/!\/!\ */
