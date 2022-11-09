@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 14:43:45 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/09 16:28:16 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,29 +46,6 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 		unlink("heredoc");
 }
 
-void	check_redirection_table(char **parser_redirect_input, int i, int j)
-{
-	int	k;
-
-	k = 0;
-	if (ft_strcmp(parser_redirect_input[i], "<")
-		&& ft_strcmp(parser_redirect_input[i], "<<"))
-		errorexit("Wrong redirection input\n");
-	while (parser_redirect_input[j][k])
-	{
-		if (parser_redirect_input[j][k] == '|'
-			|| parser_redirect_input[j][k] == '&'
-			|| parser_redirect_input[j][k] == ';'
-			|| parser_redirect_input[j][k] == '('
-			|| parser_redirect_input[j][k] == ')'
-			|| parser_redirect_input[j][k] == '<'
-			|| parser_redirect_input[j][k] == '>'
-			|| parser_redirect_input[j][k] == '$')
-			errorexit("Wrong token filename");
-		k++;
-	}
-}
-
 void	get_outfile(t_child *child)
 {
 	int	i;
@@ -80,7 +57,6 @@ void	get_outfile(t_child *child)
 		nbr_elements++;
 	while (child->parser_redirect_output[i])
 	{
-		check_redirection_table(child->parser_redirect_output, i, i + 1);
 		if (!ft_strcmp(child->parser_redirect_output[i], ">"))
 		{
 			child->fd_out = open(child->parser_redirect_output[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -112,7 +88,6 @@ void	get_infile(t_child *child, t_exec *exec)
 		nbr_elements++;
 	while (child->parser_redirect_input[i])
 	{
-		check_redirection_table(child->parser_redirect_input, i, i + 1);
 		if (!ft_strcmp(child->parser_redirect_input[i], "<"))
 		{
 			child->fd_in = open(child->parser_redirect_input[i + 1], O_RDONLY);

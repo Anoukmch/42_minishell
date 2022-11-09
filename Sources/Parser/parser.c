@@ -3,22 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:59:04 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 19:15:16 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/09 16:26:24 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	parser(t_lex *lex, t_child	**child)
+void	check_redirection_table(char **parser_redirect_input, int i, int j)
 {
 	int	k;
+
+	k = 0;
+	if (ft_strcmp(parser_redirect_input[i], "<")
+		&& ft_strcmp(parser_redirect_input[i], "<<"))
+		errorexit("Wrong redirection input\n");
+	while (parser_redirect_input[j][k])
+	{
+		if (parser_redirect_input[j][k] == '|'
+			|| parser_redirect_input[j][k] == '&'
+			|| parser_redirect_input[j][k] == ';'
+			|| parser_redirect_input[j][k] == '('
+			|| parser_redirect_input[j][k] == ')'
+			|| parser_redirect_input[j][k] == '<'
+			|| parser_redirect_input[j][k] == '>'
+			|| parser_redirect_input[j][k] == '$')
+			errorexit("Wrong token filename");
+		k++;
+	}
+}
+
+void	parser(t_lex *lex, t_child	**child)
+{
 	int	i;
 
 	i = 0;
-	k = 0;
 	parse_commands(lex, child);
 	parser_redirection(lex, child);
 }
@@ -44,3 +65,4 @@ void	parser(t_lex *lex, t_child	**child)
 	// 				k, child[k]->parser_redirect_output[i++]);
 	//     k++;
 	// }
+
