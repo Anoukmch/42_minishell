@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 13:56:46 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 12:54:25 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:46:40 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 	check the result with env
 */
 
-static char	*delete_quotes(char *str)
+static char	*builtdelete_quotes(char *str)
 {
 	if (ft_strtrim(str, "\"") != NULL)
 		str = ft_strtrim(str, "\"");
@@ -38,7 +38,7 @@ static int	invalid_identifier(char **cmd)
 	j = 0;
 	while (cmd && cmd[i])
 	{
-		cmd[i] = delete_quotes(cmd[i]);
+		cmd[i] = builtdelete_quotes(cmd[i]);
 		while (cmd[i][j] != '\0')
 		{	
 			if (cmd[i][0] == '=')
@@ -130,7 +130,7 @@ static void	env_variable(char *str, t_exec *exec)
 			ft_strlen(str) - ft_strlen(ft_strchr(str, '=')));
 	content = ft_substr(str, ft_strlen(variablename) + 1,
 			ft_strlen(ft_strchr(str, '=')) + 1);
-	content = delete_quotes(content);
+	content = builtdelete_quotes(content);
 	if (ft_strlen(content) == 0)
 		content = "";
 	while (exec->envp_bis[i])

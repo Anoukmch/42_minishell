@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 11:40:42 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:46:22 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	check_path(t_lex *lex, t_child **child, t_exec *exec)
 		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
 	{
 		child[lex->iter]->command = child[lex->iter]->parser_cmd[0];
+		printf("TesT COMAMD: %s\n", child[lex->iter]->command);
 		if (access(child[lex->iter]->command, 0) == 0)
 			return ;
 		else

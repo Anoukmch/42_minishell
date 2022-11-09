@@ -6,13 +6,13 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 18:44:38 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 12:55:42 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:47:02 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*delete_quotes(char *str)
+static char	*builtdelete_quotes(char *str)
 {
 	if (ft_strtrim(str, "\"") != NULL)
 		str = ft_strtrim(str, "\"");
@@ -30,7 +30,7 @@ static int	invalid_identifier(char **cmd)
 	j = 0;
 	while (cmd && cmd[i])
 	{
-		cmd[i] = delete_quotes(cmd[i]);
+		cmd[i] = builtdelete_quotes(cmd[i]);
 		if (cmd[i][0] == '\0')
 			printf("unset: '%s': not a valid identifier\n", cmd[i]);
 		while (cmd[i][j] != '\0')
