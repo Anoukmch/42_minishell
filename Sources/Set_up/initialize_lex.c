@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:20:11 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/09 16:23:16 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 18:36:37 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	lexer_count_spaces(t_lex *lex)
 t_lex	*initialize_lex(void)
 {
 	t_lex	*lex;
-	int i;
 
 	lex = ft_calloc(1, sizeof(t_lex));
 	if (lex == NULL)
@@ -91,13 +90,5 @@ t_lex	*initialize_lex(void)
 	lex->lexer = create_lexer_string(lex);
 	if (!lex->lexer)
 		errorexit("lex->lexer allocation failed");
-	i = 0;
-	lex->iter = 0;
-	while (lex->lexer[lex->iter])
-	{
-		printf("%s\n", lex->lexer[lex->iter]);
-		lex->iter++;
-	}
-	printf("%s\n", lex->lexer[lex->iter]);
 	return (lex);
 }

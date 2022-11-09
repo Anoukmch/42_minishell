@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 16:28:16 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:16:42 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,17 +152,21 @@ void	close_pipe(t_exec *exec, t_child *child)
 			unlink("heredoc");
 }
 
-/* 2. Is it already accessible ? */
-/* 2. Is it a builtin ? */
+void	execve_command(t_child *child, t_exec *exec)
+{
+	if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
+		errorexit("execve fail");
+}
 
-void	execute_command(t_child *child, t_exec *exec)
+
+void	builtin_command(t_child *child, t_exec *exec)
 {
 	if (!ft_strcmp(child->command, "pwd"))
-		command_pwd();
+		command_pwd(exec);
 	else if (!ft_strcmp(child->command, "echo"))
-		command_echo(child);
+		command_echo(child, exec);
 	else if (!ft_strcmp(child->command, "cd"))
-		command_cd(child);
+		command_cd(child, exec);
 	else if (!ft_strcmp(child->command, "exit"))
 		command_exit(child);
 	else if (!ft_strcmp(child->command, "export"))
@@ -171,8 +175,6 @@ void	execute_command(t_child *child, t_exec *exec)
 		command_unset(child, exec);
 	else if (!ft_strcmp(child->command, "env"))
 		command_env(exec);
-	else if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
-		errorexit("execve fail");
 }
 
 void	processes(t_child *child, t_exec *exec)
@@ -181,6 +183,11 @@ void	processes(t_child *child, t_exec *exec)
 	int		i;
 
 	i = 0;
+	if (exec->nbr_process == 1)
+	{
+		builtin_command(child, exec);
+		return ;
+	}
 	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
 	{
 		if (pipe(exec->end) < 0)
@@ -198,7 +205,8 @@ void	processes(t_child *child, t_exec *exec)
 		exec->buffer[0] = exec->end[0];
 		switch_put(child, exec);
 		close_pipe(exec, child);
-		execute_command(child, exec);
+		builtin_command(child, exec);
+		execve_command(child, exec);
 	}
 }
 

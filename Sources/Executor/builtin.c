@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/09 14:42:18 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:13:45 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,7 @@ void delete_quotes(char **cmd)
 		errorexit("delete single quote string allocation fail");
 }
 
-/* /!\/!\/!\ Are we already checking these in the parser ? /!\/!\/!\ */
-
-// void	check_args(t_child *child) /* Are we already checking these in the parser ? */
-// {
-// 	int i;
-// 	int j;
-
-// 	i = 1;
-// 	j = 0;
-// 	while(child->parser_cmd[i])
-// 	{
-// 		while (child->parser_cmd[i][j])
-// 		{
-// 			if (child->parser_cmd[i][j] == '(' || child->parser_cmd[i][j] == ')'
-// 				|| child->parser_cmd[i][j] == '<' || child->parser_cmd[i][j] == '>')
-// 				errorexit("Unexpected token");
-// 			j++;
-// 		}
-// }
-
-void	command_echo(t_child *child)
+void	command_echo(t_child *child, t_exec *exec)
 {
 	int	i;
 	bool newline;
@@ -100,11 +80,13 @@ void	command_echo(t_child *child)
 	}
 	if (newline == true)
 		ft_putstr_fd("\n", child->fd_out);
+	if (exec->nbr_process != 1)
+		exit(0);
 }
 
 /* cd with only a relative or absolute path */
 
-void	command_cd(t_child *child)
+void	command_cd(t_child *child, t_exec *exec)
 {
 	if (child->parser_cmd[1] != NULL)
 		delete_quotes(&child->parser_cmd[1]);
@@ -118,17 +100,21 @@ void	command_cd(t_child *child)
 		if (chdir(child->parser_cmd[1]) != 0)
 			errorexit("No such file or directory");
 	}
+	if (exec->nbr_process != 1)
+		exit(0);
 }
 
 /* pwd with no options */
 
-void	command_pwd(void)
+void	command_pwd(t_exec *exec)
 {
 	char *s;
 	s = getcwd(NULL, 0);
 	if (!s)
 		errorexit("Get current path fail");
 	ft_printf("%s\n", s);
+	if (exec->nbr_process != 1)
+		exit(0);
 }
 
 /* export with no options */
@@ -158,6 +144,8 @@ void	command_env(t_exec *exec)
 			ft_printf("%s\n", exec->envp_bis[i]);
 		i++;
 	}
+	if (exec->nbr_process != 1)
+		exit(0);
 }
 
 /* exit with no options */
