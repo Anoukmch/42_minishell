@@ -6,7 +6,11 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 13:53:57 by amechain          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/11/09 12:01:44 by jmatheis         ###   ########.fr       */
+=======
+/*   Updated: 2022/11/09 12:41:48 by amechain         ###   ########.fr       */
+>>>>>>> 3ac82f343200178661598691478a2863a524c44c
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +26,7 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 			| O_TRUNC, 0644);
 	if (file < 0)
 		errorexit("Open heredoc failed");
+	delete_quotes(&limiter);
 	temp = ft_strjoin(limiter, "\n");
 	ft_printf("Heredoc>");
 	line = get_next_line(STDIN_FILENO);
@@ -40,6 +45,31 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 	free(line);
 	free(temp);
 	close(file);
+	if (i < nbr_elements - 2)
+		unlink("heredoc");
+}
+
+void	check_redirection_table(char **parser_redirect_input, int i, int j)
+{
+	int	k;
+
+	k = 0;
+	if (ft_strcmp(parser_redirect_input[i], "<")
+		&& ft_strcmp(parser_redirect_input[i], "<<"))
+		errorexit("Wrong redirection input\n");
+	while (parser_redirect_input[j][k])
+	{
+		if (parser_redirect_input[j][k] == '|'
+			|| parser_redirect_input[j][k] == '&'
+			|| parser_redirect_input[j][k] == ';'
+			|| parser_redirect_input[j][k] == '('
+			|| parser_redirect_input[j][k] == ')'
+			|| parser_redirect_input[j][k] == '<'
+			|| parser_redirect_input[j][k] == '>'
+			|| parser_redirect_input[j][k] == '$')
+			errorexit("Wrong token filename");
+		k++;
+	}
 }
 
 void	get_outfile(t_child *child)
@@ -53,7 +83,7 @@ void	get_outfile(t_child *child)
 		nbr_elements++;
 	while (child->parser_redirect_output[i])
 	{
-		//check_redirection_table(child->parser_redirect_output, i, i + 1);
+		check_redirection_table(child->parser_redirect_output, i, i + 1);
 		if (!ft_strcmp(child->parser_redirect_output[i], ">"))
 		{
 			child->fd_out = open(child->parser_redirect_output[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -74,7 +104,7 @@ void	get_outfile(t_child *child)
 	}
 }
 
-void	get_infile(t_child *child)
+void	get_infile(t_child *child, t_exec *exec)
 {
 	int	i;
 	int nbr_elements;
@@ -85,7 +115,7 @@ void	get_infile(t_child *child)
 		nbr_elements++;
 	while (child->parser_redirect_input[i])
 	{
-		//check_redirection_table(child->parser_redirect_input, i, i + 1);
+		check_redirection_table(child->parser_redirect_input, i, i + 1);
 		if (!ft_strcmp(child->parser_redirect_input[i], "<"))
 		{
 			child->fd_in = open(child->parser_redirect_input[i + 1], O_RDONLY);
@@ -102,6 +132,7 @@ void	get_infile(t_child *child)
 				child->fd_in = open("heredoc", O_RDONLY);
 				if (child->fd_in < 0)
 					errorexit("Open infile heredoc failed");
+				exec->isheredoc = 1;
 			}
 		}
 		i += 2;
@@ -145,6 +176,8 @@ void	close_pipe(t_exec *exec, t_child *child)
 		close(child->fd_in);
 	if (child->parser_redirect_output[0] != NULL)
 		close(child->fd_out);
+	if (exec->isheredoc == 1)
+			unlink("heredoc");
 }
 
 /* 2. Is it already accessible ? */
@@ -187,7 +220,7 @@ void	processes(t_child *child, t_exec *exec)
 	else if (child_process == 0)
 	{
 		if (child->parser_redirect_input[0] != NULL)
-			get_infile(child);
+			get_infile(child, exec);
 		if (child->parser_redirect_output[0] != NULL)
 			get_outfile(child);
 		exec->buffer[0] = exec->end[0];

@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:44:13 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 11:10:21 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 11:16:18 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,18 @@ t_exec	*initialize_exec(t_lex *lex, char **envp)
 	exec->envp_bis = envp;
 	exec->envp_line = getenv("PATH");
 	exec->envp_path = ft_split(exec->envp_line, ':');
+	if (!exec->envp_path)
+		errorexit("check initializiation of exec->envp_path");
 	while (exec->envp_path[i])
 	{
 		exec->envp_path[i] = ft_strjoin(exec->envp_path[i], "/");
+		if (!exec->envp_path[i])
+			errorexit("exec->envp_path[i] allocation fail");
 		i++;
 	}
-	if (!exec->envp_path)
-		errorexit("check initializiation of exec->envp_path");
 	exec->end[0] = 0;
 	exec->end[1] = 0;
 	exec->buffer[0] = 0;
+	exec->isheredoc = 0;
 	return (exec);
 }

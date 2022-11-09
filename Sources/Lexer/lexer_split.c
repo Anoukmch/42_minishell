@@ -6,37 +6,37 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:05:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 19:08:56 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 11:00:10 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 //counting the words to reserve the storage with malloc
-static int	skipquotes(char const *s, int i)
-{
-	if (s[i] == '"')
-	{
-		i++;
-		while (s[i] != '"' && s[i] != '\0')
-		{
-			if (s[i] == '\0')
-				errorexit("DOUBLE QUOTES NOT CLOSED");
-			i++;
-		}
-	}
-	if (s[i] == 39)
-	{
-		i++;
-		while (s[i] != 39 && s[i] != '\0')
-		{
-			if (s[i] == 39)
-				errorexit("SINGLE QUOTES NOT CLOSED");
-			i++;
-		}
-	}
-	return (i);
-}
+// static int	skipquotes(char const *s, int i)
+// {
+// 	if (s[i] == '"')
+// 	{
+// 		i++;
+// 		while (s[i] != '"' && s[i] != '\0')
+// 		{
+// 			if (s[i] == '\0')
+// 				errorexit("DOUBLE QUOTES NOT CLOSED");
+// 			i++;
+// 		}
+// 	}
+// 	if (s[i] == 39)
+// 	{
+// 		i++;
+// 		while (s[i] != 39 && s[i] != '\0')
+// 		{
+// 			if (s[i] == 39)
+// 				errorexit("SINGLE QUOTES NOT CLOSED");
+// 			i++;
+// 		}
+// 	}
+// 	return (i);
+// }
 
 static size_t	wordcounter(char const *s, char c)
 {
@@ -49,14 +49,14 @@ static size_t	wordcounter(char const *s, char c)
 	{
 		while (s[i] == c && s[i] != '\0')
 			i++;
-		i = skipquotes(s, i);
+		//i = skipquotes(s, i);
 		if (s[i] != '\0')
 			counter++;
 		while (s[i] != c && s[i] != '\0')
 		{
 			// if (s[i] == '=')
 			// 	counter++;
-			i = skipquotes(s, i);
+			// i = skipquotes(s, i);
 			i++;
 		}
 	}

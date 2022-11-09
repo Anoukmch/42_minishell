@@ -57,6 +57,7 @@ typedef struct s_exec
 	int		nbr_process;
 	int		end[2];
 	int		buffer[1];
+	int	isheredoc;
 
 }	t_exec;
 
@@ -100,6 +101,9 @@ void	command_export (t_child *child, t_exec *exec);
 void	command_unset(t_child *child, t_exec *exec);
 
 void	count_new_spaces(char *line, t_lex *lex);
+
+// MISCELLANEOUS
+void delete_quotes(char **cmd);
 
 // CHECKING LEXER
 //void print_lexer(t_lex *lex);
