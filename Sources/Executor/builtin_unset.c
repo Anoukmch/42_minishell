@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 18:44:38 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 19:08:59 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:55:42 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,47 +50,50 @@ static int	invalid_identifier(char **cmd)
 	return (0);
 }
 
-void	command_unset(char **cmd)
+static char	**get_position_in_env(t_exec *exec, char *variable)
 {
 	int	i;
 
-	i = 1;
-
-	if (cmd[i] == NULL)
+	i = 0;
+	while (exec->envp_bis[i])
 	{
-		// nothing should happen in this case
-		return ;
+		if (ft_strncmp(exec->envp_bis[i], variable,
+				ft_strlen(variable) + 1) == 0)
+		{
+			return (&exec->envp_bis[i]);
+		}
+		i++;
 	}
-	if (invalid_identifier(cmd) != 0)
+	return (NULL);
+}
+
+void	command_unset(t_child *child, t_exec *exec)
+{
+	int		i;
+	int		j;
+	char	**tmp;
+
+	i = 1;
+	tmp = NULL;
+	if (child->parser_cmd[i] == NULL)
+		return ;
+	if (invalid_identifier(child->parser_cmd) != 0)
 	{
 		printf("error occured\n");
 		return ;
 	}
-	// while (cmd[i] && cmd)
-	// {
-	// 	if VARIABLE EXISTS --> EXECUTE IT
-	// 	else
-	// 		IF VARIABLE DOESN'T EXIST --> RETUNR NEW LINE
-	// 	i++;
-	// }
+	while (child->parser_cmd[i])
+	{
+		j = 0;
+		tmp = get_position_in_env(exec, child->parser_cmd[i]);
+		free(tmp[j]);
+		j++;
+		while (tmp[j])
+		{
+			tmp[j - 1] = tmp[j];
+			j++;
+		}
+		tmp[j - 1] = NULL;
+		i++;
+	}
 }
-
-/*
-	->not a valid identifier
-	unset "" X --> IS NOT WORKING
-	unset =
-	unset "="
-	unset ""=
-	unset =""
-	unset ==
-	unset ?
-	unset "?"
-	unset $
-	unset "$"
-	unset $""
-*/
-
-// in cae of $HOME
-// --> unset HOME
-// --> echo HOME --> new line
-// IF VARIABLE DOESN'T EXIST --> RETURN NEW LINE

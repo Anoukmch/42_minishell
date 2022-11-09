@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 13:56:46 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 18:10:51 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:54:25 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,6 @@
 	use unset to remove some of them
 	check the result with env
 */
-// static int	no_equalsign(char **cmd)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while(cmd[j])
-// 	{
-// 		while(cmd[j][i])
-// 		{
-// 			if (cmd[j][i] == '=')
-// 				return (0);
-// 			i++;
-// 		}
-// 		i = 0;
-// 		j++;
-// 	}
-// 	return (1);
-// }
 
 static char	*delete_quotes(char *str)
 {
@@ -49,11 +29,6 @@ static char	*delete_quotes(char *str)
 	return (str);
 }
 
-/*
-	bool = 1 --> single quotes
-	bool = 2 --> double quotes
-	"\"" --> string with one double quote
-*/
 static int	invalid_identifier(char **cmd)
 {
 	int	i;
@@ -83,22 +58,71 @@ static int	invalid_identifier(char **cmd)
 	return (0);
 }
 
-static void	export_variable(char *str)
+static int	doublepoint_size(char **str)
 {
-	printf("EXPORT\n");
-	char	*variable;
+	int	i;
 
+	i = 0;
+	while (str && str[i])
+		i++;
+	return (i);
+}
+
+// CHECK IF VARIABLE ALREADY EXISTS
+// IF YES REPLACE IT
+// void	replace_variable(char *variable, t_exec *exec)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while(exec->envp_bis[i])
+// 	{
+// 		if (ft_strncmp(exec->envp_bis[i], variable, ft_strlen(variable)) == 0)
+// 		{
+// 			printf("HERE: %s\n", exec->envp_bis[i]);
+// 			free (exec->envp_bis[i]);
+// 			exec->envp_bis[i] = ft_substr(variable, 0, ft_strlen(variable));
+// 		}
+// 		i++;
+// 	}
+// }
+
+static void	export_variable(char *str, t_exec *exec)
+{
+	char	*variable;
+	int		len;
+	int		i;
+
+	i = 0;
 	variable = NULL;
+	len = doublepoint_size(exec->envp_bis);
 	variable = str;
-	// ADD IT TO EXPORT
+	while (exec->envp_bis[i])
+	{
+		if (ft_strncmp(exec->envp_bis[i], variable, ft_strlen(variable)) == 0)
+		{
+			printf("HERE: %s\n", exec->envp_bis[i]);
+			free (exec->envp_bis[i]);
+			exec->envp_bis[i] = ft_substr(variable, 0, ft_strlen(variable));
+			return ;
+		}
+		i++;
+	}
+	exec->envp_bis[len] = ft_substr(variable, 0, ft_strlen(variable));
+	len++;
+	exec->envp_bis[len] = NULL;
 	printf("variable: %s\n", variable);
 }
 
-static void	env_variable(char *str)
+static void	env_variable(char *str, t_exec *exec)
 {
 	char	*variablename;
 	char	*content;
+	int		len;
+	int		i;
 
+	i = 0;
+	len = doublepoint_size(exec->envp_bis);
 	printf("ENV\n");
 	variablename = NULL;
 	content = NULL;
@@ -109,66 +133,103 @@ static void	env_variable(char *str)
 	content = delete_quotes(content);
 	if (ft_strlen(content) == 0)
 		content = "";
-	// ADD IT TO ENV
+	while (exec->envp_bis[i])
+	{
+		if (ft_strncmp(exec->envp_bis[i], variablename,
+				ft_strlen(variablename)) == 0)
+		{
+			printf("HERE: %s\n", exec->envp_bis[i]);
+			free (exec->envp_bis[i]);
+			exec->envp_bis[i] = ft_strjoin(variablename, "=");
+			exec->envp_bis[i] = ft_strjoin(exec->envp_bis[i], content);
+			return ;
+		}
+		i++;
+	}	
+	exec->envp_bis[len] = ft_strjoin(variablename, "=");
+	exec->envp_bis[len] = ft_strjoin(exec->envp_bis[len], content);
+	len++;
+	exec->envp_bis[len] = NULL;
 	printf("variablename: %s\n", variablename);
 	printf("content: %s\n", content);
 }
 
-//cmd[0] = "export";
-// IMPORTANT: Last string = NULL
-void	command_export(char **cmd)
+char	*add_quotes(char *adding)
 {
-	int	i;
+	int		i;
+	int		j;
+	char	*tmp;
 
-	i = 1;
-	if (cmd[i] == NULL)
+	i = 0;
+	j = 0;
+	tmp = NULL;
+	tmp = ft_calloc(ft_strlen(adding) + 2, sizeof(char));
+	if (tmp == NULL)
+		errorexit("Allocation fail\n");
+	while (adding[i] != '\0')
 	{
-		printf("declare -x\n");
-		//print whole env with declare -x in front
-		return ;
-	}
-	if (invalid_identifier(cmd) != 0)
-	{
-		printf("error occured\n");
-		return ;
-	}
-	while (cmd[i] && cmd)
-	{
-		if (ft_strchr(cmd[i], '=') != NULL)
-			env_variable(cmd[i]);
+		if (adding[j] == '=')
+		{
+			tmp[j++] = adding[i];
+			tmp[j] = '"';
+		}
 		else
-			export_variable(cmd[i]);
+			tmp[j] = adding[i];
+		j++;
+		i++;
+	}
+	tmp[j] = '"';
+	return (tmp);
+}
+
+static void	no_options(t_exec *exec)
+{
+	int		i;
+	char	**export;
+
+	i = 0;
+	export = NULL;
+	while (exec->envp_bis[i])
+		i++;
+	export = ft_calloc(i + 1, sizeof(char *));
+	if (export == NULL)
+		errorexit("Allocation error");
+	i = 0;
+	while (exec->envp_bis[i])
+	{
+		if (ft_strchr(exec->envp_bis[i], '=') != NULL)
+			export[i] = add_quotes(exec->envp_bis[i]);
+		else
+			export[i] = exec->envp_bis[i];
+		ft_printf("declare -x ");
+		ft_printf("%s\n", export[i]);
 		i++;
 	}
 }
 
-/*
-	export: `=============123': not a valid identifier
-	export: `=': not a valid identifier
-	export: `=42': not a valid identifier
-	export: `?=hallo': not a valid identifier
-	export test =1 --> export: `=1': not a valid identifier
-	export test ? --> export: `?': not a valid identifier
-	export ''=''
-	export ""=""
-	--> INFRONT OF = MUST BE A ALPHABETICAL CHARACTER, otherwise: not a valid identifier
-	--> only letters & _, numbers after a letter is fine
-	export export //nothing happens
-	export echo //nothing happens
-	export cd //nothing happens
-	export test //nothing happens
-	export TEST //nothing happens
-	export
-	--> if after EXPORT sth without = --> NOTHING HAPPENS
+//cmd[0] = "export";
+// IMPORTANT: Last string = NULL
+void	command_export(t_child *child, t_exec *exec)
+{
+	int	i;
 
-	//WORKS:
-	export TES_T=123 --> echo TES_T --> 123, in env: TES_T=123
-	export HELLO42=T="" -->echo HELLO42 --> T=, in env: HELLO42=T=
-	export mini_test= --> echo $mini_test --> empty line, in env: mini_test=
-	export test= test --> echo $test --> empty line, in env: test=
-	export test test=  --> echo $test --> empty line, in env: test=
-	export test= test= --> echo $test --> empty line, in env: test=
-	if echo $random (variable is not exported) --> return empty line
-
-	export test=42 | echo 99 --> first process gets ignored, only second one is executed
-*/
+	i = 1;
+	if (child->parser_cmd[i] == NULL)
+	{
+		no_options(exec);
+		return ;
+	}
+	if (invalid_identifier(child->parser_cmd) != 0)
+	{
+		printf("error occured\n");
+		return ;
+	}
+	while (child->parser_cmd[i] && child->parser_cmd)
+	{
+		if (ft_strchr(child->parser_cmd[i], '=') != NULL)
+			env_variable(child->parser_cmd[i], exec);
+		else
+			export_variable(child->parser_cmd[i], exec);
+		i++;
+	}
+}

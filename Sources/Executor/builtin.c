@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 12:42:44 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 13:05:07 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void	command_echo(t_child *child)
 	}
 	if (newline == true)
 		ft_putstr_fd("\n", child->fd_out);
-	exit(0);
 }
 
 /* cd with only a relative or absolute path */
@@ -121,7 +120,7 @@ void	command_cd(t_child *child)
 
 /* pwd with no options */
 
-void	command_pwd()
+void	command_pwd(void)
 {
 	char *s;
 	s = getcwd(NULL, 0);
@@ -146,9 +145,17 @@ void	command_pwd()
 
 /* env with no options or arguments */
 
-void	command_env()
+void	command_env(t_exec *exec)
 {
+	int	i;
 
+	i = 0;
+	while(exec->envp_bis[i])
+	{
+		if (ft_strchr(exec->envp_bis[i], '=') != NULL)
+			ft_printf("%s\n", exec->envp_bis[i]);
+		i++;
+	}
 }
 
 /* exit with no options */

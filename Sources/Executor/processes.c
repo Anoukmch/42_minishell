@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 13:53:57 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 18:31:13 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:01:44 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,14 +158,14 @@ void	execute_command(t_child *child, t_exec *exec)
 		command_echo(child);
 	else if (!ft_strcmp(child->command, "cd"))
 		command_cd(child);
-	// else if (!ft_strcmp(child->command, "exit"))
-	// 	command_exit(child);
-	// else if (!ft_strcmp(child->command, "export"))
-	// 	command_export(child);
-	// else if (!ft_strcmp(child->command, "unset"))
-	// 	command_unset(child);
-	// else if (!ft_strcmp(child->command, "env"))
-	// 	command_env(child);
+	else if (!ft_strcmp(child->command, "exit"))
+		command_exit(child);
+	else if (!ft_strcmp(child->command, "export"))
+		command_export(child, exec);
+	else if (!ft_strcmp(child->command, "unset"))
+		command_unset(child, exec);
+	else if (!ft_strcmp(child->command, "env"))
+		command_env(exec);
 	else if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
 		errorexit("execve fail");
 }
