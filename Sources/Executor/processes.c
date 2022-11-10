@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/10 12:58:00 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/10 19:53:44 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,15 +141,15 @@ void	close_pipe(t_exec *exec, t_child *child)
 	{
 		close(exec->end[0]);
 		close(exec->end[1]);
-		if (child->id != 0 && child->id != (exec->nbr_process - 1))
-			close(exec->buffer[0]);
+		//if (child->id != 0 && child->id != (exec->nbr_process - 1))
+		close(exec->buffer[0]);
 	}
 	if (child->parser_redirect_input[0] != NULL)
 		close(child->fd_in);
 	if (child->parser_redirect_output[0] != NULL)
 		close(child->fd_out);
 	if (exec->isheredoc == 1)
-			unlink("heredoc");
+		unlink("heredoc");
 }
 
 void	builtin_command(t_child *child, t_exec *exec)
@@ -185,6 +185,7 @@ void	processes(t_child *child, t_exec *exec)
 	}
 	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
 	{
+		exec->buffer[0] = exec->end[0];
 		if (pipe(exec->end) < 0)
 			errorexit("Pipe fail");
 	}
@@ -197,7 +198,6 @@ void	processes(t_child *child, t_exec *exec)
 			get_infile(child, exec);
 		if (child->parser_redirect_output[0] != NULL)
 			get_outfile(child);
-		exec->buffer[0] = exec->end[0];
 		switch_put(child, exec);
 		close_pipe(exec, child);
 		builtin_command(child, exec);
