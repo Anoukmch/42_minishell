@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/09 19:13:45 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/10 13:05:16 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	command_echo(t_child *child, t_exec *exec)
 	}
 	if (newline == true)
 		ft_putstr_fd("\n", child->fd_out);
-	if (exec->nbr_process != 1)
+	if (exec->nbr_process > 1)
 		exit(0);
 }
 
@@ -100,7 +100,7 @@ void	command_cd(t_child *child, t_exec *exec)
 		if (chdir(child->parser_cmd[1]) != 0)
 			errorexit("No such file or directory");
 	}
-	if (exec->nbr_process != 1)
+	if (exec->nbr_process > 1)
 		exit(0);
 }
 
@@ -113,7 +113,7 @@ void	command_pwd(t_exec *exec)
 	if (!s)
 		errorexit("Get current path fail");
 	ft_printf("%s\n", s);
-	if (exec->nbr_process != 1)
+	if (exec->nbr_process > 1)
 		exit(0);
 }
 
@@ -144,13 +144,13 @@ void	command_env(t_exec *exec)
 			ft_printf("%s\n", exec->envp_bis[i]);
 		i++;
 	}
-	if (exec->nbr_process != 1)
+	if (exec->nbr_process > 1)
 		exit(0);
 }
 
 /* exit with no options */
 
-void	command_exit(t_child *child)
+void	command_exit(t_child *child, t_exec *exec)
 {
 	long long int	buffer;
 	bool			istoobig;
@@ -162,20 +162,29 @@ void	command_exit(t_child *child)
 	ft_putstr_fd("exit\n", 1);
 	if (child->parser_cmd[1] != NULL)
 	{
-		if (child->parser_cmd[1][i] == '-')
+		if (child->parser_cmd[1][i] == '-' || child->parser_cmd[1][i] == '+')
 			i++;
 		while (child->parser_cmd[1][i])
 		{
 			if (child->parser_cmd[1][i] < 48 || child->parser_cmd[1][i] > 57)
-				errorexit("Numeric argument required");
+			{
+				fprintf(stderr, "bash: exit: numeric argument required\n");
+				exit(255); /* with which code exit ? 255 ? */
+			}
 			i++;
 		}
 		istoobig = ft_atoilong(&buffer, child->parser_cmd[1]);
 		if (istoobig == true)
-			errorexit("Exit code too long or too short");
+			errorexit("Exit code too long or too short\n");
 		status = buffer % 256;
 	}
 	if (child->no_cmd_opt > 2)
-		errorexit("Too many arguments for exit function"); /* This shouldn't exit but just return to a newline */
+	{
+		fprintf(stderr, "bash: exit: too many arguments\n"); /* This shouldn't exit but just return to a newline and exit code == 1 (failure) */
+		if (exec->nbr_process > 1)
+			exit(1);
+		else
+			return ;
+	}
 	exit(status);
 }

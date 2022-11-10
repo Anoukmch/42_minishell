@@ -96,7 +96,7 @@ void    command_path(t_lex *lex, t_child **child, t_exec *exec);
 void	command_echo(t_child *child, t_exec *exec);
 void	command_cd(t_child *child, t_exec *exec);
 void	command_pwd(t_exec *exec);
-void	command_exit(t_child *child); 
+void	command_exit(t_child *child, t_exec *exec);
 void	command_export (t_child *child, t_exec *exec);
 void	command_unset(t_child *child, t_exec *exec);
 

@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 19:16:42 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/10 12:58:00 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,13 +152,6 @@ void	close_pipe(t_exec *exec, t_child *child)
 			unlink("heredoc");
 }
 
-void	execve_command(t_child *child, t_exec *exec)
-{
-	if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
-		errorexit("execve fail");
-}
-
-
 void	builtin_command(t_child *child, t_exec *exec)
 {
 	if (!ft_strcmp(child->command, "pwd"))
@@ -168,13 +161,15 @@ void	builtin_command(t_child *child, t_exec *exec)
 	else if (!ft_strcmp(child->command, "cd"))
 		command_cd(child, exec);
 	else if (!ft_strcmp(child->command, "exit"))
-		command_exit(child);
+		command_exit(child, exec);
 	else if (!ft_strcmp(child->command, "export"))
 		command_export(child, exec);
 	else if (!ft_strcmp(child->command, "unset"))
 		command_unset(child, exec);
 	else if (!ft_strcmp(child->command, "env"))
 		command_env(exec);
+	else if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
+		errorexit("execve fail");
 }
 
 void	processes(t_child *child, t_exec *exec)
@@ -206,7 +201,6 @@ void	processes(t_child *child, t_exec *exec)
 		switch_put(child, exec);
 		close_pipe(exec, child);
 		builtin_command(child, exec);
-		execve_command(child, exec);
 	}
 }
 
