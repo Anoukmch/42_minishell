@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 18:05:29 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/10 10:47:50 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/10 18:02:57 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

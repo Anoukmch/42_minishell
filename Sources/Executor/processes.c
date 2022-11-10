@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/10 12:58:00 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/10 18:06:35 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,9 +175,7 @@ void	builtin_command(t_child *child, t_exec *exec)
 void	processes(t_child *child, t_exec *exec)
 {
 	pid_t	child_process;
-	int		i;
-
-	i = 0;
+	// instead of child_process, last_pid
 	if (exec->nbr_process == 1)
 	{
 		builtin_command(child, exec);
