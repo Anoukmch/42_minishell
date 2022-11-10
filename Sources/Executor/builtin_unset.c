@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 18:44:38 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 14:47:02 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/10 09:39:40 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ static int	invalid_identifier(char **cmd)
 				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_'
 					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
 			{
-				printf("unset: '%s': not a valid identifier\n", cmd[i]);
+				ft_putstr_fd("unset: '", 2);
+				ft_putstr_fd(cmd[i], 2);
+				ft_putstr_fd("': not a valid identifier\n", 2);			
+				// printf("unset: '%s': not a valid identifier\n", cmd[i]);
 				return (1);
 			}
 			j++;
