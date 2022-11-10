@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+         #
+#    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/11/08 17:07:22 by amechain         ###   ########.fr        #
+#    Updated: 2022/11/10 19:42:40 by jmatheis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ M_SRC = Set_up/minishell.c \
 		Set_up/initialize_exec.c \
 		Set_up/initialize_lex.c \
 		Set_up/signals.c \
+		Set_up/quotes.c \
 		Lexer/lexer.c \
 		Lexer/lexer_split.c \
 		Lexer/freeing.c \

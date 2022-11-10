@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:06:11 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 10:54:27 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/10 17:04:35 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ ASCII 39 = single quote*/
 
 
 // CHECKING LEXER
-// void	print_lexer(t_lex *lex)
-// {
-// 	int	i;
+void	print_lexer(t_lex *lex)
+{
+	int	i;
 
-// 	i = 0;
-// 	lex->iter = 0;
-// 	while (lex->lexer[lex->iter])
-// 	{
-// 		printf("%s\n", lex->lexer[lex->iter]);
-// 		lex->iter++;
-// 	}
-// 	printf("%s\n", lex->lexer[lex->iter]);
-// }
+	i = 0;
+	lex->iter = 0;
+	while (lex->lexer[lex->iter])
+	{
+		printf("%s\n", lex->lexer[lex->iter]);
+		lex->iter++;
+	}
+	printf("%s\n", lex->lexer[lex->iter]);
+}

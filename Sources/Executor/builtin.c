@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/10 13:05:16 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/10 19:48:35 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ bool	ft_atoilong(long long int *buffer, const char *str)
 	return (false);
 }
 
-void delete_quotes(char **cmd)
-{
-	*cmd = ft_strtrim(*cmd, "\"");
-	if (!*cmd)
-		errorexit("delete double quote string allocation fail");
-	*cmd = ft_strtrim(*cmd, "'");
-	if (!*cmd)
-		errorexit("delete single quote string allocation fail");
-}
+// void delete_quotes(char **cmd)
+// {
+// 	*cmd = ft_strtrim(*cmd, "\"");
+// 	if (!*cmd)
+// 		errorexit("delete double quote string allocation fail");
+// 	*cmd = ft_strtrim(*cmd, "'");
+// 	if (!*cmd)
+// 		errorexit("delete single quote string allocation fail");
+// }
 
 void	command_echo(t_child *child, t_exec *exec)
 {
@@ -60,9 +60,9 @@ void	command_echo(t_child *child, t_exec *exec)
 	/* Handle echo in lower and upper case, every single letter */
 	i = 1;
 	newline = true;
-	while (child->parser_cmd[i])
-		delete_quotes(&child->parser_cmd[i++]);
-	i = 1;
+	// while (child->parser_cmd[i])
+	// 	delete_quotes(&child->parser_cmd[i++]);
+	// i = 1;
 	while (child->parser_cmd[i] != NULL && !ft_strcmp(child->parser_cmd[i], "-n"))
 	{
 		newline = false;
@@ -88,8 +88,8 @@ void	command_echo(t_child *child, t_exec *exec)
 
 void	command_cd(t_child *child, t_exec *exec)
 {
-	if (child->parser_cmd[1] != NULL)
-		delete_quotes(&child->parser_cmd[1]);
+	// if (child->parser_cmd[1] != NULL)
+	// 	delete_quotes(&child->parser_cmd[1]);
 	if (child->parser_cmd[1] == NULL || !ft_strcmp(child->parser_cmd[1], "~"))
 	{
 		if (chdir(getenv("HOME")) != 0)

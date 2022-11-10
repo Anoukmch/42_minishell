@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/10 19:53:44 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/10 20:00:18 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,9 +175,7 @@ void	builtin_command(t_child *child, t_exec *exec)
 void	processes(t_child *child, t_exec *exec)
 {
 	pid_t	child_process;
-	int		i;
-
-	i = 0;
+	// instead of child_process, last_pid
 	if (exec->nbr_process == 1)
 	{
 		builtin_command(child, exec);
