@@ -62,7 +62,7 @@ typedef struct s_exec
 	int		nbr_process;
 	int		end[2];
 	int		buffer[1];
-	int		isheredoc;
+	int		isheredoc; //are we using it? store if heredoc has quotes?
 	pid_t	last_pid;
 
 }	t_exec;
