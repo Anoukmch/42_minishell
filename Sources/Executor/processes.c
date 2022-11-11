@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/10 20:00:18 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/11 12:58:24 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 			| O_TRUNC, 0644);
 	if (file < 0)
 		errorexit("Open heredoc failed");
-	delete_quotes(&limiter);
+	delete_quotes(limiter);
 	temp = ft_strjoin(limiter, "\n");
 	ft_printf("Heredoc>");
 	line = get_next_line(STDIN_FILENO);
@@ -141,8 +141,8 @@ void	close_pipe(t_exec *exec, t_child *child)
 	{
 		close(exec->end[0]);
 		close(exec->end[1]);
-		//if (child->id != 0 && child->id != (exec->nbr_process - 1))
-		close(exec->buffer[0]);
+		if (child->id != 0 && child->id != (exec->nbr_process - 1))
+			close(exec->buffer[0]);
 	}
 	if (child->parser_redirect_input[0] != NULL)
 		close(child->fd_in);
@@ -174,8 +174,6 @@ void	builtin_command(t_child *child, t_exec *exec)
 
 void	processes(t_child *child, t_exec *exec)
 {
-	pid_t	child_process;
-	// instead of child_process, last_pid
 	if (exec->nbr_process == 1)
 	{
 		builtin_command(child, exec);
@@ -183,14 +181,13 @@ void	processes(t_child *child, t_exec *exec)
 	}
 	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
 	{
-		exec->buffer[0] = exec->end[0];
 		if (pipe(exec->end) < 0)
 			errorexit("Pipe fail");
 	}
-	child_process = fork();
-	if (child_process < 0)
+	exec->last_pid = fork();
+	if (exec->last_pid < 0)
 		errorexit("Fork fail");
-	else if (child_process == 0)
+	else if (exec->last_pid == 0)
 	{
 		if (child->parser_redirect_input[0] != NULL)
 			get_infile(child, exec);
@@ -200,6 +197,11 @@ void	processes(t_child *child, t_exec *exec)
 		close_pipe(exec, child);
 		builtin_command(child, exec);
 	}
+	if (child->id != 0)
+		close(exec->buffer[0]);
+	if (child->id != (exec->nbr_process - 1))
+		close(exec->end[1]);
+	exec->buffer[0] = exec->end[0];
 }
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 19:19:33 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/10 18:08:41 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/10 20:01:38 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ int	main(int ac, char **ag, char **envp)
 			// exec->last_pid instead of 0
  			while (waitpid(0, &child_info, 0) != -1)
         		continue ;
-				// waitpid(exec->last_pid, &child_info, 0)
-				// while (wait(NULL) > 0)
-					// continue ;
+			// waitpid(exec->last_pid, &child_info, 0)
+			// while (wait(NULL) > 0)
+				// continue ;
 			freeing(child, exec);
 		}
 		free(lex->line);

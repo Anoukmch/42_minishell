@@ -56,7 +56,7 @@ typedef struct s_exec
 	char	*envp_line;
 	int		nbr_process;
 	int		end[2];
-	int		buffer[1];
+	int		buffer[2];
 	int	isheredoc;
 	pid_t	last_pid;
 
