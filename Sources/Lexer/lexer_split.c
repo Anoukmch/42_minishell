@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:05:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 10:49:54 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 15:24:49 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static size_t	wordcounter(char const *s, char c)
 			i++;
 		}
 	}
-	printf("WORD COUNTER: %zu\n", counter);
+	//printf("WORD COUNTER: %zu\n", counter);
 	return (counter);
 }
 

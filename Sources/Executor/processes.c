@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 13:09:59 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/11 20:10:15 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,12 @@ void	close_pipe(t_exec *exec, t_child *child)
 		unlink("heredoc");
 }
 
+void	env_command(t_child *child, t_exec *exec)
+{
+	if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
+		errorexit("execve fail");
+}
+
 void	builtin_command(t_child *child, t_exec *exec)
 {
 	if (!ft_strcmp(child->command, "pwd"))
@@ -169,15 +175,34 @@ void	builtin_command(t_child *child, t_exec *exec)
 		command_unset(child, exec);
 	else if (!ft_strcmp(child->command, "env"))
 		command_env(exec);
-	else if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
-		errorexit("execve fail");
 }
 
 void	processes(t_child *child, t_exec *exec)
 {
-	if (exec->nbr_process == 1)
+	int     infd_tmp;
+    int     outfd_tmp;
+
+	infd_tmp = dup(STDIN_FILENO);
+    outfd_tmp = dup(STDOUT_FILENO);
+	if (exec->nbr_process == 1 && child->isbuiltin == true)
 	{
+		if (child->parser_redirect_input[0] != NULL)
+			get_infile(child, exec);
+		if (child->parser_redirect_output[0] != NULL)
+			get_outfile(child);
+		if (child->parser_redirect_input[0] != NULL)
+		{
+			dup2(child->fd_in, STDIN_FILENO);
+			close(child->fd_in);
+		}
+		if (child->parser_redirect_output[0] != NULL)
+		{
+			dup2(child->fd_out, STDOUT_FILENO);
+			close(child->fd_out);
+		}
 		builtin_command(child, exec);
+		dup2(infd_tmp, STDIN_FILENO);
+		dup2(outfd_tmp, STDOUT_FILENO);
 		return ;
 	}
 	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
@@ -196,7 +221,10 @@ void	processes(t_child *child, t_exec *exec)
 			get_outfile(child);
 		switch_put(child, exec);
 		close_pipe(exec, child);
-		builtin_command(child, exec);
+		if (child->isbuiltin == true)
+			builtin_command(child, exec);
+		else
+			env_command(child, exec);
 	}
 	if (child->id != 0)
 		close(exec->buffer[0]);

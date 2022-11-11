@@ -50,6 +50,7 @@ typedef struct s_child
 	int		fd_out;
 	int		id;
 	char	*command;
+	bool isbuiltin;
 
 }	t_child;
 

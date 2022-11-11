@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 09:41:58 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 18:37:45 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	check_path(t_lex *lex, t_child **child, t_exec *exec)
 		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
 	{
 		child[lex->iter]->command = child[lex->iter]->parser_cmd[0];
-		printf("TesT COMAMD: %s\n", child[lex->iter]->command);
+		//printf("TesT COMAMD: %s\n", child[lex->iter]->command);
 		if (access(child[lex->iter]->command, 0) == 0)
 			return ;
 		else
@@ -67,6 +67,8 @@ static void	check_builtins(t_lex *lex, t_child **child)
 static void	check_commands(t_lex *lex, t_child **child, t_exec *exec)
 {
 	check_builtins(lex, child);
+	if (child[lex->iter]->command)
+		child[lex->iter]->isbuiltin = true;
 	if (child[lex->iter]->command == NULL)
 		check_path(lex, child, exec);
 }

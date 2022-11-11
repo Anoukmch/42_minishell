@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:57 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/07 18:08:38 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 15:00:44 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	control_c(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	// else if (signum == SIGABRT)
-	// 	errorexit("CTRL-D");
+// 	else if (signum == SIGABRT)
+// 		errorexit("CTRL-D");
 }
 
 /*

@@ -6,11 +6,13 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 19:19:33 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/11 13:07:51 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/11 18:39:46 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	exit_code = 0;
 
 //char *exit_string;
 

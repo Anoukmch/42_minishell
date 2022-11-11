@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/10 19:48:35 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 20:09:30 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,15 @@ void	command_echo(t_child *child, t_exec *exec)
 	while (child->parser_cmd[i])
 	{
 		if (!ft_strcmp(child->parser_cmd[1], "~"))
-			ft_putstr_fd(getenv("HOME"), child->fd_out);
+			ft_printf("%s", getenv("HOME"));
 		else
-			ft_putstr_fd(child->parser_cmd[i], child->fd_out);
+			ft_printf("%s", child->parser_cmd[i]);
 		if (child->parser_cmd[i + 1] != NULL)
-			ft_putstr_fd(" ", child->fd_out);
+			ft_printf(" ");
 		i++;
 	}
 	if (newline == true)
-		ft_putstr_fd("\n", child->fd_out);
+		ft_printf("\n");
 	if (exec->nbr_process > 1)
 		exit(0);
 }
@@ -88,17 +88,19 @@ void	command_echo(t_child *child, t_exec *exec)
 
 void	command_cd(t_child *child, t_exec *exec)
 {
-	// if (child->parser_cmd[1] != NULL)
-	// 	delete_quotes(&child->parser_cmd[1]);
+	/* If cd "" , do nothing. Different from having a null argument which means cd HOME */
 	if (child->parser_cmd[1] == NULL || !ft_strcmp(child->parser_cmd[1], "~"))
 	{
 		if (chdir(getenv("HOME")) != 0)
-			errorexit("No such file or directory");
+			errorexit("cd: No such file or directory\n");
 	}
 	else
 	{
 		if (chdir(child->parser_cmd[1]) != 0)
-			errorexit("No such file or directory");
+		{
+			fprintf(stderr, "cd: %s: No such file or directory\n", child->parser_cmd[1]);
+			exit(1);
+		}
 	}
 	if (exec->nbr_process > 1)
 		exit(0);
@@ -152,6 +154,7 @@ void	command_env(t_exec *exec)
 
 void	command_exit(t_child *child, t_exec *exec)
 {
+	/* exit "" : the "" shouldnt be remove by lexer */
 	long long int	buffer;
 	bool			istoobig;
 	int 			status;
@@ -160,7 +163,7 @@ void	command_exit(t_child *child, t_exec *exec)
 	i = 0;
 	status = 0;
 	ft_putstr_fd("exit\n", 1);
-	if (child->parser_cmd[1] != NULL)
+	if (child->parser_cmd[1])
 	{
 		if (child->parser_cmd[1][i] == '-' || child->parser_cmd[1][i] == '+')
 			i++;

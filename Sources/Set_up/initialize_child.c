@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:32:34 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/08 15:33:45 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/11 19:56:07 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,10 @@ t_child	**initialize_child(t_lex *lex)
 			|| child[k]->parser_cmd == NULL)
 			errorexit("check initializiation of child arrays");
 		child[k]->command = NULL;
-		child[k]->fd_in = 0;
-		child[k]->fd_out = 1;
+		child[k]->fd_in = -1;
+		child[k]->fd_out = -1;
 		child[k]->id = k;
+		child[k]->isbuiltin = false;
 		k++;
 	}
 	child[lex->no_processes] = NULL;
