@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 19:41:59 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/10 19:53:20 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 10:57:01 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,32 @@
 // 1. handle varaibles, then quotes
 // INT FUNCTION
 // Marking $ signs outside of quotes & in double quotes with -2
-char *mark_quotes(char *str)
+int mark_quotes(char *str)
 {
-	char quote = '\0';
-	int i = 0;
+	char	quote;
+	int		i;
+
+	i = 0;
+	quote = '\0';
 	while (str[i])
 	{
-		if (quote == '\0' && str[i] == '\'') {
+		if (quote == '\0' && str[i] == '\'')
+		{
 			quote = '\'';
 			str[i] = -1;
 		}
-		else if (quote == '\0' && str[i] == '\"') {
+		else if (quote == '\0' && str[i] == '\"')
+		{
 			quote = '\"';
 			str[i] = -1;
 		}
-		else if (quote == '\'' && str[i] == '\'') {
+		else if (quote == '\'' && str[i] == '\'')
+		{
 			quote = '\0';
 			str[i] = -1;
 		}
-		else if (quote == '\"' && str[i] == '\"') {
+		else if (quote == '\"' && str[i] == '\"')
+		{
 			quote = '\0';
 			str[i] = -1;
 		}
@@ -42,15 +49,18 @@ char *mark_quotes(char *str)
 		i++;
 	}
 	if (quote == '\'' || quote == '\"')
+	{
 		ft_putstr_fd("QUOTES NOT CLOSED\n", 2);
-	return str;
+		return (1);
+	}
+	return (0);
 }
 
-char *delete_quotes (char *str)
+char	*delete_quotes(char *str)
 {
-	int	i;
-	int	count;
-	char *final;
+	int		i;
+	int		count;
+	char	*final;
 
 	i = 0;
 	count = 0;

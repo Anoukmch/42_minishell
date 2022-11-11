@@ -3,40 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:05:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 11:00:10 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/11 10:49:54 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 //counting the words to reserve the storage with malloc
-// static int	skipquotes(char const *s, int i)
-// {
-// 	if (s[i] == '"')
-// 	{
-// 		i++;
-// 		while (s[i] != '"' && s[i] != '\0')
-// 		{
-// 			if (s[i] == '\0')
-// 				errorexit("DOUBLE QUOTES NOT CLOSED");
-// 			i++;
-// 		}
-// 	}
-// 	if (s[i] == 39)
-// 	{
-// 		i++;
-// 		while (s[i] != 39 && s[i] != '\0')
-// 		{
-// 			if (s[i] == 39)
-// 				errorexit("SINGLE QUOTES NOT CLOSED");
-// 			i++;
-// 		}
-// 	}
-// 	return (i);
-// }
+static int	skipquotes(char const *s, size_t *i)
+{
+	if (s[*i] == '"')
+	{
+		(*i)++;
+		while (s[*i] != '"' && s[*i] != '\0')
+		{
+			if (s[*i] == '\0')
+				errorexit("DOUBLE QUOTES NOT CLOSED");
+			(*i)++;
+		}
+	}
+	if (s[*i] == 39)
+	{
+		(*i)++;
+		while (s[*i] != 39 && s[*i] != '\0')
+		{
+			if (s[*i] == 39)
+				errorexit("SINGLE QUOTES NOT CLOSED");
+			(*i)++;
+		}
+	}
+	return (*i);
+}
 
 static size_t	wordcounter(char const *s, char c)
 {
@@ -49,7 +49,7 @@ static size_t	wordcounter(char const *s, char c)
 	{
 		while (s[i] == c && s[i] != '\0')
 			i++;
-		//i = skipquotes(s, i);
+		i = skipquotes(s, &i);
 		if (s[i] != '\0')
 			counter++;
 		while (s[i] != c && s[i] != '\0')
@@ -60,6 +60,7 @@ static size_t	wordcounter(char const *s, char c)
 			i++;
 		}
 	}
+	printf("WORD COUNTER: %zu\n", counter);
 	return (counter);
 }
 
@@ -70,14 +71,6 @@ static size_t	wordcounter(char const *s, char c)
 //difference from strchr & &s[start]-->string to return/length
 static size_t	endsofsubs(char const *s, char c, size_t start)
 {
-	// size_t	i;
-	// i = 0;
-	// while(s[start + i] != '\0' && s[start + i] != c)
-	// {
-	// 	if (s[start + i] == '=')
-	// 		return (ft_strchr(s + i + 1, '=') - &s[start] + 1);
-	// 	i++;
-	// }
 	if (s[start] == '"')
 	{
 		if (!ft_strchr(s + start + 1, '"'))

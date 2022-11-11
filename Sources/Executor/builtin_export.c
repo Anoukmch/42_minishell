@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 13:56:46 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/10 09:45:33 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 09:40:24 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 	check the result with env
 */
 
-static char	*builtdelete_quotes(char *str)
-{
-	if (ft_strtrim(str, "\"") != NULL)
-		str = ft_strtrim(str, "\"");
-	if (ft_strtrim(str, "'") != NULL)
-		str = ft_strtrim(str, "'");
-	return (str);
-}
+// static char	*builtdelete_quotes(char *str)
+// {
+// 	if (ft_strtrim(str, "\"") != NULL)
+// 		str = ft_strtrim(str, "\"");
+// 	if (ft_strtrim(str, "'") != NULL)
+// 		str = ft_strtrim(str, "'");
+// 	return (str);
+// }
 
 static int	invalid_identifier(char **cmd)
 {
@@ -38,11 +38,9 @@ static int	invalid_identifier(char **cmd)
 	j = 0;
 	while (cmd && cmd[i])
 	{
-		cmd[i] = builtdelete_quotes(cmd[i]);
+		// cmd[i] = builtdelete_quotes(cmd[i]);
 		while (cmd[i][j] != '\0')
 		{	
-			// if (cmd[i][0] == '=')
-				// printf("WORKS HERE\n");
 			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
 				|| ((ft_isalnum(cmd[i][j]) == 0) && cmd[i][j] != '_'
 					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
@@ -71,25 +69,6 @@ static int	doublepoint_size(char **str)
 	return (i);
 }
 
-// CHECK IF VARIABLE ALREADY EXISTS
-// IF YES REPLACE IT
-// void	replace_variable(char *variable, t_exec *exec)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while(exec->envp_bis[i])
-// 	{
-// 		if (ft_strncmp(exec->envp_bis[i], variable, ft_strlen(variable)) == 0)
-// 		{
-// 			printf("HERE: %s\n", exec->envp_bis[i]);
-// 			free (exec->envp_bis[i]);
-// 			exec->envp_bis[i] = ft_substr(variable, 0, ft_strlen(variable));
-// 		}
-// 		i++;
-// 	}
-// }
-
 static void	export_variable(char *str, t_exec *exec)
 {
 	char	*variable;
@@ -104,17 +83,15 @@ static void	export_variable(char *str, t_exec *exec)
 	{
 		if (ft_strncmp(exec->envp_bis[i], variable, ft_strlen(variable)) == 0)
 		{
-			// printf("HERE: %s\n", exec->envp_bis[i]);
 			free (exec->envp_bis[i]);
-			exec->envp_bis[i] = ft_substr(variable, 0, ft_strlen(variable));
+			exec->envp_bis[i] = ft_strdup(variable);
 			return ;
 		}
 		i++;
 	}
-	exec->envp_bis[len] = ft_substr(variable, 0, ft_strlen(variable));
+	exec->envp_bis[len] = ft_strdup(variable);
 	len++;
 	exec->envp_bis[len] = NULL;
-	// printf("variable: %s\n", variable);
 }
 
 static void	env_variable(char *str, t_exec *exec)
@@ -126,14 +103,13 @@ static void	env_variable(char *str, t_exec *exec)
 
 	i = 0;
 	len = doublepoint_size(exec->envp_bis);
-	// printf("ENV\n");
 	variablename = NULL;
 	content = NULL;
 	variablename = ft_substr(str, 0,
 			ft_strlen(str) - ft_strlen(ft_strchr(str, '=')));
 	content = ft_substr(str, ft_strlen(variablename) + 1,
 			ft_strlen(ft_strchr(str, '=')) + 1);
-	content = builtdelete_quotes(content);
+	// content = builtdelete_quotes(content);
 	if (ft_strlen(content) == 0)
 		content = "";
 	while (exec->envp_bis[i])
@@ -141,7 +117,6 @@ static void	env_variable(char *str, t_exec *exec)
 		if (ft_strncmp(exec->envp_bis[i], variablename,
 				ft_strlen(variablename)) == 0)
 		{
-			// printf("HERE: %s\n", exec->envp_bis[i]);
 			free (exec->envp_bis[i]);
 			exec->envp_bis[i] = ft_strjoin(variablename, "=");
 			exec->envp_bis[i] = ft_strjoin(exec->envp_bis[i], content);
@@ -153,8 +128,6 @@ static void	env_variable(char *str, t_exec *exec)
 	exec->envp_bis[len] = ft_strjoin(exec->envp_bis[len], content);
 	len++;
 	exec->envp_bis[len] = NULL;
-	// printf("variablename: %s\n", variablename);
-	// printf("content: %s\n", content);
 }
 
 char	*add_quotes(char *adding)
@@ -223,10 +196,7 @@ void	command_export(t_child *child, t_exec *exec)
 		return ;
 	}
 	if (invalid_identifier(child->parser_cmd) != 0)
-	{
-		// printf("error occured\n");
 		return ;
-	}
 	while (child->parser_cmd[i] && child->parser_cmd)
 	{
 		if (ft_strchr(child->parser_cmd[i], '=') != NULL)

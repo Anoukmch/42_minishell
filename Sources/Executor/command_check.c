@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/09 18:37:36 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/11 09:41:58 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,19 @@ static void	check_path(t_lex *lex, t_child **child, t_exec *exec)
 static void	check_builtins(t_lex *lex, t_child **child)
 {
 	if (ft_strncmp("echo", child[lex->iter]->parser_cmd[0], 5) == 0)
-		child[lex->iter]->command = ft_substr("echo", 0, 5);
+		child[lex->iter]->command = ft_strdup("echo");
 	else if (ft_strncmp("cd", child[lex->iter]->parser_cmd[0], 3) == 0)
-		child[lex->iter]->command = ft_substr("cd", 0, 3);
+		child[lex->iter]->command = ft_strdup("cd");
 	else if (ft_strncmp("pwd", child[lex->iter]->parser_cmd[0], 4) == 0)
-		child[lex->iter]->command = ft_substr("pwd", 0, 4);
+		child[lex->iter]->command = ft_strdup("pwd");
 	else if (ft_strncmp("export", child[lex->iter]->parser_cmd[0], 7) == 0)
-		child[lex->iter]->command = ft_substr("export", 0, 7);
+		child[lex->iter]->command = ft_strdup("export");
 	else if (ft_strncmp("unset", child[lex->iter]->parser_cmd[0], 6) == 0)
-		child[lex->iter]->command = ft_substr("unset", 0, 6);
+		child[lex->iter]->command = ft_strdup("unset");
 	else if (ft_strncmp("env", child[lex->iter]->parser_cmd[0], 4) == 0)
-		child[lex->iter]->command = ft_substr("env", 0, 4);
+		child[lex->iter]->command = ft_strdup("env");
 	else if (ft_strncmp("exit", child[lex->iter]->parser_cmd[0], 5) == 0)
-		child[lex->iter]->command = ft_substr("exit", 0, 5);
+		child[lex->iter]->command = ft_strdup("exit");
 	/* Proteger les retours MALLOC */
 }
 static void	check_commands(t_lex *lex, t_child **child, t_exec *exec)
