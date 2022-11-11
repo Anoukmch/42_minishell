@@ -6,13 +6,14 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 12:58:24 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/11 13:09:59 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../includes/minishell.h"
 
+// DELETE QUOTES & STORE INFORMATION SOMEWHERE
 void	here_doc(char *limiter, int i, int nbr_elements)
 {
 	int		file;
@@ -23,7 +24,7 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 			| O_TRUNC, 0644);
 	if (file < 0)
 		errorexit("Open heredoc failed");
-	delete_quotes(limiter);
+	//delete_quotes(&limiter);
 	temp = ft_strjoin(limiter, "\n");
 	ft_printf("Heredoc>");
 	line = get_next_line(STDIN_FILENO);

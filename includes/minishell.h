@@ -20,6 +20,10 @@
 
 # include "../includes/libs/libs.h"
 
+// RETURN 0 --> all fine
+// RETURN 1 --> error message, stay in shell
+// RETURN 2 --> error message (?), exit shell
+
 typedef struct s_lex
 {
 	char	*line;
@@ -56,22 +60,24 @@ typedef struct s_exec
 	char	*envp_line;
 	int		nbr_process;
 	int		end[2];
-	int		buffer[2];
+	int		buffer[1];
 	int	isheredoc;
 	pid_t	last_pid;
 
 }	t_exec;
 
+// CHECKERS
 void	print_lexer(t_lex *lex);
+void	print_parser(t_child **child);
 
 // INIT
-void count_pipes(t_lex *lex);
-t_lex *initialize_lex();
-t_child **initialize_child(t_lex *lex);
-t_exec *initialize_exec(t_lex *lex, char **envp);
+void	count_pipes(t_lex *lex);
+t_lex	*initialize_lex();
+t_child	**initialize_child(t_lex *lex);
+t_exec	*initialize_exec(t_lex *lex, char **envp);
 
-char *delete_quotes (char *str);
-char *mark_quotes(char *str);
+char	*delete_quotes (char *str);
+int		mark_quotes(char *str);
 
 // SIGNALS
 void	handle_signals(void);
@@ -105,11 +111,7 @@ void	command_exit(t_child *child, t_exec *exec);
 void	command_export (t_child *child, t_exec *exec);
 void	command_unset(t_child *child, t_exec *exec);
 
-void	count_new_spaces(char *line, t_lex *lex);
-
 // MISCELLANEOUS
 // void delete_quotes(char **cmd);
 
-// CHECKING LEXER
-//void print_lexer(t_lex *lex);
 #endif

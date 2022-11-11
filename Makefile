@@ -6,7 +6,7 @@
 #    By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/11/11 13:04:08 by amechain         ###   ########.fr        #
+#    Updated: 2022/11/11 13:10:19 by amechain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ M_SRC = Set_up/minishell.c \
 		Set_up/initialize_lex.c \
 		Set_up/signals.c \
 		Set_up/quotes.c \
-		Lexer/lexer.c \
+		Set_up/checker.c \
 		Lexer/lexer_split.c \
 		Lexer/freeing.c \
 		Parser/parser.c \

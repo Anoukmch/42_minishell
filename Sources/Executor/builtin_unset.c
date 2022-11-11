@@ -6,20 +6,20 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 18:44:38 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/10 09:39:40 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 09:34:40 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*builtdelete_quotes(char *str)
-{
-	if (ft_strtrim(str, "\"") != NULL)
-		str = ft_strtrim(str, "\"");
-	if (ft_strtrim(str, "'") != NULL)
-		str = ft_strtrim(str, "'");
-	return (str);
-}
+// static char	*builtdelete_quotes(char *str)
+// {
+// 	if (ft_strtrim(str, "\"") != NULL)
+// 		str = ft_strtrim(str, "\"");
+// 	if (ft_strtrim(str, "'") != NULL)
+// 		str = ft_strtrim(str, "'");
+// 	return (str);
+// }
 
 static int	invalid_identifier(char **cmd)
 {
@@ -30,7 +30,7 @@ static int	invalid_identifier(char **cmd)
 	j = 0;
 	while (cmd && cmd[i])
 	{
-		cmd[i] = builtdelete_quotes(cmd[i]);
+		// cmd[i] = builtdelete_quotes(cmd[i]);
 		if (cmd[i][0] == '\0')
 			printf("unset: '%s': not a valid identifier\n", cmd[i]);
 		while (cmd[i][j] != '\0')
@@ -81,10 +81,7 @@ void	command_unset(t_child *child, t_exec *exec)
 	if (child->parser_cmd[i] == NULL)
 		return ;
 	if (invalid_identifier(child->parser_cmd) != 0)
-	{
-		printf("error occured\n");
 		return ;
-	}
 	while (child->parser_cmd[i])
 	{
 		j = 0;

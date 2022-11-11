@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:01:43 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/09 16:29:24 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:01:56 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@ void	fill_redirection_table(t_lex *lex, t_child *child)
 			|| !ft_strcmp(lex->lexer[lex->counter], "<<"))
 		{
 			child->parser_redirect_input[i++]
-				= ft_substr(lex->lexer[lex->counter++], 0, 2);
+				= ft_strdup(lex->lexer[lex->counter++]);
 			child->parser_redirect_input[i++]
-				= ft_substr(lex->lexer[lex->counter],
-					0, ft_strlen(lex->lexer[lex->counter]));
+				= ft_strdup(lex->lexer[lex->counter]);
 			if (!child->parser_redirect_input[i - 1]
 				|| !child->parser_redirect_input[i - 2])
 				errorexit("Allocation failed");
@@ -38,10 +37,9 @@ void	fill_redirection_table(t_lex *lex, t_child *child)
 			|| !ft_strcmp(lex->lexer[lex->counter], ">>"))
 		{
 			child->parser_redirect_output[j++]
-				= ft_substr(lex->lexer[lex->counter++], 0, 2);
+				= ft_strdup(lex->lexer[lex->counter++]);
 			child->parser_redirect_output[j++]
-				= ft_substr(lex->lexer[lex->counter],
-					0, ft_strlen(lex->lexer[lex->counter]));
+				= ft_strdup(lex->lexer[lex->counter]);
 			if (!child->parser_redirect_output[j - 1]
 				|| !child->parser_redirect_output[j - 2])
 				errorexit("Allocation failed");

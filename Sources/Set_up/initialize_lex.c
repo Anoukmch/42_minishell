@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:20:11 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/10 17:37:32 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 10:41:23 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ t_lex	*initialize_lex(void)
 		errorexit("check initializiation of lex->line");
 	else if (!lex->line[0])
 		return (lex);
-	// CONVERT TABS TO SPACES IF OUTSIDE OF STRING
 	lex->line = convert_tabs_to_spaces(lex->line);
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;
