@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 18:44:38 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 09:34:40 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 15:38:14 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	invalid_identifier(char **cmd)
 	return (0);
 }
 
-static char	**get_position_in_env(t_exec *exec, char *variable)
+char	**get_position_in_env(t_exec *exec, char *variable)
 {
 	int	i;
 

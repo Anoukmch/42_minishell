@@ -6,13 +6,15 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 09:55:46 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:44:22 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../includes/minishell.h"
 
+// exec->heredoc = 1 --> QUOTES --> no expansion of variables
+// exec->heredoc = 0 --> NO QUOTES --> expansion of variables
 // DELETE QUOTES & STORE INFORMATION SOMEWHERE
 void	here_doc(char *limiter, int i, int nbr_elements)
 {
@@ -24,7 +26,10 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 			| O_TRUNC, 0644);
 	if (file < 0)
 		errorexit("Open heredoc failed");
-	// delete_quotes(&limiter);
+	// if (child[k]-->heredoc_quotes == 0)
+	//  expand variables in heredoc
+	// if (child[k]-->heredoc_quotes == 1)
+	//  DO NOT expand variables in heredoc	
 	temp = ft_strjoin(limiter, "\n");
 	ft_printf("Heredoc>");
 	line = get_next_line(STDIN_FILENO);
