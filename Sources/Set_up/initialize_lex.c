@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:20:11 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/11 15:25:58 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/11 20:11:17 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,15 @@ char	**create_lexer_string(t_lex *lex)
 	{
 		while ((lex->line[i] != ' ' && lex->line[i + 1] == '|')
 			|| (lex->line[i] != ' ' && lex->line[i] != '<'
+				&& lex->line[i] != '"' && lex->line[i] != 39
 				&& lex->line[i + 1] == '<') || (lex->line[i] != ' '
-				&& lex->line[i] != '>' && lex->line[i + 1] == '>')
+				&& lex->line[i] != '>' && lex->line[i + 1] == '>'
+				&& lex->line[i] != '"' && lex->line[i] != 39)
 			|| (lex->line[i] == '<' && lex->line[i + 1] != '<'
-				&& lex->line[i + 1] != ' ') || (lex->line[i] == '>'
-				&& lex->line[i + 1] != '>' && lex->line[i + 1] != ' '))
+				&& lex->line[i + 1] != ' ' && lex->line[i + 1] != '"' && lex->line[i + 1] != 39)
+				|| (lex->line[i] == '>'
+				&& lex->line[i + 1] != '>' && lex->line[i + 1] != ' '
+				&& lex->line[i + 1] != '"' && lex->line[i + 1] != 39))
 		{
 			lex->line2[j++] = lex->line[i++];
 			lex->line2[j++] = ' ';

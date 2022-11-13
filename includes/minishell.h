@@ -49,6 +49,7 @@ typedef struct s_child
 	int		fd_in;
 	int		fd_out;
 	int		id;
+	int		heredoc_quotes;
 	char	*command;
 	bool isbuiltin;
 
@@ -62,7 +63,7 @@ typedef struct s_exec
 	int		nbr_process;
 	int		end[2];
 	int		buffer[1];
-	int	isheredoc;
+	int		isheredoc; //are we using it? store if heredoc has quotes?
 	pid_t	last_pid;
 
 }	t_exec;
@@ -78,7 +79,7 @@ t_child	**initialize_child(t_lex *lex);
 t_exec	*initialize_exec(t_lex *lex, char **envp);
 
 char	*delete_quotes (char *str);
-int		mark_quotes(char *str);
+int		mark_quotes(char *str, char *before_str);
 
 // SIGNALS
 void	handle_signals(void);
@@ -104,13 +105,15 @@ void	processes(t_child *child, t_exec *exec);
 
 // BUILTIN
 void	command_env(t_exec *exec);
-void    command_path(t_lex *lex, t_child **child, t_exec *exec);
+int		command_path(t_lex *lex, t_child **child, t_exec *exec);
 void	command_echo(t_child *child, t_exec *exec);
 void	command_cd(t_child *child, t_exec *exec);
 void	command_pwd(t_exec *exec);
 void	command_exit(t_child *child, t_exec *exec);
 void	command_export (t_child *child, t_exec *exec);
 void	command_unset(t_child *child, t_exec *exec);
+char	**get_position_in_env(t_exec *exec, char *variable);
+
 
 // MISCELLANEOUS
 // void delete_quotes(char **cmd);

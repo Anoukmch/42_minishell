@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_exec.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:44:13 by amechain          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/11/11 14:50:12 by amechain         ###   ########.fr       */
+=======
+/*   Updated: 2022/11/11 15:09:22 by jmatheis         ###   ########.fr       */
+>>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +26,31 @@ t_exec	*initialize_exec(t_lex *lex, char **envp)
 	if (exec == NULL)
 		errorexit("check initializiation of exec");
 	exec->nbr_process = lex->no_processes;
-	exec->envp_bis = envp;
-	exec->envp_line = getenv("PATH");
-	exec->envp_path = ft_split(exec->envp_line, ':');
-	if (!exec->envp_path)
-		errorexit("check initializiation of exec->envp_path");
-	while (exec->envp_path[i])
+	if (envp[0] == NULL)
 	{
-		exec->envp_path[i] = ft_strjoin(exec->envp_path[i], "/");
-		if (!exec->envp_path[i])
-			errorexit("exec->envp_path[i] allocation fail");
-		i++;
+		exec->envp_bis = ft_calloc(3 + 1, sizeof(char *));
+		if (exec->envp_bis == NULL)
+			errorexit("ALLOC ERROR");
+		exec->envp_bis[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
+		exec->envp_bis[1] = ft_strdup("SHLVL=1");
+		exec->envp_bis[2] = ft_strdup("_=/usr/bin/env");		
+		exec->envp_line = NULL;
+		exec->envp_path = NULL;
+	}
+	else
+	{
+		exec->envp_bis = envp;
+		exec->envp_line = getenv("PATH");
+		exec->envp_path = ft_split(exec->envp_line, ':');
+		if (!exec->envp_path)
+			errorexit("check initializiation of exec->envp_path");
+		while (exec->envp_path[i])
+		{
+			exec->envp_path[i] = ft_strjoin(exec->envp_path[i], "/");
+			if (!exec->envp_path[i])
+				errorexit("exec->envp_path[i] allocation fail");
+			i++;
+		}
 	}
 	exec->end[0] = 0;
 	exec->end[1] = 0;

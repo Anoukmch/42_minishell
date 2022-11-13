@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 09:35:13 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 09:47:27 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 12:41:29 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	print_lexer(t_lex *lex)
 
 	i = 0;
 	lex->iter = 0;
+	printf("\n*** LEXER ***\n");
 	while (lex->lexer[lex->iter])
 	{
 		printf("%s\n", lex->lexer[lex->iter]);
@@ -35,6 +36,7 @@ void	print_parser(t_child **child)
 
 	k = 0;
 	i = 0;
+	printf("\n*** PARSER ***\n");
 	while (child[k])
 	{
 		i = 0;
@@ -55,4 +57,5 @@ void	print_parser(t_child **child)
 				k, child[k]->parser_redirect_output[i++]);
 		k++;
 	}
+	printf("\n");
 }

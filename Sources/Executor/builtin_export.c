@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 13:56:46 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 09:40:24 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 15:09:02 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,17 @@ static void	env_variable(char *str, t_exec *exec)
 		}
 		i++;
 	}	
+	printf("TEST\n");
 	exec->envp_bis[len] = ft_strjoin(variablename, "=");
 	exec->envp_bis[len] = ft_strjoin(exec->envp_bis[len], content);
 	len++;
 	exec->envp_bis[len] = NULL;
+	int z = 0;
+	while (exec->envp_bis[z])
+	{
+		printf("NEW ENV: %s\n", exec->envp_bis[z]);
+		z++;
+	}
 }
 
 char	*add_quotes(char *adding)

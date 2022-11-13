@@ -6,7 +6,11 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:05:43 by jmatheis          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/11/11 15:24:49 by amechain         ###   ########.fr       */
+=======
+/*   Updated: 2022/11/11 12:13:33 by jmatheis         ###   ########.fr       */
+>>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +53,21 @@ static size_t	wordcounter(char const *s, char c)
 	{
 		while (s[i] == c && s[i] != '\0')
 			i++;
-		i = skipquotes(s, &i);
 		if (s[i] != '\0')
 			counter++;
 		while (s[i] != c && s[i] != '\0')
 		{
+			i = skipquotes(s, &i);
 			// if (s[i] == '=')
 			// 	counter++;
 			// i = skipquotes(s, i);
 			i++;
 		}
 	}
+<<<<<<< HEAD
 	//printf("WORD COUNTER: %zu\n", counter);
+=======
+>>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 	return (counter);
 }
 

@@ -6,45 +6,15 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/11/11 18:37:45 by amechain         ###   ########.fr       */
+=======
+/*   Updated: 2022/11/11 14:53:58 by jmatheis         ###   ########.fr       */
+>>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static void	check_path(t_lex *lex, t_child **child, t_exec *exec)
-{
-	int	i;
-	int j;
-
-	j = 0;
-	i = 0;
-	if (exec->envp_bis == NULL || exec->envp_path == NULL
-		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
-	{
-		child[lex->iter]->command = child[lex->iter]->parser_cmd[0];
-		//printf("TesT COMAMD: %s\n", child[lex->iter]->command);
-		if (access(child[lex->iter]->command, 0) == 0)
-			return ;
-		else
-		{
-			free (child[lex->iter]->command);
-			return ;
-		}
-	}
-	while (exec->envp_bis && exec->envp_path[i])
-	{
-		child[lex->iter]->command = ft_strjoin(exec->envp_path[i],
-				child[lex->iter]->parser_cmd[0]);
-		if (!child[lex->iter]->command)
-			errorexit("child[lex->iter]->command allocation fail");
-		if (access(child[lex->iter]->command, 0) == 0)
-			return ;
-		free(child[lex->iter]->command);
-		i++;
-	}
-	child[lex->iter]->command = NULL;
-}
 
 static void	check_builtins(t_lex *lex, t_child **child)
 {
@@ -64,28 +34,108 @@ static void	check_builtins(t_lex *lex, t_child **child)
 		child[lex->iter]->command = ft_strdup("exit");
 	/* Proteger les retours MALLOC */
 }
-static void	check_commands(t_lex *lex, t_child **child, t_exec *exec)
+
+static void	check_existing_path(t_exec *exec, t_child **child, t_lex *lex)
+{
+	if (exec->envp_bis == NULL || exec->envp_path == NULL
+		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
+	{
+		child[lex->iter]->command = child[lex->iter]->parser_cmd[0];
+<<<<<<< HEAD
+		//printf("TesT COMAMD: %s\n", child[lex->iter]->command);
+=======
+		printf("\nabsolutes path\n");
+>>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
+		if (access(child[lex->iter]->command, 0) == 0)
+			return ;
+		else
+		{
+			child[lex->iter]->command = NULL;
+			return ;
+		}
+	}
+}
+
+static void	find_command_path(t_exec *exec, t_child **child, t_lex *lex)
+{
+	int	i;
+
+	i = 0;
+	while (exec->envp_bis && exec->envp_path[i])
+	{
+		printf("\nrelative path\n");
+		child[lex->iter]->command = ft_strjoin(exec->envp_path[i],
+				child[lex->iter]->parser_cmd[0]);
+		if (!child[lex->iter]->command)
+			errorexit("child[lex->iter]->command allocation fail");
+		if (access(child[lex->iter]->command, 0) == 0)
+			return ; // return (0);
+		free(child[lex->iter]->command);
+		i++;
+	}
+	child[lex->iter]->command = NULL;
+}
+
+static int	command_not_found(t_child **child, t_exec *exec, t_lex *lex)
+{
+	if (exec->envp_bis == NULL || exec->envp_path == NULL
+		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
+	{
+		// CHECK CURRENT PATH
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (1); //return(1);
+	}
+	return (0);
+}
+
+static int	check_path(t_lex *lex, t_child **child, t_exec *exec)
+{
+	if (!ft_strchr(child[lex->iter]->parser_cmd[0], '/')
+		&& (exec->envp_path == NULL || exec->envp_bis == NULL))
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);		
+		return (1);
+	}
+	check_existing_path(exec, child, lex);
+	if (child[lex->iter]->command != NULL)
+		return (0); // return (0);
+	find_command_path(exec, child, lex);
+	if (child[lex->iter]->command != NULL)
+		return (0);
+	if (command_not_found(child, exec, lex) != 0)
+		return (1);
+	return (1);
+}
+
+static int	check_commands(t_lex *lex, t_child **child, t_exec *exec)
 {
 	check_builtins(lex, child);
 	if (child[lex->iter]->command)
 		child[lex->iter]->isbuiltin = true;
 	if (child[lex->iter]->command == NULL)
-		check_path(lex, child, exec);
+	{
+		if (check_path(lex, child, exec) != 0)
+			return (1);
+		
+	}
+	printf("CMD PATH: %s\n", child[lex->iter]->command);
+	return (0);
 }
 
-void	command_path(t_lex *lex, t_child **child, t_exec *exec)
+int	command_path(t_lex *lex, t_child **child, t_exec *exec)
 {
 	lex->iter = 0;
 	while (child[lex->iter])
 	{
-		// ft_putnbr_fd(lex->iter, 2);
-		// ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
-		// ft_putstr_fd("\n", 2);
-		check_commands(lex, child, exec);
-		if (child[lex->iter]->command == NULL)
-			errorexit ("invalid command!");
+		if (check_commands(lex, child, exec) != 0)
+			return (1);
 		lex->iter++;
 	}
+	return (0);
 	// PRINT COMMAND PATHS
 	// int k = 0;
 	// while (child[k])

@@ -6,7 +6,11 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:59:04 by jmatheis          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/11/11 18:20:56 by amechain         ###   ########.fr       */
+=======
+/*   Updated: 2022/11/11 16:59:39 by jmatheis         ###   ########.fr       */
+>>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +43,11 @@ void	parser(t_lex *lex, t_child	**child)
 {
 	int	i;
 	int	k;
+	int	z;
 
 	i = 0;
 	k = 0;
+	z = 0;
 	// DELETE QUOTES EXCEPT HERE_DOC
 	// MARKING VARIABLES THAT SHOULD GET EXPAND AS -2
 	while (child[k])
@@ -49,25 +55,43 @@ void	parser(t_lex *lex, t_child	**child)
 		while (lex->lexer[i] && lex->lexer)
 		{
 			if (!ft_strcmp(lex->lexer[i], "<<"))
-				i += 2;
-			// else if (!ft_strcmp(lex->lexer[i], "<")
-			// 	|| !ft_strcmp(lex->lexer[i], ">")
-			// 	|| !ft_strcmp(lex->lexer[i], ">>"))
-			// 	i++;
+			{
+				while(lex->lexer[i++][z])
+				{
+					if (lex->lexer[i][z] == 39 || lex->lexer[i][z] == '"')
+					{
+						child[k]->heredoc_quotes = 1;
+						break ;
+					}
+					z++;
+				}
+			}
+			else if (!strcmp(lex->lexer[i], "<")
+				|| !strcmp(lex->lexer[i], ">")
+				|| !strcmp(lex->lexer[i], ">>")
+				|| !strcmp(lex->lexer[i], "<<"))
+				i++;
 			else
 			{
-				if (mark_quotes(lex->lexer[i]) != 0)
+				// HERE_DOC EOF $ IS NOT ALLOWED TO BE MARKED (should work now)
+				if (mark_quotes(lex->lexer[i], lex->lexer[i - 1]) != 0)
 					return ; //RETURN(1);
+				printf("STR after marking: %s\n", lex->lexer[i]);
 				lex->lexer[i] = delete_quotes(lex->lexer[i]);
 				i++;
 			}
 		}
+		printf("QUOTES HEREDOC: %d\n", child[k]->heredoc_quotes);
 		k++;
 	}
 	parse_commands(lex, child);
 	parser_redirection(lex, child);
+<<<<<<< HEAD
 	// printf("TEST\n");
 	// print_lexer(lex);
+=======
+	print_lexer(lex);
+>>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 	print_parser(child);
 	// return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 19:41:59 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 10:57:01 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:48:08 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // 1. handle varaibles, then quotes
 // INT FUNCTION
 // Marking $ signs outside of quotes & in double quotes with -2
-int mark_quotes(char *str)
+int mark_quotes(char *str, char *before_str)
 {
 	char	quote;
 	int		i;
@@ -44,7 +44,8 @@ int mark_quotes(char *str)
 			quote = '\0';
 			str[i] = -1;
 		}
-		else if ((quote == '\"' || quote == '\0') && str[i] == '$')
+		else if ((quote == '\"' || quote == '\0') && str[i] == '$'
+			&& strcmp(before_str, "<<"))
 			str[i] = -2;
 		i++;
 	}
