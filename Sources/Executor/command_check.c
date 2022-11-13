@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/11/11 18:37:45 by amechain         ###   ########.fr       */
-=======
-/*   Updated: 2022/11/11 14:53:58 by jmatheis         ###   ########.fr       */
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
+/*   Updated: 2022/11/13 12:00:09 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +37,7 @@ static void	check_existing_path(t_exec *exec, t_child **child, t_lex *lex)
 		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
 	{
 		child[lex->iter]->command = child[lex->iter]->parser_cmd[0];
-<<<<<<< HEAD
 		//printf("TesT COMAMD: %s\n", child[lex->iter]->command);
-=======
-		printf("\nabsolutes path\n");
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 		if (access(child[lex->iter]->command, 0) == 0)
 			return ;
 		else

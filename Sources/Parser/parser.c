@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:59:04 by jmatheis          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/11/11 18:20:56 by amechain         ###   ########.fr       */
-=======
-/*   Updated: 2022/11/11 16:59:39 by jmatheis         ###   ########.fr       */
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
+/*   Updated: 2022/11/13 11:30:42 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +82,8 @@ void	parser(t_lex *lex, t_child	**child)
 	}
 	parse_commands(lex, child);
 	parser_redirection(lex, child);
-<<<<<<< HEAD
 	// printf("TEST\n");
 	// print_lexer(lex);
-=======
-	print_lexer(lex);
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 	print_parser(child);
 	// return (0);
 }
