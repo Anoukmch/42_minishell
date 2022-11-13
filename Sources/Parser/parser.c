@@ -1,5 +1,4 @@
 
-
 #include "../../includes/minishell.h"
 
 void	check_redirection_table(char **parser_redirect_input, int i, int j)

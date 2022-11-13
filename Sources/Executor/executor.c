@@ -1,5 +1,4 @@
 
-
 #include "../../includes/minishell.h"
 
 void	check_env(t_exec *exec)

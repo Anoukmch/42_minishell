@@ -1,6 +1,4 @@
 
-
-
 #include "../../includes/minishell.h"
 
 t_exec	*initialize_exec(t_lex *lex, char **envp)

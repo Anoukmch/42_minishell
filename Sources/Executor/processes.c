@@ -1,6 +1,4 @@
 
-
-
 #include "../../includes/minishell.h"
 
 // exec->heredoc = 1 --> QUOTES --> no expansion of variables
