@@ -29,7 +29,9 @@ static void	check_existing_path(t_exec *exec, t_child **child, t_lex *lex)
 		child[lex->iter]->command = ft_strdup(child[lex->iter]->parser_cmd[0]);
 		//printf("TesT COMAMD: %s\n", child[lex->iter]->command);
 		if (access(child[lex->iter]->command, 0) == 0)
+		{
 			return ;
+		}
 		else
 		{
 			child[lex->iter]->command = NULL;
@@ -80,11 +82,7 @@ static int	check_path(t_lex *lex, t_child **child, t_exec *exec)
 	{
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
-<<<<<<< HEAD
 		ft_putstr_fd(": No such file or directory\n", 2);
-=======
-		ft_putstr_fd(": command not found\n", 2);
->>>>>>> 1a68437417319dcbf5ff47c7b7f1fb2d44600a9c
 		return (1);
 	}
 	check_existing_path(exec, child, lex);
