@@ -6,7 +6,7 @@
 /*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 15:20:11 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/13 15:16:13 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/13 12:01:12 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,123 +71,94 @@
 // 	return (NULL);
 // }
 
-void	skipquotes(char *quote, char lex)
+char	**create_lexer_string(t_lex *lex)
 {
-	if (*quote == '\0' && lex == '\'')
-		*quote = '\'';
-	else if (*quote == '\0' && lex == '\"')
-		*quote = '\"';
-	else if (*quote == '\'' && lex == '\'')
-		*quote = '\0';
-	else if (*quote == '\"' && lex == '\"')
-		*quote = '\0';
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+	while (lex->line && lex->line[i])
+	{
+		while ((lex->line[i] != ' ' && lex->line[i + 1] == '|')
+			|| (lex->line[i] != ' ' && lex->line[i] != '<'
+				&& lex->line[i] != '"' && lex->line[i] != 39
+				&& lex->line[i + 1] == '<') || (lex->line[i] != ' '
+				&& lex->line[i] != '>' && lex->line[i + 1] == '>'
+				&& lex->line[i] != '"' && lex->line[i] != 39)
+			|| (lex->line[i] == '<' && lex->line[i + 1] != '<'
+				&& lex->line[i + 1] != ' ' && lex->line[i + 1] != '"' && lex->line[i + 1] != 39)
+				|| (lex->line[i] == '>'
+				&& lex->line[i + 1] != '>' && lex->line[i + 1] != ' '
+				&& lex->line[i + 1] != '"' && lex->line[i + 1] != 39))
+		{
+			lex->line2[j++] = lex->line[i++];
+			lex->line2[j++] = ' ';
+		}
+		lex->line2[j++] = lex->line[i++];
+	}
+	lex->lexer = split_lexer(lex->line2, ' ');
+	free_doublepointer(split_lexer(lex->line2, ' '));
+	free(lex->line2);
+//	print_lexer(lex);
+	return (lex->lexer);
 }
 
 int	lexer_count_spaces(t_lex *lex)
 {
-	int		i;
-	char	quote;
-	bool	notdouble;
+	int	i;
 
-	quote = '\0';
 	i = 0;
 	lex->counter = 0;
-	notdouble = 0;
-	while (lex->line[i] != '\0')
+	while (lex->line && lex->line[i])
 	{
-		if (quote == '\0')
-		{
-			if (lex->line[i - 1] == '|' && lex->line[i] != ' ')
-			{
-				notdouble = 1;
-				lex->counter++;
-			}
-			else if (lex->line[i - 1] == '<'
-				&& lex->line[i] != '<' && lex->line[i] != ' ')
-			{
-				notdouble = 1;
-				lex->counter++;
-			}
-			else if (lex->line[i - 1] == '>'
-				&& lex->line[i] != '>' && lex->line[i] != ' ')
-			{
-				notdouble = 1;
-				lex->counter++;
-			}
-		}
-		skipquotes(&quote, lex->line[i]);
-		if (notdouble != 1 && quote == '\0')
-		{
-			if (lex->line[i] == '|' && lex->line[i - 1] != ' ')
-				lex->counter++;
-			else if (lex->line[i] == '<'
-				&& lex->line[i - 1] != '<' && lex->line[i - 1] != ' ')
-				lex->counter++;
-			else if (lex->line[i] == '>'
-				&& lex->line[i - 1] != '>' && lex->line[i - 1] != ' ')
-				lex->counter++;
-		}
-		notdouble = 0;
+		// TOO MANY SPACES? QUOTES!
+		if (lex->line[i] != ' ' && lex->line[i + 1] == '|')
+			lex->counter++;
+		if (lex->line[i] != ' ' && lex->line[i] != '<'
+			&& lex->line[i + 1] == '<')
+			lex->counter++;
+		if (lex->line[i] != ' ' && lex->line[i] != '>'
+			&& lex->line[i + 1] == '>')
+			lex->counter++;
+		if (lex->line[i] == '<' && lex->line[i + 1]
+			!= '<' && lex->line[i + 1] != ' ')
+			lex->counter++;
+		if (lex->line[i] == '>' && lex->line[i + 1]
+			!= '>' && lex->line[i + 1] != ' ')
+			lex->counter++;
 		i++;
 	}
 	return (lex->counter);
 }
 
-void	create_line2(t_lex *lex)
+static char	*convert_tabs_to_spaces(char *str)
 {
-	int		i;
-	int		j;
-	int		count;
-	char	quote;
-	bool	notdouble;
+	int	i;
 
-	quote = '\0';
 	i = 0;
-	j = 0;
-	count = 0;
-	notdouble = 0;
-	while (lex->line[i] != '\0')
+	while (str[i] != '\0')
 	{
-		if (quote == '\0')
+		if (str[i] == '\t' || str[i] == '\n')
 		{
-			if (lex->line[i - 1] == '|' && lex->line[i] != ' ')
-			{
-				notdouble = 1;
-				lex->line2[j++] = -1;
-			}
-			else if (lex->line[i - 1] == '<'
-				&& lex->line[i] != '<' && lex->line[i] != ' ')
-			{
-				notdouble = 1;
-				lex->line2[j++] = -1;
-			}
-			else if (lex->line[i - 1] == '>'
-				&& lex->line[i] != '>' && lex->line[i] != ' ')
-			{
-				notdouble = 1;
-				lex->line2[j++] = -1;
-			}
+			while (str[i] == '\t' || str[i] == '\n')
+				str[i++] = ' ';
 		}
-		skipquotes(&quote, lex->line[i]);
-		if (notdouble != 1 && quote == '\0')
+		if (str[i] == '"')
 		{
-			if (lex->line[i] == '|' && lex->line[i - 1] != ' ')
-				lex->line2[j++] = -1;
-			else if (lex->line[i] == '<'
-				&& lex->line[i - 1] != '<' && lex->line[i - 1] != ' ')
-				lex->line2[j++] = -1;
-			else if (lex->line[i] == '>'
-				&& lex->line[i - 1] != '>' && lex->line[i - 1] != ' ')
-				lex->line2[j++] = -1;
+			i++;
+			while (str[i] != '"' && str[i] != '\0')
+				i++;
 		}
-		if (quote == '\0' && lex->line[i] == ' ')
-			lex->line2[j] = -1;
-		else
-			lex->line2[j] = lex->line[i];
-		notdouble = 0;
-		j++;
+		if (str[i] == 39)
+		{
+			i++;
+			while (str[i] != 39 && str[i] != '\0')
+				i++;
+		}
 		i++;
-	}	
+	}
+	return (str);
 }
 
 t_lex	*initialize_lex(void)
@@ -207,18 +178,18 @@ t_lex	*initialize_lex(void)
 		errorexit("check initializiation of lex->line");
 	else if (!lex->line[0])
 		return (lex);
+	lex->line = convert_tabs_to_spaces(lex->line);
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;
 	lex->no_processes = 0;
-	lex->line2 = ft_calloc(ft_strlen(lex->line) + lex->counter, sizeof(char));
+	lex->line2 = ft_calloc(ft_strlen(lex->line) + lex->counter,
+			(ft_strlen(lex->line) + lex->counter) * sizeof(char));
 	if (lex->line2 == NULL)
 		errorexit("malloc error line2");
-	create_line2(lex);
-	lex->lexer = ft_split(lex->line2, -1);
+	lex->lexer = create_lexer_string(lex);
 	if (!lex->lexer)
 		errorexit("lex->lexer allocation failed");
-	free_doublepointer(ft_split(lex->line2, -1));
-	free(lex->line2);
-	// print_lexer(lex);
+	print_lexer(lex);
+	exit (0); //CHECKING LEXER
 	return (lex);
 }

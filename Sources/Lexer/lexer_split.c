@@ -3,10 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2022/11/13 12:45:01 by amechain          #+#    #+#             */
 /*   Updated: 2022/11/13 12:45:11 by amechain         ###   ########.fr       */
+=======
+/*   Created: 2022/10/29 16:05:43 by jmatheis          #+#    #+#             */
+/*   Updated: 2022/11/13 11:59:58 by jmatheis         ###   ########.fr       */
+>>>>>>> 1a68437417319dcbf5ff47c7b7f1fb2d44600a9c
 /*                                                                            */
 /* ************************************************************************** */
 

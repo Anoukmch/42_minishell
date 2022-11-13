@@ -3,10 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2022/11/13 12:46:56 by amechain          #+#    #+#             */
 /*   Updated: 2022/11/13 12:53:12 by amechain         ###   ########.fr       */
+=======
+/*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
+/*   Updated: 2022/11/13 12:00:20 by jmatheis         ###   ########.fr       */
+>>>>>>> 1a68437417319dcbf5ff47c7b7f1fb2d44600a9c
 /*                                                                            */
 /* ************************************************************************** */
 

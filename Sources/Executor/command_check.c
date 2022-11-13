@@ -3,10 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   command_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2022/11/13 12:45:49 by amechain          #+#    #+#             */
 /*   Updated: 2022/11/13 15:22:46 by amechain         ###   ########.fr       */
+=======
+/*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
+/*   Updated: 2022/11/13 15:36:30 by jmatheis         ###   ########.fr       */
+>>>>>>> 1a68437417319dcbf5ff47c7b7f1fb2d44600a9c
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +95,11 @@ static int	check_path(t_lex *lex, t_child **child, t_exec *exec)
 	{
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
+<<<<<<< HEAD
 		ft_putstr_fd(": No such file or directory\n", 2);
+=======
+		ft_putstr_fd(": command not found\n", 2);		
+>>>>>>> 1a68437417319dcbf5ff47c7b7f1fb2d44600a9c
 		return (1);
 	}
 	check_existing_path(exec, child, lex);
@@ -106,6 +115,13 @@ static int	check_path(t_lex *lex, t_child **child, t_exec *exec)
 
 static int	check_commands(t_lex *lex, t_child **child, t_exec *exec)
 {
+	if (!ft_strcmp(child[lex->iter]->parser_cmd[0], ""))
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		return (1);	
+	}
 	check_builtins(lex, child);
 	if (child[lex->iter]->command)
 		child[lex->iter]->isbuiltin = true;
