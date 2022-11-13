@@ -65,7 +65,6 @@ int	main(int ac, char **ag, char **envp)
 	t_lex	*lex;
 	t_child	**child;
 	t_exec	*exec;
-	int		child_info;
 
 	if (ac != 1 || !ag[0])
 		errorexit("Wrong number of arguments");
@@ -82,9 +81,9 @@ int	main(int ac, char **ag, char **envp)
 			executor(lex, child, exec);
 			close_piping(exec);
 			// exec->last_pid instead of 0
- 			while (waitpid(0, &child_info, 0) != -1)
+ 			while (waitpid(0, &exit_code, 0) != -1)
         		continue ;
-				// waitpid(exec->last_pid, &child_info, 0)
+				// waitpid(exec->last_pid, &exit_code, 0)
 				// while (wait(NULL) > 0)
 					// continue ;
 			freeing(child, exec);

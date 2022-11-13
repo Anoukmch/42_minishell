@@ -151,11 +151,7 @@ void	env_command(t_child *child, t_exec *exec)
 	if (child->parser_cmd[0] == NULL)
 		exit(0);
 	if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
-	{
-		fprintf(stderr, "command execve: %s\n", child->command);
-		fprintf(stderr, "CHILD ID execve: %d\n", child->id);
 		errorexit("execve fail");
-	}
 }
 
 void	builtin_command(t_child *child, t_exec *exec)
@@ -183,7 +179,6 @@ void	processes(t_child *child, t_exec *exec)
 
 	infd_tmp = dup(STDIN_FILENO);
     outfd_tmp = dup(STDOUT_FILENO);
-	fprintf(stderr, "nbr of process : %d\n", exec->nbr_process);
 	if (exec->nbr_process == 1 && child->isbuiltin == true)
 	{
 		if (child->parser_redirect_input[0] != NULL)
@@ -210,15 +205,15 @@ void	processes(t_child *child, t_exec *exec)
 		if (pipe(exec->end) < 0)
 			errorexit("Pipe fail");
 	}
+	if (child->parser_redirect_input[0] != NULL)
+		get_infile(child, exec);
+	if (child->parser_redirect_output[0] != NULL)
+		get_outfile(child);
 	exec->last_pid = fork();
 	if (exec->last_pid < 0)
 		errorexit("Fork fail");
 	else if (exec->last_pid == 0)
 	{
-		if (child->parser_redirect_input[0] != NULL)
-			get_infile(child, exec);
-		if (child->parser_redirect_output[0] != NULL)
-			get_outfile(child);
 		switch_put(child, exec);
 		close_pipe(exec, child);
 		if (child->isbuiltin == true)

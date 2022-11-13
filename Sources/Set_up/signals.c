@@ -2,6 +2,8 @@
 
 #include "../../includes/minishell.h"
 
+int exit_code;
+
 static void	control_c(int signum)
 {
 	if (signum == SIGINT)
@@ -10,6 +12,7 @@ static void	control_c(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		exit_code = 1;
 	}
 // 	else if (signum == SIGABRT)
 // 		errorexit("CTRL-D");

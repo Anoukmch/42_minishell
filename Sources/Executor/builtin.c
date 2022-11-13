@@ -191,14 +191,16 @@ void	command_exit(t_child *child, t_exec *exec)
 		if (istoobig == true)
 			errorexit("Exit code too long or too short\n");
 		status = buffer % 256;
+		if (child->no_cmd_opt > 2)
+		{
+			fprintf(stderr, "bash: exit: too many arguments\n"); /* This shouldn't exit but just return to a newline and exit code == 1 (failure) */
+			if (exec->nbr_process > 1)
+				exit(1);
+			else
+				return ;
+		}
+		exit(status);
 	}
-	if (child->no_cmd_opt > 2)
-	{
-		fprintf(stderr, "bash: exit: too many arguments\n"); /* This shouldn't exit but just return to a newline and exit code == 1 (failure) */
-		if (exec->nbr_process > 1)
-			exit(1);
-		else
-			return ;
-	}
-	exit(status);
+	else if (!child->parser_cmd[1])
+		exit(exit_code % 256);
 }

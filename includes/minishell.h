@@ -24,6 +24,8 @@
 // RETURN 1 --> error message, stay in shell
 // RETURN 2 --> error message (?), exit shell
 
+int	exit_code;
+
 typedef struct s_lex
 {
 	char	*line;
