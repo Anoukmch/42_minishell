@@ -61,6 +61,35 @@
 // 	return (NULL);
 // }
 
+static char	*convert_tabs_to_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\t' || str[i] == '\n')
+		{
+			while (str[i] == '\t' || str[i] == '\n')
+				str[i++] = ' ';
+		}
+		if (str[i] == '"')
+		{
+			i++;
+			while (str[i] != '"' && str[i] != '\0')
+				i++;
+		}
+		if (str[i] == 39)
+		{
+			i++;
+			while (str[i] != 39 && str[i] != '\0')
+				i++;
+		}
+		i++;
+	}
+	return (str);
+}
+
 void	skipquotes(char *quote, char lex)
 {
 	if (*quote == '\0' && lex == '\'')
@@ -197,14 +226,18 @@ t_lex	*initialize_lex(void)
 		errorexit("check initializiation of lex->line");
 	else if (!lex->line[0])
 		return (lex);
+	lex->line = convert_tabs_to_spaces(lex->line);
 	lex->counter = lexer_count_spaces(lex);
+	printf("counter: %d\n", lex->counter);
 	lex->iter = 0;
 	lex->no_processes = 0;
-	lex->line2 = ft_calloc(ft_strlen(lex->line) + lex->counter, sizeof(char));
+	lex->line2 = ft_calloc((ft_strlen(lex->line) + lex->counter + 1), sizeof(char));
 	if (lex->line2 == NULL)
 		errorexit("malloc error line2");
 	create_line2(lex);
+	printf("Before splitting line2: %s\n", lex->line2);
 	lex->lexer = ft_split(lex->line2, -1);
+	print_lexer(lex);
 	if (!lex->lexer)
 		errorexit("lex->lexer allocation failed");
 	free_doublepointer(ft_split(lex->line2, -1));

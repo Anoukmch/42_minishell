@@ -27,7 +27,6 @@ static void	check_existing_path(t_exec *exec, t_child **child, t_lex *lex)
 		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
 	{
 		child[lex->iter]->command = ft_strdup(child[lex->iter]->parser_cmd[0]);
-		//printf("TesT COMAMD: %s\n", child[lex->iter]->command);
 		if (access(child[lex->iter]->command, 0) == 0)
 			return ;
 		else
@@ -45,7 +44,6 @@ static void	find_command_path(t_exec *exec, t_child **child, t_lex *lex)
 	i = 0;
 	while (exec->envp_bis && exec->envp_path[i])
 	{
-		//printf("\nrelative path\n");
 		child[lex->iter]->command = ft_strjoin(exec->envp_path[i],
 				child[lex->iter]->parser_cmd[0]);
 		if (!child[lex->iter]->command)
@@ -63,12 +61,11 @@ static int	command_not_found(t_child **child, t_exec *exec, t_lex *lex)
 	if (exec->envp_bis == NULL || exec->envp_path == NULL
 		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
 	{
-		// CHECK CURRENT PATH
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		//perror(NULL);
-		return (1); //return(1);
+		return (1);
 	}
 	return (0);
 }
@@ -78,19 +75,27 @@ static int	check_path(t_lex *lex, t_child **child, t_exec *exec)
 	if (!ft_strchr(child[lex->iter]->parser_cmd[0], '/')
 		&& (exec->envp_path == NULL || exec->envp_bis == NULL))
 	{
+		// CURRENT PATH
+		child[lex->iter]->command = ft_strjoin(getcwd(NULL, 0), "/");
+		child[lex->iter]->command = ft_strjoin(child[lex->iter]->command,
+				child[lex->iter]->parser_cmd[0]);
+		if (!child[lex->iter]->command)
+			errorexit("child[lex->iter]->command allocation fail");
+		if (access(child[lex->iter]->command, 0) == 0)
+			return (0);
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
-<<<<<<< HEAD
 		ft_putstr_fd(": No such file or directory\n", 2);
-=======
-		ft_putstr_fd(": command not found\n", 2);
->>>>>>> 1a68437417319dcbf5ff47c7b7f1fb2d44600a9c
 		return (1);
 	}
-	check_existing_path(exec, child, lex);
-	if (child[lex->iter]->command != NULL)
-		return (0); // return (0);
-	find_command_path(exec, child, lex);
+	if (ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
+	{
+		check_existing_path(exec, child, lex);
+		if (child[lex->iter]->command != NULL)
+			return (0);
+	}
+	else
+		find_command_path(exec, child, lex);
 	if (child[lex->iter]->command != NULL)
 		return (0);
 	if (command_not_found(child, exec, lex) != 0)
@@ -114,9 +119,7 @@ static int	check_commands(t_lex *lex, t_child **child, t_exec *exec)
 	{
 		if (check_path(lex, child, exec) != 0)
 			return (1);
-
 	}
-	//printf("CMD PATH: %s\n", child[lex->iter]->command);
 	return (0);
 }
 
