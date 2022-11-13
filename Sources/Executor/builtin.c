@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/02 14:00:52 by amechain          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/11/11 20:09:30 by amechain         ###   ########.fr       */
-=======
-/*   Updated: 2022/11/11 16:04:22 by jmatheis         ###   ########.fr       */
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
+/*   Created: 2022/11/13 12:46:56 by amechain          #+#    #+#             */
+/*   Updated: 2022/11/13 12:53:12 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +85,7 @@ void	command_echo(t_child *child, t_exec *exec)
 
 void	command_cd(t_child *child, t_exec *exec)
 {
-<<<<<<< HEAD
 	/* If cd "" , do nothing. Different from having a null argument which means cd HOME */
-=======
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 	if (child->parser_cmd[1] == NULL || !ft_strcmp(child->parser_cmd[1], "~"))
 	{
 		if (chdir(getenv("HOME")) != 0)

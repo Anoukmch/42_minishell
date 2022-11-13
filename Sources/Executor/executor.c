@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 18:05:29 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 14:44:39 by jmatheis         ###   ########.fr       */
+/*   Updated: 2022/11/13 14:00:28 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	executor(t_lex *lex, t_child **child, t_exec *exec)
 	// {
 	// 	ft_printf("ENV: %s\n", exec->envp_bis[z]);
 	// 	z++;
-		
+
 	// }
 	// return (0);
 }

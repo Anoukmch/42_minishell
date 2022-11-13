@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/02 17:01:51 by jmatheis          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/11/11 18:37:45 by amechain         ###   ########.fr       */
-=======
-/*   Updated: 2022/11/11 14:53:58 by jmatheis         ###   ########.fr       */
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
+/*   Created: 2022/11/13 12:45:49 by amechain          #+#    #+#             */
+/*   Updated: 2022/11/13 15:22:46 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +36,8 @@ static void	check_existing_path(t_exec *exec, t_child **child, t_lex *lex)
 	if (exec->envp_bis == NULL || exec->envp_path == NULL
 		|| ft_strchr(child[lex->iter]->parser_cmd[0], '/') != NULL)
 	{
-		child[lex->iter]->command = child[lex->iter]->parser_cmd[0];
-<<<<<<< HEAD
+		child[lex->iter]->command = ft_strdup(child[lex->iter]->parser_cmd[0]);
 		//printf("TesT COMAMD: %s\n", child[lex->iter]->command);
-=======
-		printf("\nabsolutes path\n");
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
 		if (access(child[lex->iter]->command, 0) == 0)
 			return ;
 		else
@@ -63,7 +55,7 @@ static void	find_command_path(t_exec *exec, t_child **child, t_lex *lex)
 	i = 0;
 	while (exec->envp_bis && exec->envp_path[i])
 	{
-		printf("\nrelative path\n");
+		//printf("\nrelative path\n");
 		child[lex->iter]->command = ft_strjoin(exec->envp_path[i],
 				child[lex->iter]->parser_cmd[0]);
 		if (!child[lex->iter]->command)
@@ -85,6 +77,7 @@ static int	command_not_found(t_child **child, t_exec *exec, t_lex *lex)
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
+		//perror(NULL);
 		return (1); //return(1);
 	}
 	return (0);
@@ -97,7 +90,7 @@ static int	check_path(t_lex *lex, t_child **child, t_exec *exec)
 	{
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(child[lex->iter]->parser_cmd[0], 2);
-		ft_putstr_fd(": No such file or directory\n", 2);		
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return (1);
 	}
 	check_existing_path(exec, child, lex);
@@ -120,9 +113,9 @@ static int	check_commands(t_lex *lex, t_child **child, t_exec *exec)
 	{
 		if (check_path(lex, child, exec) != 0)
 			return (1);
-		
+
 	}
-	printf("CMD PATH: %s\n", child[lex->iter]->command);
+	//printf("CMD PATH: %s\n", child[lex->iter]->command);
 	return (0);
 }
 

@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_exec.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/02 15:44:13 by amechain          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/11/11 14:50:12 by amechain         ###   ########.fr       */
-=======
-/*   Updated: 2022/11/11 15:09:22 by jmatheis         ###   ########.fr       */
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
+/*   Created: 2022/11/13 12:44:50 by amechain          #+#    #+#             */
+/*   Updated: 2022/11/13 12:44:53 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +29,7 @@ t_exec	*initialize_exec(t_lex *lex, char **envp)
 			errorexit("ALLOC ERROR");
 		exec->envp_bis[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
 		exec->envp_bis[1] = ft_strdup("SHLVL=1");
-		exec->envp_bis[2] = ft_strdup("_=/usr/bin/env");		
+		exec->envp_bis[2] = ft_strdup("_=/usr/bin/env");
 		exec->envp_line = NULL;
 		exec->envp_path = NULL;
 	}

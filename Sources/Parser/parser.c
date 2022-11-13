@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 15:59:04 by jmatheis          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/11/11 18:20:56 by amechain         ###   ########.fr       */
-=======
-/*   Updated: 2022/11/11 16:59:39 by jmatheis         ###   ########.fr       */
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
+/*   Created: 2022/11/13 12:45:27 by amechain          #+#    #+#             */
+/*   Updated: 2022/11/13 14:57:25 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,22 +72,18 @@ void	parser(t_lex *lex, t_child	**child)
 				// HERE_DOC EOF $ IS NOT ALLOWED TO BE MARKED (should work now)
 				if (mark_quotes(lex->lexer[i], lex->lexer[i - 1]) != 0)
 					return ; //RETURN(1);
-				printf("STR after marking: %s\n", lex->lexer[i]);
+				//printf("STR after marking: %s\n", lex->lexer[i]);
 				lex->lexer[i] = delete_quotes(lex->lexer[i]);
 				i++;
 			}
 		}
-		printf("QUOTES HEREDOC: %d\n", child[k]->heredoc_quotes);
+		//printf("QUOTES HEREDOC: %d\n", child[k]->heredoc_quotes);
 		k++;
 	}
 	parse_commands(lex, child);
 	parser_redirection(lex, child);
-<<<<<<< HEAD
 	// printf("TEST\n");
 	// print_lexer(lex);
-=======
-	print_lexer(lex);
->>>>>>> 4a5e0e3ae40e54fce095491cc6f2da5621c3cc95
-	print_parser(child);
+	//print_parser(child);
 	// return (0);
 }

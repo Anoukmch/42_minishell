@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:43:43 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 20:10:43 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/13 15:37:29 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,10 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 			| O_TRUNC, 0644);
 	if (file < 0)
 		errorexit("Open heredoc failed");
-<<<<<<< HEAD
 	// if (child[k]-->heredoc_quotes == 0)
 	//  expand variables in heredoc
 	// if (child[k]-->heredoc_quotes == 1)
 	//  DO NOT expand variables in heredoc
-=======
-	//delete_quotes(&limiter);
->>>>>>> 5d66a72fd8cd72ff71501d6bcb9afd3df04ef089
 	temp = ft_strjoin(limiter, "\n");
 	ft_printf("Heredoc>");
 	line = get_next_line(STDIN_FILENO);
@@ -102,7 +98,7 @@ void	get_infile(t_child *child, t_exec *exec)
 		{
 			child->fd_in = open(child->parser_redirect_input[i + 1], O_RDONLY);
 			if (child->fd_in < 0)
-				errorexit("Open infile failed");
+				errorexit("No such file or directory");
 			if (i < nbr_elements - 2)
 				close(child->fd_in);
 		}
