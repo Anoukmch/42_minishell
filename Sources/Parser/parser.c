@@ -73,10 +73,6 @@ void	parser(t_lex *lex, t_child	**child)
 	parser_redirection(lex, child);
 	// printf("TEST\n");
 	// print_lexer(lex);
-<<<<<<< HEAD
 	//print_parser(child);
-=======
-	print_parser(child);
->>>>>>> 1a68437417319dcbf5ff47c7b7f1fb2d44600a9c
 	// return (0);
 }
