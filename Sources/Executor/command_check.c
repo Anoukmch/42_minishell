@@ -28,7 +28,9 @@ static void	check_existing_path(t_exec *exec, t_child **child, t_lex *lex)
 	{
 		child[lex->iter]->command = ft_strdup(child[lex->iter]->parser_cmd[0]);
 		if (access(child[lex->iter]->command, 0) == 0)
+		{
 			return ;
+		}
 		else
 		{
 			child[lex->iter]->command = NULL;

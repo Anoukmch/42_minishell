@@ -82,7 +82,7 @@ void	command_cd(t_child *child, t_exec *exec)
 	}
 	else
 	{
-		if (chdir(child->parser_cmd[1]) != 0)
+		if (child->parser_cmd[1][0] != '\0' && chdir(child->parser_cmd[1]) != 0)
 		{
 			fprintf(stderr, "cd: %s: No such file or directory\n", child->parser_cmd[1]);
 			exit(1);
@@ -175,9 +175,10 @@ void	command_exit(t_child *child, t_exec *exec)
 	ft_putstr_fd("exit\n", 1);
 	if (child->parser_cmd[1])
 	{
-		if (child->parser_cmd[1][i] == '-' || child->parser_cmd[1][i] == '+')
+		if ((child->parser_cmd[1][i] == '-' && child->parser_cmd[1][i + 1])
+			|| (child->parser_cmd[1][i] == '+' && child->parser_cmd[1][i + 1]))
 			i++;
-		while (child->parser_cmd[1][i])
+		while (child->parser_cmd[1][i] || child->parser_cmd[1][0] == '\0')
 		{
 			if (child->parser_cmd[1][i] < 48 || child->parser_cmd[1][i] > 57)
 			{

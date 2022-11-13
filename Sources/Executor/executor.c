@@ -21,7 +21,7 @@ void	executor(t_lex *lex, t_child **child, t_exec *exec)
 	i = 0;
     if (command_path(lex, child, exec) != 0)
 	{
-		ft_putstr_fd("cmd path not found\n", 2);
+		ft_putstr_fd("cmd path not found\n", 2); /* or No such file or directory for unfind absolute command */
 		return ;
 		// return (1);
 	}
