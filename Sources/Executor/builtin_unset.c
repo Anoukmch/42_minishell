@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 18:44:38 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 15:38:14 by jmatheis         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -34,14 +23,14 @@ static int	invalid_identifier(char **cmd)
 		if (cmd[i][0] == '\0')
 			printf("unset: '%s': not a valid identifier\n", cmd[i]);
 		while (cmd[i][j] != '\0')
-		{	
+		{
 			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
 				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_'
 					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
 			{
 				ft_putstr_fd("unset: '", 2);
 				ft_putstr_fd(cmd[i], 2);
-				ft_putstr_fd("': not a valid identifier\n", 2);			
+				ft_putstr_fd("': not a valid identifier\n", 2);
 				// printf("unset: '%s': not a valid identifier\n", cmd[i]);
 				return (1);
 			}

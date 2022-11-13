@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin_export.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/04 13:56:46 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/11 15:09:02 by jmatheis         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -40,7 +29,7 @@ static int	invalid_identifier(char **cmd)
 	{
 		// cmd[i] = builtdelete_quotes(cmd[i]);
 		while (cmd[i][j] != '\0')
-		{	
+		{
 			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
 				|| ((ft_isalnum(cmd[i][j]) == 0) && cmd[i][j] != '_'
 					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
@@ -123,7 +112,7 @@ static void	env_variable(char *str, t_exec *exec)
 			return ;
 		}
 		i++;
-	}	
+	}
 	printf("TEST\n");
 	exec->envp_bis[len] = ft_strjoin(variablename, "=");
 	exec->envp_bis[len] = ft_strjoin(exec->envp_bis[len], content);
