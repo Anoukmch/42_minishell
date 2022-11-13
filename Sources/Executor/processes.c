@@ -151,7 +151,11 @@ void	env_command(t_child *child, t_exec *exec)
 	if (child->parser_cmd[0] == NULL)
 		exit(0);
 	if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
+	{
+		fprintf(stderr, "command execve: %s\n", child->command);
+		fprintf(stderr, "CHILD ID execve: %d\n", child->id);
 		errorexit("execve fail");
+	}
 }
 
 void	builtin_command(t_child *child, t_exec *exec)

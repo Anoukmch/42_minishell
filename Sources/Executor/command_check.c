@@ -130,8 +130,11 @@ int	command_path(t_lex *lex, t_child **child, t_exec *exec)
 	lex->iter = 0;
 	while (child[lex->iter])
 	{
-		if (check_commands(lex, child, exec) != 0)
-			return (1);
+		if (child[lex->iter]->parser_cmd[0] != NULL)
+		{
+			if (check_commands(lex, child, exec) != 0)
+				return (1);
+		}
 		lex->iter++;
 	}
 	return (0);
