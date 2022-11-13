@@ -240,7 +240,6 @@ t_lex	*initialize_lex(void)
 	print_lexer(lex);
 	if (!lex->lexer)
 		errorexit("lex->lexer allocation failed");
-	free_doublepointer(ft_split(lex->line2, -1));
 	free(lex->line2);
 	// print_lexer(lex);
 	return (lex);

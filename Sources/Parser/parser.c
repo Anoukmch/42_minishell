@@ -41,7 +41,9 @@ void	parser(t_lex *lex, t_child	**child)
 		{
 			if (!ft_strcmp(lex->lexer[i], "<<"))
 			{
-				while(lex->lexer[i++][z])
+				z = 0;
+				i++;
+				while(lex->lexer[i][z])
 				{
 					if (lex->lexer[i][z] == 39 || lex->lexer[i][z] == '"')
 					{

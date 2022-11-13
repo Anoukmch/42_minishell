@@ -148,8 +148,17 @@ void	close_pipe(t_exec *exec, t_child *child)
 
 void	env_command(t_child *child, t_exec *exec)
 {
+	if (child->parser_cmd[0] == NULL)
+	{
+		fprintf(stderr, "CHILD ID: %d\n", child->id);
+		exit(0);
+	}
 	if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
+	{
+		fprintf(stderr, "command execve: %s\n", child->command);
+		fprintf(stderr, "CHILD ID execve: %d\n", child->id);
 		errorexit("execve fail");
+	}
 }
 
 void	builtin_command(t_child *child, t_exec *exec)
@@ -177,6 +186,7 @@ void	processes(t_child *child, t_exec *exec)
 
 	infd_tmp = dup(STDIN_FILENO);
     outfd_tmp = dup(STDOUT_FILENO);
+	fprintf(stderr, "processes: %d\n", exec->nbr_process);
 	if (exec->nbr_process == 1 && child->isbuiltin == true)
 	{
 		if (child->parser_redirect_input[0] != NULL)

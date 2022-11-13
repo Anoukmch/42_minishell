@@ -57,7 +57,7 @@ typedef struct s_child
 
 typedef struct s_exec
 {
-	char 	**envp_bis;
+	char	**envp_bis;
 	char	**envp_path;
 	char	*envp_line;
 	int		nbr_process;
