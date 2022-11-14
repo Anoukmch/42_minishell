@@ -32,7 +32,7 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	freeing(t_child	**child, t_exec	*exec)
+void	freeing(t_child	**child)
 {
 	int	i;
 
@@ -47,8 +47,6 @@ void	freeing(t_child	**child, t_exec	*exec)
 		i++;
 	}
 	free(child);
-	free_array(exec->envp_path);
-	free(exec);
 }
 
 void	close_piping(t_exec	*exec)
@@ -65,10 +63,12 @@ int	main(int ac, char **ag, char **envp)
 	t_lex	*lex;
 	t_child	**child;
 	t_exec	*exec;
+	t_env	*env;
 
 	if (ac != 1 || !ag[0])
 		errorexit("Wrong number of arguments");
 	signal(SIGQUIT, SIG_IGN);
+	env = initialize_env(envp);
 	while (1)
 	{
 		handle_signals();
@@ -77,9 +77,10 @@ int	main(int ac, char **ag, char **envp)
 		{
 			add_history(lex->line);
 			child = initialize_child(lex);
-			exec = initialize_exec(lex, envp);
+			exec = initialize_exec(lex);
 			parser(lex, child);
-			executor(lex, child, exec);
+			print_parser(child);
+			executor(lex, child, exec, env);
 			close_piping(exec);
 			// exec->last_pid instead of 0
  			while (waitpid(0, &exit_code, 0) != -1)
@@ -87,7 +88,7 @@ int	main(int ac, char **ag, char **envp)
 				// waitpid(exec->last_pid, &exit_code, 0)
 				// while (wait(NULL) > 0)
 					// continue ;
-			freeing(child, exec);
+			freeing(child);
 		}
 		free(lex->line);
 		free_array(lex->lexer);
@@ -101,5 +102,6 @@ int	main(int ac, char **ag, char **envp)
 		/* if i remember correctly, WEXITSTATUS(child_info) = $? */
 		// }
 	}
+	// FREE ENVIRONMENT HERE AFTER WHILE LOOP
 	return(0);
 }

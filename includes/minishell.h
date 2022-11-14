@@ -59,9 +59,6 @@ typedef struct s_child
 
 typedef struct s_exec
 {
-	char	**envp_bis;
-	char	**envp_path;
-	char	*envp_line;
 	int		nbr_process;
 	int		end[2];
 	int		buffer[1];
@@ -69,6 +66,13 @@ typedef struct s_exec
 	pid_t	last_pid;
 
 }	t_exec;
+
+typedef struct s_env
+{
+	char	**envp_bis;
+	char	**envp_path;
+	char	*envp_line;
+}	t_env;
 
 // CHECKERS
 void	print_lexer(t_lex *lex);
@@ -78,7 +82,9 @@ void	print_parser(t_child **child);
 void	count_pipes(t_lex *lex);
 t_lex	*initialize_lex();
 t_child	**initialize_child(t_lex *lex);
-t_exec	*initialize_exec(t_lex *lex, char **envp);
+t_exec	*initialize_exec(t_lex *lex);
+t_env	*initialize_env(char **envp);
+
 
 char	*delete_quotes (char *str);
 int		mark_quotes(char *str, char *before_str);
@@ -102,20 +108,22 @@ t_child **init_child(t_lex *lex, t_child **child);
 void	count_pipes(t_lex *lex);
 
 // EXECUTOR
-void	executor(t_lex *lex, t_child **child, t_exec *exec);
-void	processes(t_child *child, t_exec *exec);
+void	executor(t_lex *lex, t_child **child, t_exec *exec, t_env *env);
+void	processes(t_child *child, t_exec *exec, t_env *env);
 
 // BUILTIN
-void	command_env(t_exec *exec);
-int		command_path(t_lex *lex, t_child **child, t_exec *exec);
+void	command_env(t_exec *exec, t_env *env);
+int		command_path(t_lex *lex, t_child **child, t_env *env);
 void	command_echo(t_child *child, t_exec *exec);
 void	command_cd(t_child *child, t_exec *exec);
 void	command_pwd(t_exec *exec);
 void	command_exit(t_child *child, t_exec *exec);
-void	command_export (t_child *child, t_exec *exec);
-void	command_unset(t_child *child, t_exec *exec);
-char	**get_position_in_env(t_exec *exec, char *variable);
+void	command_export (t_child *child, t_env *env);
+void	command_unset(t_child *child, t_env *env);
+char	**get_position_in_env(t_env *env, char *variable);
 
+// ENV
+int	doublepoint_size(char **str);
 
 // MISCELLANEOUS
 // void delete_quotes(char **cmd);

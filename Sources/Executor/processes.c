@@ -161,15 +161,15 @@ void	close_pipe(t_exec *exec, t_child *child)
 		unlink("heredoc");
 }
 
-void	env_command(t_child *child, t_exec *exec)
+void	env_command(t_child *child, t_env *env)
 {
 	if (child->parser_cmd[0] == NULL)
 		exit(0);
-	if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
+	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)
 		errorexit("execve fail");
 }
 
-void	builtin_command(t_child *child, t_exec *exec)
+void	builtin_command(t_child *child, t_exec *exec, t_env *env)
 {
 	if (!ft_strcmp(child->command, "pwd"))
 		command_pwd(exec);
@@ -180,14 +180,14 @@ void	builtin_command(t_child *child, t_exec *exec)
 	else if (!ft_strcmp(child->command, "exit"))
 		command_exit(child, exec);
 	else if (!ft_strcmp(child->command, "export"))
-		command_export(child, exec);
+		command_export(child, env);
 	else if (!ft_strcmp(child->command, "unset"))
-		command_unset(child, exec);
+		command_unset(child, env);
 	else if (!ft_strcmp(child->command, "env"))
-		command_env(exec);
+		command_env(exec, env);
 }
 
-void	processes(t_child *child, t_exec *exec)
+void	processes(t_child *child, t_exec *exec, t_env *env)
 {
 	int     infd_tmp;
     int     outfd_tmp;
@@ -210,7 +210,7 @@ void	processes(t_child *child, t_exec *exec)
 			dup2(child->fd_out, STDOUT_FILENO);
 			close(child->fd_out);
 		}
-		builtin_command(child, exec);
+		builtin_command(child, exec, env);
 		dup2(infd_tmp, STDIN_FILENO);
 		dup2(outfd_tmp, STDOUT_FILENO);
 		return ;
@@ -232,9 +232,9 @@ void	processes(t_child *child, t_exec *exec)
 		switch_put(child, exec);
 		close_pipe(exec, child);
 		if (child->isbuiltin == true)
-			builtin_command(child, exec);
+			builtin_command(child, exec, env);
 		else
-			env_command(child, exec);
+			env_command(child, env);
 	}
 	if (child->id != 0)
 		close(exec->buffer[0]);

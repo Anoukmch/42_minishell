@@ -1,15 +1,6 @@
 
 #include "../../includes/minishell.h"
 
-// static char	*builtdelete_quotes(char *str)
-// {
-// 	if (ft_strtrim(str, "\"") != NULL)
-// 		str = ft_strtrim(str, "\"");
-// 	if (ft_strtrim(str, "'") != NULL)
-// 		str = ft_strtrim(str, "'");
-// 	return (str);
-// }
-
 static int	invalid_identifier(char **cmd)
 {
 	int	i;
@@ -19,7 +10,6 @@ static int	invalid_identifier(char **cmd)
 	j = 0;
 	while (cmd && cmd[i])
 	{
-		// cmd[i] = builtdelete_quotes(cmd[i]);
 		if (cmd[i][0] == '\0')
 			printf("unset: '%s': not a valid identifier\n", cmd[i]);
 		while (cmd[i][j] != '\0')
@@ -31,7 +21,6 @@ static int	invalid_identifier(char **cmd)
 				ft_putstr_fd("unset: '", 2);
 				ft_putstr_fd(cmd[i], 2);
 				ft_putstr_fd("': not a valid identifier\n", 2);
-				// printf("unset: '%s': not a valid identifier\n", cmd[i]);
 				return (1);
 			}
 			j++;
@@ -42,39 +31,32 @@ static int	invalid_identifier(char **cmd)
 	return (0);
 }
 
-char	**get_position_in_env(t_exec *exec, char *variable)
+char	**get_position_in_env(t_env *env, char *variable)
 {
 	int	i;
 
 	i = 0;
-	while (exec->envp_bis[i])
+	while (env->envp_bis[i])
 	{
-		if (ft_strncmp(exec->envp_bis[i], variable,
-				ft_strlen(variable) + 1) == 0)
+		if (ft_strncmp(env->envp_bis[i], variable,
+				ft_strlen(variable)) == 0)
 		{
-			return (&exec->envp_bis[i]);
+			return (&env->envp_bis[i]);
 		}
 		i++;
 	}
 	return (NULL);
 }
 
-void	command_unset(t_child *child, t_exec *exec)
+void unset_variable(t_env *env, char *str)
 {
-	int		i;
-	int		j;
-	char	**tmp;
+	int	j;
+	char **tmp;
 
-	i = 1;
-	tmp = NULL;
-	if (child->parser_cmd[i] == NULL)
-		return ;
-	if (invalid_identifier(child->parser_cmd) != 0)
-		return ;
-	while (child->parser_cmd[i])
+	j = 0;
+	tmp = get_position_in_env(env, str);
+	if (tmp[0] != NULL)
 	{
-		j = 0;
-		tmp = get_position_in_env(exec, child->parser_cmd[i]);
 		free(tmp[j]);
 		j++;
 		while (tmp[j])
@@ -83,6 +65,21 @@ void	command_unset(t_child *child, t_exec *exec)
 			j++;
 		}
 		tmp[j - 1] = NULL;
+	}
+}
+
+void	command_unset(t_child *child, t_env *env)
+{
+	int		i;
+
+	i = 1;
+	if (child->parser_cmd[i] == NULL)
+		return ;
+	if (invalid_identifier(child->parser_cmd) != 0)
+		return ;
+	while (child->parser_cmd[i])
+	{
+		unset_variable(env, child->parser_cmd[i]);
 		i++;
 	}
 }
