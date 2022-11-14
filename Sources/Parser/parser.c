@@ -38,7 +38,7 @@ int	parser(t_lex *lex, t_child	**child)
 	// MARKING VARIABLES THAT SHOULD GET EXPAND AS -2
 	while (child[k])
 	{
-		while (lex->lexer[i] && lex->lexer)
+		while (lex->lexer[i] && lex->lexer) 
 		{
 			if (!ft_strcmp(lex->lexer[i], "<<"))
 			{

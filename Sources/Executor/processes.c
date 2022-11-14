@@ -10,6 +10,7 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 	char	*line;
 	char	*temp;
 
+	line = NULL;
 	file = open("heredoc", O_CREAT | O_WRONLY
 			| O_TRUNC, 0644);
 	if (file < 0)
@@ -40,6 +41,8 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 		unlink("heredoc");
 	return (0);
 }
+
+
 
 int	get_outfile(t_child *child)
 {
@@ -151,15 +154,15 @@ void	close_pipe(t_exec *exec, t_child *child)
 		unlink("heredoc");
 }
 
-void	env_command(t_child *child, t_exec *exec)
+void	env_command(t_child *child, t_env *env)
 {
 	if (child->parser_cmd[0] == NULL)
 		perror_exit_child("command not found");
-	if (execve(child->command, child->parser_cmd, exec->envp_bis) < 0)
+	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)
 		perror_exit_child("execve command failed");
 }
 
-int	builtin_command(t_child *child, t_exec *exec)
+int	builtin_command(t_child *child, t_exec *exec, t_env *env)
 {
 	if (!ft_strcmp(child->command, "pwd"))
 		return(command_pwd());
@@ -170,15 +173,15 @@ int	builtin_command(t_child *child, t_exec *exec)
 	else if (!ft_strcmp(child->command, "exit"))
 		return(command_exit(child, exec));
 	else if (!ft_strcmp(child->command, "export"))
-		return(command_export(child, exec));
+		return(command_export(child, env));
 	else if (!ft_strcmp(child->command, "unset"))
-		return(command_unset(child, exec));
+		return(command_unset(child, env));
 	else if (!ft_strcmp(child->command, "env"))
-		return(command_env(exec));
+		return(command_env(exec, env));
 	return (1);
 }
 
-int	single_builtin(t_child *child, t_exec *exec) /* Rewrite this function */
+int	single_builtin(t_child *child, t_exec *exec, t_env *env) /* Rewrite this function */
 {
 	int     infd_tmp;
     int     outfd_tmp;
@@ -205,14 +208,14 @@ int	single_builtin(t_child *child, t_exec *exec) /* Rewrite this function */
 		dup2(child->fd_out, STDOUT_FILENO);
 		close(child->fd_out);
 	}
-	if (builtin_command(child, exec))
+	if (builtin_command(child, exec, env))
 		return (1);
 	dup2(infd_tmp, STDIN_FILENO);
 	dup2(outfd_tmp, STDOUT_FILENO);
 	return (0);
 }
 
-int	child_exec(t_child *child, t_exec *exec)
+int	child_exec(t_child *child, t_exec *exec, t_env *env)
 {
 	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
 	{
@@ -232,12 +235,12 @@ int	child_exec(t_child *child, t_exec *exec)
 		close_pipe(exec, child);
 		if (child->isbuiltin == true)
 		{
-			if (builtin_command(child, exec))
+			if (builtin_command(child, exec, env))
 				perror_exit_child(NULL); /* Is it gonna print two errors messages, ex for cd ? */
 			exit(0);
 		}
 		else
-			env_command(child, exec);
+			env_command(child, env);
 	}
 	if (child->id != 0)
 		close(exec->buffer[0]);
@@ -247,16 +250,16 @@ int	child_exec(t_child *child, t_exec *exec)
 	return (0);
 }
 
-int	processes(t_child *child, t_exec *exec)
+int	processes(t_child *child, t_exec *exec, t_env *env)
 {
 	if (exec->nbr_process == 1 && child->isbuiltin == true)
 	{
-		if (single_builtin(child, exec))
+		if (single_builtin(child, exec, env))
 			return (1);
 	}
 	else
 	{
-		if (child_exec(child, exec))
+		if (child_exec(child, exec, env))
 			return (1);
 	}
 	return (0);

@@ -209,6 +209,8 @@ void	create_line2(t_lex *lex)
 	}
 }
 
+//  The Ctrl-d (^D) character will send an end of file signal
+
 t_lex	*initialize_lex(void)
 {
 	t_lex	*lex;
@@ -220,8 +222,14 @@ t_lex	*initialize_lex(void)
 		lex->line = readline("input: "); // lex->line = readline("input: "); // comment out for MINISHELL TESTER
 	else
 		lex->line = minishell_get_next_line(STDIN_FILENO);
-	if (!lex->line || !lex->line[0])
-		return(NULL);
+	if (lex->line == NULL)
+	{
+		if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+		return (NULL);
+	}
+	else if (!lex->line[0])
+		return (NULL);
 	lex->line = convert_tabs_to_spaces(lex->line);
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;

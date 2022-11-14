@@ -75,7 +75,7 @@ int	command_cd(t_child *child)
 }
 // 	if (o != -1 && i != -1)
 	// {
-	// 	exec->envp_bis[o] = ft_strjoin("OLDPWD=", s));
+	// 	env->envp_bis[o] = ft_strjoin("OLDPWD=", s));
 	// }
 	// else if (o != -1 && i != -1)
 	// {
@@ -88,9 +88,9 @@ int	get_position_of_variable(t_exec *exec, char *variable)
 	int	i;
 
 	i = 0;
-	while (exec->envp_bis[i])
+	while (env->envp_bis[i])
 	{
-		if (ft_strncmp(exec->envp_bis[i], variable, ft_strlen(variable)) == 0)
+		if (ft_strncmp(env->envp_bis[i], variable, ft_strlen(variable)) == 0)
 			return (i);
 		i++;
 	}
@@ -121,10 +121,10 @@ int	command_env(t_exec *exec)
 	int	i;
 
 	i = 0;
-	while(exec->envp_bis[i])
+	while(env->envp_bis[i])
 	{
-		if (ft_strchr(exec->envp_bis[i], '=') != NULL)
-			ft_printf("%s\n", exec->envp_bis[i]);
+		if (ft_strchr(env->envp_bis[i], '=') != NULL)
+			ft_printf("%s\n", env->envp_bis[i]);
 		i++;
 	}
 	return (0);

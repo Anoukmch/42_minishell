@@ -49,10 +49,7 @@ void	free_struct(t_child	**child, t_exec	*exec)
 		free(child);
 	}
 	if (exec)
-	{
-		free_array(exec->envp_path);
 		free(exec);
-	}
 }
 
 void	close_piping(t_exec	*exec)
@@ -64,7 +61,7 @@ void	close_piping(t_exec	*exec)
 	}
 }
 
-void	free_lex(t_lex	*lex)
+void	free_lex(t_lex	*lex) /* Check that I'm not freeing smtgh not allocated */
 {
 	if (lex)
 	{
@@ -75,10 +72,10 @@ void	free_lex(t_lex	*lex)
 	}
 }
 
-void	initialize_struct(t_child	***child, t_exec	**exec, t_lex *lex, char **envp)
+void	initialize_struct(t_child	***child, t_exec	**exec, t_lex *lex)
 {
 	*child = initialize_child(lex);
-	*exec = initialize_exec(lex, envp);
+	*exec = initialize_exec(lex);
 	if (!(*child) || !(*exec))
 	{
 		free_struct(*child, *exec);
@@ -92,36 +89,39 @@ int	main(int ac, char **ag, char **envp)
 	t_lex	*lex;
 	t_child	**child;
 	t_exec	*exec;
+	t_env	*env;
 
-	child = NULL;
-	exec = NULL;
-	if (ac == 1 && ag[0])
+	if (ac != 1 || !ag[0])
+		errorexit("Wrong number of arguments");
+	signal(SIGQUIT, SIG_IGN);
+	env = initialize_env(envp);
+	while (1)
 	{
-		while (1)
+		handle_signals();
+		lex = initialize_lex();
+		if (lex)
 		{
-			handle_signals();
-			lex = initialize_lex();
-			if (lex)
+			add_history(lex->line);
+			initialize_struct(&child, &exec, lex);
+			if (!parser(lex, child))
 			{
-				add_history(lex->line);
-				initialize_struct(&child, &exec, lex, envp);
-				if (!parser(lex, child))
-				{
-					if (!executor(lex, child, exec))
-						close_piping(exec);
-				}
-				// waitpid(exec->last_pid, &errno, 0);
-				// while (wait(NULL) > 0)
-				// 	continue ;
-				// if (WIFEXITED(errno))
-				// 	printf("%d\n", WEXITSTATUS(errno)); /* WEXITSTATUS(child_info) = $? */
-				// free_struct(child, exec);
-				// free_lex(lex);
+				if (!executor(lex, child, exec))
+					close_piping(exec);
 			}
+			waitpid(exec->last_pid, &errno, 0);
+			while (wait(NULL) > 0)
+				continue ;
+			if (WIFEXITED(errno))
+				printf("%d\n", WEXITSTATUS(errno)); /* WEXITSTATUS(child_info) = $? */
+			free_struct(child, exec);
+			free_lex(lex);
 		}
+		else
+			free_lex(lex);
 	}
-	return (0);
+	free_doublepointer(env->envp_bis);
+	free_doublepointer(env->envp_path);
+	free(env->envp_line);
+	free(env);
+	return(0);
 }
-
-// while (waitpid(0, &exit_code, 0) != -1)
-//         			continue ;
