@@ -156,14 +156,12 @@ void	create_line2(t_lex *lex)
 {
 	int		i;
 	int		j;
-	int		count;
 	char	quote;
 	bool	notdouble;
 
 	quote = '\0';
 	i = 0;
 	j = 0;
-	count = 0;
 	notdouble = 0;
 	while (lex->line[i] != '\0')
 	{
@@ -210,7 +208,7 @@ void	create_line2(t_lex *lex)
 }
 
 //  The Ctrl-d (^D) character will send an end of file signal
-
+//	CTRL-D referrs to STDERR??
 t_lex	*initialize_lex(void)
 {
 	t_lex	*lex;
@@ -224,8 +222,11 @@ t_lex	*initialize_lex(void)
 		lex->line = minishell_get_next_line(STDIN_FILENO);
 	if (lex->line == NULL)
 	{
-		if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+		if (isatty(STDERR_FILENO))
+		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
+			exit (0); //EXIT HERE OR IN MAIN?
+		}
 		return (NULL);
 	}
 	else if (!lex->line[0])

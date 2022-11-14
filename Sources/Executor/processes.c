@@ -23,7 +23,14 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 	ft_printf("Heredoc>");
 	line = get_next_line(STDIN_FILENO);
 	if (!line)
+	{
+		// if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+		// {
+		// 	ft_putstr_fd("exit\n", STDERR_FILENO);
+		// 	exit (0);
+		// }		
 		return (1);
+	}
 	while (ft_strncmp(line, temp, (ft_strlen(temp) + 1)))
 	{
 		if (i == nbr_elements - 2)
@@ -32,7 +39,14 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 		ft_printf("Heredoc>");
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
+		{
+			// if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+			// {
+			// 	ft_putstr_fd("exit\n", STDERR_FILENO);
+			// 	exit (0);
+			// }
 			return (1);
+		}
 	}
 	free(line);
 	free(temp);
@@ -41,8 +55,6 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 		unlink("heredoc");
 	return (0);
 }
-
-
 
 int	get_outfile(t_child *child)
 {
@@ -177,7 +189,7 @@ int	builtin_command(t_child *child, t_exec *exec, t_env *env)
 	else if (!ft_strcmp(child->command, "unset"))
 		return(command_unset(child, env));
 	else if (!ft_strcmp(child->command, "env"))
-		return(command_env(exec, env));
+		return(command_env(env));
 	return (1);
 }
 

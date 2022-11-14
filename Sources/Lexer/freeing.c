@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   freeing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 13:40:08 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/14 19:56:39 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/14 21:09:00 by jmatheis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	errorexit(char *message)
+{
+	ft_putstr_fd(message, 2);
+	exit(EXIT_FAILURE); /* Check this exit status */
+}
 
 void	free_doublepointer(char **str)
 {

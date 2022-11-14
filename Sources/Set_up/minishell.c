@@ -4,20 +4,6 @@
 
 //char *exit_string;
 
-// void	print_lexer(t_lex *lex)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	lex->iter = 0;
-// 	while (lex->lexer[lex->iter])
-// 	{
-// 		printf("%s\n", lex->lexer[lex->iter]);
-// 		lex->iter++;
-// 	}
-// 	printf("%s\n", lex->lexer[lex->iter]);
-// }
-
 void	free_array(char **array)
 {
 	int	i;
@@ -105,7 +91,7 @@ int	main(int ac, char **ag, char **envp)
 			initialize_struct(&child, &exec, lex);
 			if (!parser(lex, child))
 			{
-				if (!executor(lex, child, exec))
+				if (!executor(lex, child, exec, env))
 					close_piping(exec);
 			}
 			waitpid(exec->last_pid, &errno, 0);

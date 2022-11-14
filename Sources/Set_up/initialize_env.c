@@ -1,6 +1,16 @@
 
 #include "../../includes/minishell.h"
 
+int	doublepoint_size(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+		i++;
+	return (i);
+}
+
 static char	**init_environment(char **envp, t_env *env)
 {
 	int	size;
@@ -20,7 +30,6 @@ static char	**init_environment(char **envp, t_env *env)
 	}
 	else
 	{
-		printf("SIZE: %d\n", size);
 		env->envp_bis = ft_calloc(size + 1, sizeof(char *));
 		if (env->envp_bis == NULL)
 			errorexit("ALLOC ERROR");
@@ -34,6 +43,12 @@ static char	**init_environment(char **envp, t_env *env)
 		env->envp_path = ft_split(env->envp_line, ':');
 		if (!env->envp_path)
 			errorexit("check initializiation of exec->envp_path");
+		i = 0;
+		while (env->envp_path[i])
+		{
+			env->envp_path[i] = ft_strjoin(env->envp_path[i], "/");
+			i++;
+		}
 	}
 	return (env->envp_bis);
 }

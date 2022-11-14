@@ -5,9 +5,6 @@
 // CHECKING LEXER
 void	print_lexer(t_lex *lex)
 {
-	int	i;
-
-	i = 0;
 	lex->iter = 0;
 	printf("\n*** LEXER ***\n");
 	while (lex->lexer[lex->iter])
@@ -16,6 +13,7 @@ void	print_lexer(t_lex *lex)
 		lex->iter++;
 	}
 	printf("%s\n", lex->lexer[lex->iter]);
+	lex->iter = 0;
 }
 
 // CHECKING PARSER

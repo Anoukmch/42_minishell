@@ -64,12 +64,10 @@ int	parser(t_lex *lex, t_child	**child)
 				// HERE_DOC EOF $ IS NOT ALLOWED TO BE MARKED (should work now)
 				if (mark_quotes(lex->lexer[i], lex->lexer[i - 1]) != 0)
 					return (1); //RETURN(1);
-				//printf("STR after marking: %s\n", lex->lexer[i]);
 				lex->lexer[i] = delete_quotes(lex->lexer[i]);
 				i++;
 			}
 		}
-		printf("QUOTES HEREDOC: %d\n", child[k]->heredoc_quotes);
 		k++;
 	}
 	if (parse_commands(lex, child))

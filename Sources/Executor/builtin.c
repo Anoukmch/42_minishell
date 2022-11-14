@@ -83,7 +83,7 @@ int	command_cd(t_child *child)
 	// 	EXPORT OLDPWD --> ft_strjoin with s
 	// }
 
-int	get_position_of_variable(t_exec *exec, char *variable)
+int	get_position_of_variable(t_env *env, char *variable)
 {
 	int	i;
 
@@ -116,7 +116,7 @@ int	command_pwd()
 
 // }
 
-int	command_env(t_exec *exec)
+int	command_env(t_env *env)
 {
 	int	i;
 

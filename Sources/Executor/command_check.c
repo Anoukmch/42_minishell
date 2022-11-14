@@ -48,9 +48,10 @@ static int	check_builtins_env(t_lex *lex, t_child **child)
 	else if (ft_strncmp("env", child[lex->iter]->parser_cmd[0], 4) == 0)
 	{
 		child[lex->iter]->command = ft_strdup("env");
-	else if (ft_strncmp("exit", child[lex->iter]->parser_cmd[0], 5) == 0)
-		child[lex->iter]->command = ft_strdup("exit");
-	/* Protect MALLOC return */
+		if (!child[lex->iter]->command)
+			return (1);
+	}
+	return (0);
 }
 
 // *** CHECK ABSOLUTE PATH ***
@@ -116,15 +117,15 @@ static int	check_path(t_lex *lex, t_child **child, t_env *env)
 	}
 	if (ft_strchr(child[lex->iter]->parser_cmd[0], '/'))
 	{
-		check_existing_path(exec, child, lex);
+		check_existing_path(env, child, lex);
 		if (child[lex->iter]->command)
 			return (0);
 	}
 	else
-		find_command_path(exec, child, lex);
+		find_command_path(env, child, lex);
 	if (child[lex->iter]->command)
 		return (0);
-	if (command_not_found(child, exec, lex))
+	if (command_not_found(child, env, lex))
 		return (1);
 	return (1);
 }
@@ -135,12 +136,14 @@ static int	check_commands(t_lex *lex, t_child **child, t_env *env)
 {
 	if (!ft_strcmp(child[lex->iter]->parser_cmd[0], ""))
 		return (1);
-	check_builtins(lex, child);
+	if (check_builtins_env(lex, child)
+		|| check_builtins_other(lex, child))
+		return (1);
 	if (child[lex->iter]->command)
 		child[lex->iter]->isbuiltin = true;
 	if (child[lex->iter]->command == NULL)
 	{
-		if (check_path(lex, child, exec))
+		if (check_path(lex, child, env))
 			return (1);
 	}
 	return (0);
@@ -154,7 +157,7 @@ int	command_path(t_lex *lex, t_child **child, t_env *env)
 	{
 		if (child[lex->iter]->parser_cmd[0])
 		{
-			if (check_commands(lex, child, exec))
+			if (check_commands(lex, child, env))
 				return (1);
 		}
 		lex->iter++;

@@ -79,8 +79,9 @@ static int	invalid_identifier(char **cmd)
 		while (cmd[i][j] != '\0')
 		{
 			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
-				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_' && cmd[i][j] != ' '
-					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
+				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_'
+				&& cmd[i][j] != ' ' && cmd[i][j] != '='
+				&& cmd[i][j] != 39 && cmd[i][j] != '"'))
 			{
 				ft_putstr_fd("export: '", 2);
 				ft_putstr_fd(cmd[i], 2);
@@ -94,17 +95,6 @@ static int	invalid_identifier(char **cmd)
 	}
 	return (0);
 }
-
-int	doublepoint_size(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-		i++;
-	return (i);
-}
-
 
 char **add_variable (t_env *env, char *variablename, char *content)
 {
@@ -165,18 +155,15 @@ static void	env_variable(char *str, t_env *env)
 {
 	char	*variablename;
 	char	*content;
-	int		len;
 	int		i;
 
 	i = 0;
-	len = doublepoint_size(env->envp_bis);
 	variablename = NULL;
 	content = NULL;
 	variablename = ft_substr(str, 0,
 			ft_strlen(str) - ft_strlen(ft_strchr(str, '=')));
 	content = ft_substr(str, ft_strlen(variablename) + 1,
 			ft_strlen(ft_strchr(str, '=')) + 1);
-	printf("CONTENT STRING: %s\n", content);
 	if (ft_strlen(content) == 0)
 		content = "";
 	while (env->envp_bis[i])
@@ -196,14 +183,14 @@ static void	env_variable(char *str, t_env *env)
 
 //cmd[0] = "export";
 // IMPORTANT: Last string = NULL
-int	command_export(t_child *child, t_exec *exec)
+int	command_export(t_child *child, t_env *env)
 {
 	int	i;
 
 	i = 1;
 	if (child->parser_cmd[i] == NULL)
 	{
-		no_options(exec);
+		no_options(env);
 		return (1);
 	}
 	if (invalid_identifier(child->parser_cmd) != 0)
