@@ -120,9 +120,9 @@ void	command_pwd(t_exec *exec);
 void	command_exit(t_child *child, t_exec *exec);
 void	command_export (t_child *child, t_env *env);
 void	command_unset(t_child *child, t_env *env);
-char	**get_position_in_env(t_env *env, char *variable);
 
 // ENV
+char	**get_position_in_env(t_env *env, char *variable);
 int	doublepoint_size(char **str);
 
 // MISCELLANEOUS

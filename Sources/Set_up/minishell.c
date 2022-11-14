@@ -102,6 +102,9 @@ int	main(int ac, char **ag, char **envp)
 		/* if i remember correctly, WEXITSTATUS(child_info) = $? */
 		// }
 	}
-	// FREE ENVIRONMENT HERE AFTER WHILE LOOP
+	free_doublepointer(env->envp_bis);
+	free_doublepointer(env->envp_path);
+	free(env->envp_line);
+	free(env);
 	return(0);
 }
