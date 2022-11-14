@@ -45,6 +45,4 @@ void	handle_signals(void)
 	sa.sa_handler = &control_c;
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
-	signal(SIGABRT, SIG_IGN);
 }
-// signal(SIGQUIT, SIG_IGN); NOT WORKING ATM

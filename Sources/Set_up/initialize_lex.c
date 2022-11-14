@@ -223,7 +223,15 @@ t_lex	*initialize_lex(void)
 		lex->line = minishell_get_next_line(STDIN_FILENO);
 	// lex->line = readline("input: "); // comment out for MINISHELL TESTER
 	if (lex->line == NULL)
+	{
+		//  The Ctrl-d (^D) character will send an end of file signal
+		if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+		{
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+			exit (0);
+		}
 		errorexit("check initializiation of lex->line");
+	}
 	else if (!lex->line[0])
 		return (lex);
 	lex->line = convert_tabs_to_spaces(lex->line);

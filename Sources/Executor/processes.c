@@ -10,6 +10,7 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 	char	*line;
 	char	*temp;
 
+	line = NULL;
 	file = open("heredoc", O_CREAT | O_WRONLY
 			| O_TRUNC, 0644);
 	if (file < 0)
@@ -22,7 +23,14 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 	ft_printf("Heredoc>");
 	line = get_next_line(STDIN_FILENO);
 	if (!line)
+	{
+		if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+		{
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+			exit (0);
+		}		
 		ft_printf("Get_next_line failed");
+	}
 	while (ft_strncmp(line, temp, (ft_strlen(temp) + 1)))
 	{
 		if (i == nbr_elements - 2)
@@ -31,7 +39,14 @@ void	here_doc(char *limiter, int i, int nbr_elements)
 		ft_printf("Heredoc>");
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
+		{
+			if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+			{
+				ft_putstr_fd("exit\n", STDERR_FILENO);
+				exit (0);
+			}
 			errorexit("Get_next_line failed");
+		}
 	}
 	free(line);
 	free(temp);

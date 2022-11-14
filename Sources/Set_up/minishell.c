@@ -68,6 +68,7 @@ int	main(int ac, char **ag, char **envp)
 
 	if (ac != 1 || !ag[0])
 		errorexit("Wrong number of arguments");
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		handle_signals();
