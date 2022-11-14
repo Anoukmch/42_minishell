@@ -1,9 +1,20 @@
 
 #include "../../includes/minishell.h"
 
-
-void	exit_status(t_child **child)
+void    perror_exit_child(char *str)
 {
+    perror(str);
+    exit(errno);
+}
+
+int    perror_return(char *str)
+{
+    perror(str);
+	return (1);
+}
+
+// void	exit_status(t_child **child)
+// {
 	// int i;
 	// int k;
 	// int j;
@@ -23,5 +34,5 @@ void	exit_status(t_child **child)
 	// 	}
 	// 	i++;
 	// }
-}
+// }
 

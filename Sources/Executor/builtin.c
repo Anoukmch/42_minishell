@@ -32,21 +32,11 @@ bool	ft_atoilong(long long int *buffer, const char *str)
 	return (false);
 }
 
-// void delete_quotes(char **cmd)
-// {
-// 	*cmd = ft_strtrim(*cmd, "\"");
-// 	if (!*cmd)
-// 		errorexit("delete double quote string allocation fail");
-// 	*cmd = ft_strtrim(*cmd, "'");
-// 	if (!*cmd)
-// 		errorexit("delete single quote string allocation fail");
-// }
-
-void	command_echo(t_child *child, t_exec *exec)
+int	command_echo(t_child *child)
 {
 	int	i;
 	bool newline;
-	/* Handle echo in lower and upper case, every single letter */
+
 	i = 1;
 	newline = true;
 	while (child->parser_cmd[i] != NULL && !ft_strcmp(child->parser_cmd[i], "-n"))
@@ -57,7 +47,7 @@ void	command_echo(t_child *child, t_exec *exec)
 	while (child->parser_cmd[i])
 	{
 		if (!ft_strcmp(child->parser_cmd[1], "~"))
-			ft_printf("%s", getenv("HOME"));
+			ft_printf("%s", getenv("HOME")); /* Can I used getenv if ENV is disabled ? */
 		else
 			ft_printf("%s", child->parser_cmd[i]);
 		if (child->parser_cmd[i + 1] != NULL)
@@ -66,30 +56,22 @@ void	command_echo(t_child *child, t_exec *exec)
 	}
 	if (newline == true)
 		ft_printf("\n");
-	if (exec->nbr_process > 1)
-		exit(0);
+	return (0);
 }
 
-/* cd with only a relative or absolute path */
-
-void	command_cd(t_child *child, t_exec *exec)
+int	command_cd(t_child *child)
 {
-	/* If cd "" , do nothing. Different from having a null argument which means cd HOME */
 	if (child->parser_cmd[1] == NULL || !ft_strcmp(child->parser_cmd[1], "~"))
 	{
 		if (chdir(getenv("HOME")) != 0)
-			errorexit("cd: No such file or directory\n");
+			perror_return("cd: No such file or directory");
 	}
 	else
 	{
 		if (child->parser_cmd[1][0] != '\0' && chdir(child->parser_cmd[1]) != 0)
-		{
-			fprintf(stderr, "cd: %s: No such file or directory\n", child->parser_cmd[1]);
-			exit(1);
-		}
+			perror_return("cd: No such file or directory");
 	}
-	if (exec->nbr_process > 1)
-		exit(0);
+	return (0);
 }
 // 	if (o != -1 && i != -1)
 	// {
@@ -101,7 +83,6 @@ void	command_cd(t_child *child, t_exec *exec)
 	// 	EXPORT OLDPWD --> ft_strjoin with s
 	// }
 
-/* pwd with no options */
 int	get_position_of_variable(t_exec *exec, char *variable)
 {
 	int	i;
@@ -116,25 +97,17 @@ int	get_position_of_variable(t_exec *exec, char *variable)
 	return (-1);
 }
 
-// OLDPWD?
-void	command_pwd(t_exec *exec)
+int	command_pwd()
 {
 	char	*s;
 
 	s = getcwd(NULL, 0);
 	if (!s)
-		errorexit("Get current path fail");
+		return (1);
 	ft_printf("%s\n", s);
-	if (exec->nbr_process > 1)
-		exit(0);
+	return (0);
 }
 
-/* export with no options */
-
-// void	command_export()
-// {
-
-// }
 
 /* unset with no options */
 
@@ -143,9 +116,7 @@ void	command_pwd(t_exec *exec)
 
 // }
 
-/* env with no options or arguments */
-
-void	command_env(t_exec *exec)
+int	command_env(t_exec *exec)
 {
 	int	i;
 
@@ -156,15 +127,28 @@ void	command_env(t_exec *exec)
 			ft_printf("%s\n", exec->envp_bis[i]);
 		i++;
 	}
-	if (exec->nbr_process > 1)
-		exit(0);
+	return (0);
 }
 
-/* exit with no options */
-
-void	command_exit(t_child *child, t_exec *exec)
+int	is_only_digits(char *str)
 {
-	/* exit "" : the "" shouldnt be remove by lexer */
+	int	i;
+
+	i = 0;
+	if ((str[i] == '-' && str[i + 1])
+		|| (str[i] == '+' && str[i + 1]))
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	command_exit(t_child *child, t_exec *exec)
+{
 	long long int	buffer;
 	bool			istoobig;
 	int 			status;
@@ -172,35 +156,26 @@ void	command_exit(t_child *child, t_exec *exec)
 
 	i = 0;
 	status = 0;
-	ft_putstr_fd("exit\n", 1);
+	if (exec->nbr_process == 1)
+		printf("exit\n");
 	if (child->parser_cmd[1])
 	{
-		if ((child->parser_cmd[1][i] == '-' && child->parser_cmd[1][i + 1])
-			|| (child->parser_cmd[1][i] == '+' && child->parser_cmd[1][i + 1]))
-			i++;
-		while (child->parser_cmd[1][i] || child->parser_cmd[1][0] == '\0')
-		{
-			if (child->parser_cmd[1][i] < 48 || child->parser_cmd[1][i] > 57)
-			{
-				fprintf(stderr, "bash: exit: numeric argument required\n");
-				exit(255); /* with which code exit ? 255 ? */
-			}
-			i++;
-		}
+		if (is_only_digits(child->parser_cmd[1]))
+			perror_exit_child("exit: numeric argument required"); /* Exit code must be 255, check it */
 		istoobig = ft_atoilong(&buffer, child->parser_cmd[1]);
 		if (istoobig == true)
-			errorexit("Exit code too long or too short\n");
+			perror_exit_child("exit: numeric argument required"); /* Exit code must be 255, check it */
 		status = buffer % 256;
 		if (child->no_cmd_opt > 2)
 		{
-			fprintf(stderr, "bash: exit: too many arguments\n"); /* This shouldn't exit but just return to a newline and exit code == 1 (failure) */
 			if (exec->nbr_process > 1)
-				exit(1);
+				perror_exit_child("exit: too many arguments"); /* Exit code must be 1, check it */
 			else
-				return ;
+				return (1);
 		}
 		exit(status);
 	}
-	else if (!child->parser_cmd[1])
+	else if (!child->parser_cmd[1]) /* I don't know if it's correct */
 		exit(exit_code % 256);
+	return (0);
 }

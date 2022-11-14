@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 13:40:08 by jmatheis          #+#    #+#             */
-/*   Updated: 2022/11/10 12:43:33 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/14 19:56:39 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,4 @@ void	free_doublepointer(char **str)
 		i++;
 	}
 	free (str);
-}
-
-void	errorexit(char *message)
-{
-	ft_putstr_fd(message, 2);
-	exit(EXIT_FAILURE); /* Check this exit status */
 }

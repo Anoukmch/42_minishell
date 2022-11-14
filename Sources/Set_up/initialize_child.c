@@ -56,13 +56,13 @@ t_child	**initialize_child(t_lex *lex)
 	count_processes(lex);
 	child = ft_calloc(lex->no_processes + 1, sizeof(t_child *));
 	if (child == NULL)
-		errorexit("check initializiation of arrays of child");
+		return (NULL);
 	lex->iter = 0;
 	while (k < lex->no_processes)
 	{
 		child[k] = ft_calloc(1, sizeof(t_child));
 		if (child[k] == NULL)
-			errorexit("check initializiation of child calloc");
+			return (NULL);
 		init_cmds(lex, child, k);
 		child[k]->parser_cmd
 			= ft_calloc(child[k]->no_cmd_opt + 1, sizeof(char *));
@@ -73,7 +73,7 @@ t_child	**initialize_child(t_lex *lex)
 		if (child[k]->parser_redirect_output == NULL
 			|| child[k]->parser_redirect_input == NULL
 			|| child[k]->parser_cmd == NULL)
-			errorexit("check initializiation of child arrays");
+			return(NULL);
 		child[k]->command = NULL;
 		child[k]->fd_in = -1;
 		child[k]->fd_out = -1;

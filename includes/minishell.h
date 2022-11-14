@@ -24,7 +24,7 @@
 // RETURN 1 --> error message, stay in shell
 // RETURN 2 --> error message (?), exit shell
 
-int	exit_code;
+int exit_code;
 
 typedef struct s_lex
 {
@@ -94,30 +94,30 @@ void	errorexit(char *message);
 void	free_doublepointer (char **str);
 
 // PARSER
-void	parser(t_lex *lex, t_child	**child);
-void	parse_commands(t_lex *lex, t_child **child);
-void	parser_redirection(t_lex *lex, t_child **child);
+int		parser(t_lex *lex, t_child	**child);
+int		parse_commands(t_lex *lex, t_child **child);
+int		parser_redirection(t_lex *lex, t_child **child);
 // PARSER INIT
 t_child **init_child(t_lex *lex, t_child **child);
 void	count_pipes(t_lex *lex);
 
 // EXECUTOR
-void	executor(t_lex *lex, t_child **child, t_exec *exec);
-void	processes(t_child *child, t_exec *exec);
+int		executor(t_lex *lex, t_child **child, t_exec *exec);
+int		processes(t_child *child, t_exec *exec);
 
 // BUILTIN
-void	command_env(t_exec *exec);
+int		command_env(t_exec *exec);
 int		command_path(t_lex *lex, t_child **child, t_exec *exec);
-void	command_echo(t_child *child, t_exec *exec);
-void	command_cd(t_child *child, t_exec *exec);
-void	command_pwd(t_exec *exec);
-void	command_exit(t_child *child, t_exec *exec);
-void	command_export (t_child *child, t_exec *exec);
-void	command_unset(t_child *child, t_exec *exec);
+int		command_echo(t_child *child);
+int		command_cd(t_child *child);
+int		command_pwd();
+int		command_exit(t_child *child, t_exec *exec);
+int		command_export (t_child *child, t_exec *exec);
+int		command_unset(t_child *child, t_exec *exec);
 char	**get_position_in_env(t_exec *exec, char *variable);
 
-
-// MISCELLANEOUS
-// void delete_quotes(char **cmd);
+// ERROR
+int		perror_return(char *str);
+void    perror_exit_child(char *str);
 
 #endif

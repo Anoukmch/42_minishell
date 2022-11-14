@@ -181,7 +181,7 @@ static void	no_options(t_exec *exec)
 
 //cmd[0] = "export";
 // IMPORTANT: Last string = NULL
-void	command_export(t_child *child, t_exec *exec)
+int	command_export(t_child *child, t_exec *exec)
 {
 	int	i;
 
@@ -189,10 +189,10 @@ void	command_export(t_child *child, t_exec *exec)
 	if (child->parser_cmd[i] == NULL)
 	{
 		no_options(exec);
-		return ;
+		return (1);
 	}
 	if (invalid_identifier(child->parser_cmd) != 0)
-		return ;
+		return (1);
 	while (child->parser_cmd[i] && child->parser_cmd)
 	{
 		if (ft_strchr(child->parser_cmd[i], '=') != NULL)
@@ -201,4 +201,5 @@ void	command_export(t_child *child, t_exec *exec)
 			export_variable(child->parser_cmd[i], exec);
 		i++;
 	}
+	return (0);
 }

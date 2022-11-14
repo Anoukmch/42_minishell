@@ -214,30 +214,24 @@ t_lex	*initialize_lex(void)
 	t_lex	*lex;
 
 	lex = ft_calloc(1, sizeof(t_lex));
-	if (lex == NULL)
-		errorexit("check initializiation of lex");
-	// ***** FOR MINISHELL TESTER *****
-	if (isatty(STDIN_FILENO))
-		lex->line = readline("input: ");
+	if (!lex)
+		return(NULL);
+	if (isatty(STDIN_FILENO)) 	// ***** FOR MINISHELL TESTER *****
+		lex->line = readline("input: "); // lex->line = readline("input: "); // comment out for MINISHELL TESTER
 	else
 		lex->line = minishell_get_next_line(STDIN_FILENO);
-	// lex->line = readline("input: "); // comment out for MINISHELL TESTER
-	if (lex->line == NULL)
-		errorexit("check initializiation of lex->line");
-	else if (!lex->line[0])
-		return (lex);
+	if (!lex->line || !lex->line[0])
+		return(NULL);
 	lex->line = convert_tabs_to_spaces(lex->line);
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;
 	lex->no_processes = 0;
 	lex->line2 = ft_calloc((ft_strlen(lex->line) + lex->counter + 1), sizeof(char));
-	if (lex->line2 == NULL)
-		errorexit("malloc error line2");
+	if (!lex->line2)
+		return(NULL);
 	create_line2(lex);
 	lex->lexer = ft_split(lex->line2, -1);
 	if (!lex->lexer)
-		errorexit("lex->lexer allocation failed");
-	free(lex->line2);
-	//print_lexer(lex);
+		return(NULL);
 	return (lex);
 }

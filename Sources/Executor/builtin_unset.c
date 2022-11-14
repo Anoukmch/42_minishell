@@ -59,7 +59,7 @@ char	**get_position_in_env(t_exec *exec, char *variable)
 	return (NULL);
 }
 
-void	command_unset(t_child *child, t_exec *exec)
+int	command_unset(t_child *child, t_exec *exec)
 {
 	int		i;
 	int		j;
@@ -68,9 +68,9 @@ void	command_unset(t_child *child, t_exec *exec)
 	i = 1;
 	tmp = NULL;
 	if (child->parser_cmd[i] == NULL)
-		return ;
+		return (0);
 	if (invalid_identifier(child->parser_cmd) != 0)
-		return ;
+		return (0);
 	while (child->parser_cmd[i])
 	{
 		j = 0;
@@ -85,4 +85,5 @@ void	command_unset(t_child *child, t_exec *exec)
 		tmp[j - 1] = NULL;
 		i++;
 	}
+	return (0);
 }

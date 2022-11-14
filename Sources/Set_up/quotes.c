@@ -40,10 +40,7 @@ int mark_quotes(char *str, char *before_str)
 		i++;
 	}
 	if (quote == '\'' || quote == '\"')
-	{
-		ft_putstr_fd("QUOTES NOT CLOSED\n", 2);
-		return (1);
-	}
+		return(perror_return("Unclosed pair of quotes"));
 	return (0);
 }
 

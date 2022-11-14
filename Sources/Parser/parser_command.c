@@ -5,7 +5,7 @@
 /*
 grep "hello world" >outfile | 'my name is' > infile
 */
-static void	commands(t_lex *lex, t_child **child, int k)
+int	commands(t_lex *lex, t_child **child, int k)
 {
 	int	j;
 
@@ -24,15 +24,16 @@ static void	commands(t_lex *lex, t_child **child, int k)
 			// child[k]->parser_cmd[j] = delete_quotes(lex->lexer[lex->iter]);
 			child[k]->parser_cmd[j] = ft_strdup(lex->lexer[lex->iter]);
 			if (!child[k]->parser_cmd[j])
-				errorexit("Allocation failed");
+				return (1);
 			j++;
 			lex->iter++;
 		}
 	}
 	child[k]->parser_cmd[j] = NULL;
+	return (0);
 }
 
-void	parse_commands(t_lex *lex, t_child **child)
+int	parse_commands(t_lex *lex, t_child **child)
 {
 	int	k;
 
@@ -40,8 +41,10 @@ void	parse_commands(t_lex *lex, t_child **child)
 	lex->iter = 0;
 	while (k < lex->no_processes)
 	{
-		commands(lex, child, k);
+		if (commands(lex, child, k))
+			return (1);
 		lex->iter++;
 		k++;
 	}
+	return (0);
 }

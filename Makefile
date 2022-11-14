@@ -6,13 +6,13 @@
 #    By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:30:39 by amechain          #+#    #+#              #
-#    Updated: 2022/11/13 17:22:31 by amechain         ###   ########.fr        #
+#    Updated: 2022/11/14 19:59:49 by amechain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline  -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
 
 NAME =  minishell
 
@@ -23,7 +23,6 @@ M_SRC = Set_up/minishell.c \
 		Set_up/signals.c \
 		Set_up/quotes.c \
 		Set_up/checker.c \
-		Lexer/lexer_split.c \
 		Lexer/freeing.c \
 		Parser/parser.c \
 		Parser/parser_command.c \
@@ -33,7 +32,8 @@ M_SRC = Set_up/minishell.c \
 		Executor/processes.c \
 		Executor/builtin.c \
 		Executor/builtin_export.c \
-		Executor/builtin_unset.c
+		Executor/builtin_unset.c \
+		Executor/exitstatus.c
 
 M_SRCS = $(addprefix ./Sources/, $(M_SRC))
 
