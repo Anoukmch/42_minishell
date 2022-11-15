@@ -102,6 +102,24 @@ void	skipquotes(char *quote, char lex)
 		*quote = '\0';
 }
 
+// static int	check_syntax(t_lex *lex)
+// {
+// 	int	i;
+// 	char	quote;
+
+// 	i = 0;
+// 	quote = '\0';
+// 	if (!strcmp(lex->line, ">") || !strcmp(lex->line, "<")
+// 		|| !strcmp(lex->line, ">>") || !strcmp(lex->line, "<<"))
+// 		perror_return_status("")
+// 	while (lex->line[i])
+// 	{
+// 		skipquotes(&quote, lex->line[i]);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
 int	lexer_count_spaces(t_lex *lex)
 {
 	int		i;
@@ -225,8 +243,8 @@ t_lex	*initialize_lex(void)
 		if (isatty(STDERR_FILENO))
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
-			exit (0); //EXIT HERE OR IN MAIN?
 		}
+		// exit (0); //EXIT HERE OR IN MAIN?
 		return (NULL);
 	}
 	else if (!lex->line[0])

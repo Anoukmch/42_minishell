@@ -79,6 +79,7 @@ void	print_lexer(t_lex *lex);
 void	print_parser(t_child **child);
 
 // INIT
+int		check_syntax(t_lex *lex);
 void	count_pipes(t_lex *lex);
 t_lex	*initialize_lex();
 t_child	**initialize_child(t_lex *lex);
@@ -115,7 +116,7 @@ int		processes(t_child *child, t_exec *exec, t_env *env);
 
 // BUILTIN
 int		command_env(t_env *env);
-int		command_path(t_lex *lex, t_child **child, t_env *env);
+int		command_path(t_child *child, t_env *env);
 int		command_echo(t_child *child);
 int		command_cd(t_child *child);
 int		command_pwd();
@@ -130,6 +131,8 @@ char	**get_position_in_env(t_env *env, char *variable);
 // ERROR
 int    perror_return(char *str);
 void    perror_exit_child(char *str);
+void    perror_exit_status(char *str, int status);
+int    perror_return_status(char *str, int status);
 
 void	errorexit(char *message);
 

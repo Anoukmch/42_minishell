@@ -101,10 +101,24 @@ static int	command_not_found(t_child **child, t_env *env, t_lex *lex)
 // *** 2. CHECK ABSOLUTE PATH ***
 // *** 3. FIND PATH FOR COMMAND ***
 // *** 4. PATH NOT FOUND & ENVIRONMENT DISABLED ***
-static int	check_path(t_lex *lex, t_child **child, t_env *env)
+	// if (!ft_strchr(child[lex->iter]->parser_cmd[0], '/')
+	// 	&& (env->envp_path == NULL || env->envp_bis == NULL))
+	// {
+	// 	child[lex->iter]->command = ft_strjoin(getcwd(NULL, 0), "/");
+	// 	child[lex->iter]->command = ft_strjoin(child[lex->iter]->command,
+	// 			child[lex->iter]->parser_cmd[0]);
+	// 	if (!child[lex->iter]->command)
+	// 		return(1);
+	// 	if (access(child[lex->iter]->command, 0) == 0)
+	// 		return (0);
+	// 	return(1);
+	// }
+static int	get_environment_path(t_child **child, t_env *env)
 {
-	if (!ft_strchr(child[lex->iter]->parser_cmd[0], '/')
-		&& (env->envp_path == NULL || env->envp_bis == NULL))
+	int	i;
+
+	i = 0;
+	if (!env->envp_bis && !ft_strchr(child[lex->iter]->parser_cmd[0], '/'))
 	{
 		child[lex->iter]->command = ft_strjoin(getcwd(NULL, 0), "/");
 		child[lex->iter]->command = ft_strjoin(child[lex->iter]->command,
@@ -114,6 +128,41 @@ static int	check_path(t_lex *lex, t_child **child, t_env *env)
 		if (access(child[lex->iter]->command, 0) == 0)
 			return (0);
 		return(1);
+	}
+}
+
+static int	check_path(t_lex *lex, t_child **child, t_env *env)
+{
+
+	while(env->envp_bis[i])
+	{
+		if (!ft_strncmp(env->envp_bis[i], "PATH", 4))
+		{
+			env->envp_line = ft_strchr(env->envp_bis[i], '/'); //PATH FROM OWN ENVIRONMENT
+			break ;
+		}
+		i++;
+	}
+	if (!env->envp_line && !ft_strchr(child[lex->iter]->parser_cmd[0], '/'))
+	{
+		child[lex->iter]->command = ft_strjoin(getcwd(NULL, 0), "/");
+		child[lex->iter]->command = ft_strjoin(child[lex->iter]->command,
+				child[lex->iter]->parser_cmd[0]);
+		if (!child[lex->iter]->command)
+			return(1);
+		if (access(child[lex->iter]->command, 0) == 0)
+			return (0);
+		return(1);
+	}
+	else
+	{
+		env->envp_path = ft_split(env->envp_line, ':');
+		i = 0;
+		while (env->envp_path[i])
+		{
+			env->envp_path[i] = ft_strjoin(env->envp_path[i], "/");
+			i++;
+		}
 	}
 	if (ft_strchr(child[lex->iter]->parser_cmd[0], '/'))
 	{

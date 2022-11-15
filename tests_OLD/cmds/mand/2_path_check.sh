@@ -3,7 +3,7 @@
 # **************************************************************************** #
 
 unset PATH
-# echo $PATH
+echo $PATH
 cat
 ls
 echo 1
@@ -14,28 +14,28 @@ unset PATH
 unset PATH
 unset PATH
 unset PATH
-# echo $PATH
+echo $PATH
 cat
 ls
 echo 1
 /bin/echo 42
 
 export PATH=""
-# echo $PATH
+echo $PATH
 cat
 ls
 echo 1
 /bin/echo 42
 
 export PATH=
-# echo $PATH
+echo $PATH
 cat
 ls
 echo 1
 /bin/echo 42
 
 export PATH=1
-# echo $PATH
+echo $PATH
 cat
 ls
 echo 1

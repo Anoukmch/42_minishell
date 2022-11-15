@@ -2,7 +2,6 @@
 
 # Change if you store the tester in another PATH
 export MINISHELL_PATH=../
-#export MINISHELL_PATH=/Users/jmatheis/Documents/programs/42_minishell
 export EXECUTABLE=minishell
 
 NL=$'\n'

@@ -193,7 +193,7 @@ int	command_export(t_child *child, t_env *env)
 		no_options(env);
 		return (1);
 	}
-	if (invalid_identifier(child->parser_cmd) != 0)
+	if (invalid_identifier(child->parser_cmd))
 		return (1);
 	while (child->parser_cmd[i] && child->parser_cmd)
 	{
