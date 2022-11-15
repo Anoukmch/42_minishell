@@ -28,7 +28,7 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 		// {
 		// 	ft_putstr_fd("exit\n", STDERR_FILENO);
 		// 	exit (0);
-		// }		
+		// }
 		return (1);
 	}
 	while (ft_strncmp(line, temp, (ft_strlen(temp) + 1)))
@@ -169,7 +169,7 @@ void	close_pipe(t_exec *exec, t_child *child)
 void	env_command(t_child *child, t_env *env)
 {
 	if (child->parser_cmd[0] == NULL)
-		perror_exit_child("command not found");
+		perror_exit_child("test");
 	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)
 		perror_exit_child("execve command failed");
 }

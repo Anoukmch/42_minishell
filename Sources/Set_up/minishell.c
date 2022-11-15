@@ -91,7 +91,7 @@ int	main(int ac, char **ag, char **envp)
 			initialize_struct(&child, &exec, lex);
 			if (!parser(lex, child))
 			{
-				if (!executor(lex, child, exec, env))
+				if (!executor(child, exec, env))
 					close_piping(exec);
 			}
 			waitpid(exec->last_pid, &errno, 0);
