@@ -181,16 +181,16 @@ static int	check_path(t_lex *lex, t_child **child, t_env *env)
 
 // CHECK IF BUILT-IN
 // IF NOT BUILT-IN --> CHECK ABSOLUTE PATH/ FIND PATH
-static int	check_commands(t_lex *lex, t_child **child, t_env *env)
+static int	check_commands(t_lex *lex, t_child *child, t_env *env)
 {
-	if (!ft_strcmp(child[lex->iter]->parser_cmd[0], ""))
+	if (!ft_strcmp(child->parser_cmd[0], ""))
 		return (1);
 	if (check_builtins_env(lex, child)
 		|| check_builtins_other(lex, child))
 		return (1);
-	if (child[lex->iter]->command)
-		child[lex->iter]->isbuiltin = true;
-	if (child[lex->iter]->command == NULL)
+	if (child->command)
+		child->isbuiltin = true;
+	if (child->command == NULL)
 	{
 		if (check_path(lex, child, env))
 			return (1);
@@ -199,17 +199,13 @@ static int	check_commands(t_lex *lex, t_child **child, t_env *env)
 }
 
 // CHECK COMMAND OF EVERY PROCESS
-int	command_path(t_lex *lex, t_child **child, t_env *env)
+int	command_path(t_lex *lex, t_child *child, t_env *env)
 {
-	lex->iter = 0;
-	while (child[lex->iter])
+	if (child->parser_cmd[0])
 	{
-		if (child[lex->iter]->parser_cmd[0])
-		{
-			if (check_commands(lex, child, env))
-				return (1);
-		}
-		lex->iter++;
+		if (check_commands(child, env))
+			return (1);
+	}
 	}
 	return (0);
 }

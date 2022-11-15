@@ -28,7 +28,7 @@
 // 		// {
 // 		// 	ft_putstr_fd("exit\n", STDERR_FILENO);
 // 		// 	exit (0);
-// 		// }		
+// 		// }
 // 		return (1);
 // 	}
 // 	while (ft_strncmp(line, temp, (ft_strlen(temp) + 1)))

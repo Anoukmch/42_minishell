@@ -90,23 +90,15 @@ int	main(int ac, char **ag, char **envp)
 		{
 			if (!check_syntax(lex))
 			{
-				add_history(lex->line);
-				initialize_struct(&child, &exec, lex);
-				if (!parser(lex, child))
-				{
-					if (!executor(lex, child, exec, env))
-						close_piping(exec);
-				}
-				waitpid(exec->last_pid, &errno, 0);
-				while (wait(NULL) > 0)
-					continue ;
-				if (WIFEXITED(errno))
-					printf("%d\n", WEXITSTATUS(errno)); /* WEXITSTATUS(child_info) = $? */
-				free_struct(child, exec);
-				free_lex(lex);
+				if (!executor(child, exec, env))
+					close_piping(exec);
 			}
 		}
 		else {
+			free_lex(lex);
+			exit(exit_code);
+		}
+		else
 			free_lex(lex);
 			exit(exit_code);
 		}
