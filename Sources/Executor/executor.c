@@ -1,7 +1,7 @@
 
 #include "../../includes/minishell.h"
 
-int	executort_child **child, t_exec *exec, t_env *env)
+int	executor (t_child **child, t_exec *exec, t_env *env)
 {
 	int	i;
 
