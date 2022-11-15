@@ -79,7 +79,8 @@ int	command_unset(t_child *child, t_env *env)
 		return (0);
 	while (child->parser_cmd[i])
 	{
-		unset_variable(env, child->parser_cmd[i]);
+		if (get_position_in_env(env, child->parser_cmd[i]))
+			unset_variable(env, child->parser_cmd[i]);
 		i++;
 	}
 	return (0);

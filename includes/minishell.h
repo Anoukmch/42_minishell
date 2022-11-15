@@ -91,6 +91,8 @@ int		mark_quotes(char *str, char *before_str);
 
 // SIGNALS
 void	handle_signals(void);
+void	handle_signals_heredoc(void);
+void	signal_for_heredoc(int signum);
 
 // LEXER
 char	**create_lexer_string(t_lex *lex);

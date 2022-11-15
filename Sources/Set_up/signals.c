@@ -14,10 +14,53 @@ static void	control_c(int signum)
 		rl_redisplay();
 		exit_code = 1;
 	}
-// 	else if (signum == SIGABRT)
-// 		errorexit("CTRL-D");
 }
 
+void	control_c_heredoc(int signum)
+{
+	if (signum == SIGINT)
+	{
+		close(STDIN_FILENO); //Handlen, nicht shell schliessen
+		// auf alten STDIN setzen
+		ft_putstr_fd("\n", STDERR_FILENO);
+		exit_code = 1;
+	}
+}
+
+void	handle_signals_heredoc(void)
+{
+	struct sigaction	sa;
+	struct termios		te;
+
+	tcgetattr(0, &te);
+	te.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &te);
+	sa.sa_handler = &control_c_heredoc;
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+}
+
+void	handle_signals(void)
+{
+	struct sigaction	sa;
+	struct termios		te;
+
+	tcgetattr(0, &te);
+	te.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &te);
+	sa.sa_handler = &control_c;
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+}
+
+
+// void	signal_ctlc_heredoc(int sig)
+// {
+// 	if (sig == SIGINT)
+// 	{
+// 		close(STDIN_FILENO);
+// 		write(STDERR_FILENO, "\n", 1);
+// 	}
 /*
 	ECHOCTL: controls characters with '^'?  echo control chars as ^(Char)
 	followed by the corresponding text character
@@ -34,15 +77,3 @@ static void	control_c(int signum)
 	SIGABRT --> CTRL-BACKSLASH
 	SIGQUIT --> CTRL-D
 */
-void	handle_signals(void)
-{
-	struct sigaction	sa;
-	struct termios		te;
-
-	tcgetattr(0, &te);
-	te.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &te);
-	sa.sa_handler = &control_c;
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-}

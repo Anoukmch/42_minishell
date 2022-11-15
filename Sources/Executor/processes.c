@@ -4,13 +4,68 @@
 // exec->heredoc = 1 --> QUOTES --> no expansion of variables
 // exec->heredoc = 0 --> NO QUOTES --> expansion of variables
 // DELETE QUOTES & STORE INFORMATION SOMEWHERE
+// int	here_doc(char *limiter, int i, int nbr_elements)
+// {
+// 	int		file;
+// 	char	*line;
+// 	char	*temp;
+
+// 	line = NULL;
+// 	file = open("heredoc", O_CREAT | O_WRONLY
+// 			| O_TRUNC, 0644);
+// 	if (file < 0)
+// 		return (1);
+// 	// if (child[k]-->heredoc_quotes == 0)
+// 	//  expand variables in heredoc
+// 	// if (child[k]-->heredoc_quotes == 1)
+// 	//  DO NOT expand variables in heredoc
+// 	temp = ft_strjoin(limiter, "\n");
+// 	ft_printf("Heredoc>");
+// 	line = get_next_line(STDIN_FILENO);
+// 	if (!line)
+// 	{
+// 		// if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+// 		// {
+// 		// 	ft_putstr_fd("exit\n", STDERR_FILENO);
+// 		// 	exit (0);
+// 		// }		
+// 		return (1);
+// 	}
+// 	while (ft_strncmp(line, temp, (ft_strlen(temp) + 1)))
+// 	{
+// 		if (i == nbr_elements - 2)
+// 			ft_putstr_fd(line, file);
+// 		free(line);
+// 		ft_printf("Heredoc>");
+// 		line = get_next_line(STDIN_FILENO);
+// 		if (!line)
+// 		{
+// 			// if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+// 			// {
+// 			// 	ft_putstr_fd("exit\n", STDERR_FILENO);
+// 			// 	exit (0);
+// 			// }
+// 			return (1);
+// 		}
+// 	}
+// 	free(line);
+// 	free(temp);
+// 	close(file);
+// 	if (i < nbr_elements - 2)
+// 		unlink("heredoc");
+// 	return (0);
+// }
+
 int	here_doc(char *limiter, int i, int nbr_elements)
 {
 	int		file;
 	char	*line;
 	char	*temp;
+	int		set_stdin_back;
 
 	line = NULL;
+	// what happens if we don't have permissions for heredoc or
+	// heredoc exists?
 	file = open("heredoc", O_CREAT | O_WRONLY
 			| O_TRUNC, 0644);
 	if (file < 0)
@@ -20,33 +75,23 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 	// if (child[k]-->heredoc_quotes == 1)
 	//  DO NOT expand variables in heredoc
 	temp = ft_strjoin(limiter, "\n");
-	ft_printf("Heredoc>");
-	line = get_next_line(STDIN_FILENO);
-	if (!line)
-	{
-		// if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
-		// {
-		// 	ft_putstr_fd("exit\n", STDERR_FILENO);
-		// 	exit (0);
-		// }		
-		return (1);
-	}
+	set_stdin_back = dup(STDIN_FILENO);
 	while (ft_strncmp(line, temp, (ft_strlen(temp) + 1)))
 	{
+		handle_signals_heredoc(); //closing stdin --> closing readline
 		if (i == nbr_elements - 2)
 			ft_putstr_fd(line, file);
 		free(line);
-		ft_printf("Heredoc>");
-		line = get_next_line(STDIN_FILENO);
-		if (!line)
+		line = readline("Heredoc> ");
+		if (!line) //ctrl c & ctrl d give NULL back
 		{
-			// if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
-			// {
-			// 	ft_putstr_fd("exit\n", STDERR_FILENO);
-			// 	exit (0);
-			// }
+			dup2(set_stdin_back, STDIN_FILENO); //set stdin back --> minishell is not closed
+			close(set_stdin_back);
+			if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
+				break ;
 			return (1);
 		}
+		line = ft_strjoin(line, "\n");
 	}
 	free(line);
 	free(temp);
@@ -168,8 +213,15 @@ void	close_pipe(t_exec *exec, t_child *child)
 
 void	env_command(t_child *child, t_env *env)
 {
-	if (child->parser_cmd[0] == NULL)
+	if (child->parser_cmd[0] == NULL) //no comment exists
+	{
+		// perror_exit_child("command not found");
+		exit (0);
+	}
+	else if(!ft_strcmp(child->parser_cmd[0], "\0")) //empty string ""
+	{
 		perror_exit_child("command not found");
+	}
 	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)
 		perror_exit_child("execve command failed");
 }
