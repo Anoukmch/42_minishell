@@ -20,7 +20,7 @@ char	*add_quotes(char *adding)
 	tmp = NULL;
 	tmp = ft_calloc(ft_strlen(adding) + 3, sizeof(char));
 	if (tmp == NULL)
-		return (NULL); /* Change that */
+		return (NULL);
 	while (adding[i] != '\0')
 	{
 		if (adding[j] == '=')
@@ -50,16 +50,16 @@ int	no_options(t_env *env)
 		i++;
 	export = ft_calloc(i + 1, sizeof(char *));
 	if (export == NULL)
-		return (perror_return("ALLOC ERROR"));
+		return (1);
 	i = 0;
 	while (env->envp_bis[i])
 	{
 		if (ft_strchr(env->envp_bis[i], '=') != NULL)
-		{
 			export[i] = add_quotes(env->envp_bis[i]);
-		}
 		else
-			export[i] = ft_strdup(env->envp_bis[i]);
+			export[i] = ft_strdup(env->envp_bis[i]); /* Check that */
+		if (!export[i])
+			return (1);
 		ft_printf("declare -x ");
 		ft_printf("%s\n", export[i]);
 		i++;
@@ -80,22 +80,12 @@ static int	invalid_identifier(char **cmd)
 		while (cmd[i][j] != '\0')
 		{
 			if (cmd[i][0] == '=')
-			{
-				ft_putstr_fd("export: '", 2);
-				ft_putstr_fd(cmd[i], 2);
-				ft_putstr_fd("': not a valid identifier\n", 2);
-				return (1);
-			}
+				perror_return_status("export: not a valid identifier\n", 1);
 			if (ft_isdigit(cmd[i][0]) != 0
 				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_'
 				&& cmd[i][j] != '='
 				&& cmd[i][j] != 39 && cmd[i][j] != '"'))
-			{
-				ft_putstr_fd("export: '", 2);
-				ft_putstr_fd(cmd[i], 2);
-				ft_putstr_fd("': not a valid identifier\n", 2);
-				return (1);
-			}
+				perror_return_status("export: not a valid identifier\n", 1);
 			j++;
 		}
 		j = 0;
@@ -114,19 +104,28 @@ char	**add_variable(t_env *env, char *variablename, char *content)
 	size = doublepoint_size(env->envp_bis);
 	new = ft_calloc(size + 2, sizeof(char *));
 	if (new == NULL)
-		return (NULL); /* Change that */
+		return (NULL);
 	i = 0;
 	while (env->envp_bis[i])
 	{
 		new[i] = ft_strdup(env->envp_bis[i]);
+		if (!new[i])
+			return (NULL);
 		i++;
 	}
 	if (content == NULL)
 		new[size] = ft_strdup(variablename);
+		if (!new[size])
+			return (NULL);
 	else
 	{
 		new[size] = ft_strjoin(variablename, "=");
+		if (!new[size])
+			return (NULL);
+		free(new[size]);
 		new[size] = ft_strjoin(new[size], content);
+		if (!new[size])
+			return (NULL);
 	}
 	size++;
 	new[size] = NULL;
@@ -135,7 +134,7 @@ char	**add_variable(t_env *env, char *variablename, char *content)
 }
 
 // UDPATE VARIABLE
-static void	export_variable(char *str, t_env *env)
+int	export_variable(char *str, t_env *env)
 {
 	char	*variable;
 	int		len;
@@ -152,15 +151,20 @@ static void	export_variable(char *str, t_env *env)
 		{
 			free (env->envp_bis[i]);
 			env->envp_bis[i] = ft_strdup(variable);
-			return ;
+			if (!env->envp_bis[i])
+				return (1);
+			return (0);
 		}
 		i++;
 	}
 	env->envp_bis = add_variable (env, variable, NULL);
+	if (!env->envp_bis)
+		return (1);
+	return (0);
 }
 
 // UPDATE VARIABLE
-static void	env_variable(char *str, t_env *env)
+int	env_variable(char *str, t_env *env)
 {
 	char	*variablename;
 	char	*content;
@@ -173,6 +177,8 @@ static void	env_variable(char *str, t_env *env)
 			ft_strlen(str) - ft_strlen(ft_strchr(str, '=')));
 	content = ft_substr(str, ft_strlen(variablename) + 1,
 			ft_strlen(ft_strchr(str, '=')) + 1);
+	if (!content || !variablename)
+		return (1);
 	if (ft_strlen(content) == 0)
 		content = "";
 	while (env->envp_bis[i])
@@ -180,14 +186,22 @@ static void	env_variable(char *str, t_env *env)
 		if (ft_strncmp(env->envp_bis[i], variablename,
 				ft_strlen(variablename)) == 0)
 		{
-			free (env->envp_bis[i]);
+			free(env->envp_bis[i]);
 			env->envp_bis[i] = ft_strjoin(variablename, "=");
+			if (!env->envp_bis[i])
+				return (1);
+			free(env->envp_bis[i]);
 			env->envp_bis[i] = ft_strjoin(env->envp_bis[i], content);
-			return ;
+			if (!env->envp_bis[i])
+				return (1);
+			return (0);
 		}
 		i++;
 	}
 	env->envp_bis = add_variable(env, variablename, content);
+	if (!env->envp_bis)
+		return (1);
+	return (0);
 }
 
 //cmd[0] = "export";
@@ -199,17 +213,25 @@ int	command_export(t_child *child, t_env *env)
 	i = 1;
 	if (child->parser_cmd[i] == NULL)
 	{
-		no_options(env);
-		return (1);
+		if (no_options(env))
+			return (1);
+		return (0);
 	}
-	if (invalid_identifier(child->parser_cmd) != 0)
-		return (1);
 	while (child->parser_cmd[i] && child->parser_cmd)
 	{
-		if (ft_strchr(child->parser_cmd[i], '=') != NULL)
-			env_variable(child->parser_cmd[i], env);
-		else
-			export_variable(child->parser_cmd[i], env);
+		if (!invalid_identifier(child->parser_cmd))
+		{
+			if (ft_strchr(child->parser_cmd[i], '=') != NULL)
+			{
+				if (env_variable(child->parser_cmd[i], env))
+					return (1);
+			}
+			else
+			{
+				if (export_variable(child->parser_cmd[i], env))
+					return (1);
+			}
+		}
 		i++;
 	}
 	return (0);

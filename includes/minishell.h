@@ -78,6 +78,13 @@ typedef struct s_env
 void	print_lexer(t_lex *lex);
 void	print_parser(t_child **child);
 
+// FREE
+void	free_lex(t_lex	*lex);
+void	close_piping(t_exec	*exec);
+void	free_struct(t_child	**child, t_exec	*exec);
+void	free_array(char **array);
+void	free_env(t_env	*env);
+
 // INIT
 int		check_syntax(t_lex *lex);
 void	count_pipes(t_lex *lex);
@@ -98,8 +105,6 @@ void	signal_for_heredoc(int signum);
 char	**create_lexer_string(t_lex *lex);
 char	**split_lexer(char const *s, char c);
 void	errorexit(char *message);
-// LEXER FREEING
-void	free_array(char **array);
 
 // PARSER
 int		parser(t_lex *lex, t_child	**child);

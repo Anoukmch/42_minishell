@@ -15,6 +15,7 @@ M_SRC = Set_up/minishell.c \
 		Set_up/quotes.c \
 		Set_up/checker.c \
 		Set_up/syntax.c \
+		Set_up/free_program.c \
 		Parser/parser.c \
 		Parser/parser_command.c \
 		Parser/parser_redirection.c \

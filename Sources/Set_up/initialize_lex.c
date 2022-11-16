@@ -1,5 +1,7 @@
 #include "../../includes/minishell.h"
 
+static char	*minishell_gnl_free_line(char *line);
+
 // ***** FOR MINISHELL TESTER *****
 static char	*str_append_chr(char *str, char append)
 {
@@ -23,8 +25,6 @@ static char	*str_append_chr(char *str, char append)
 	free(str);
 	return (new_str);
 }
-
-static char	*minishell_gnl_free_line(char *line);
 
 char	*minishell_get_next_line(int fd)
 {

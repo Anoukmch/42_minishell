@@ -2,57 +2,6 @@
 
 int	g_exit_code = 0;
 
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
-		free(array[i++]);
-	free(array);
-}
-
-void	free_struct(t_child	**child, t_exec	*exec)
-{
-	int	i;
-
-	i = 0;
-	if (child)
-	{
-		while (child[i])
-		{
-			free_array(child[i]->parser_cmd);
-			free_array(child[i]->parser_redirect_input);
-			free_array(child[i]->parser_redirect_output);
-			free(child[i]->command);
-			free(child[i]);
-			i++;
-		}
-		free(child);
-	}
-	if (exec)
-		free(exec);
-}
-
-void	close_piping(t_exec	*exec)
-{
-	if (exec->nbr_process > 1)
-	{
-		close(exec->end[0]);
-		close(exec->end[1]);
-	}
-}
-
-void	free_lex(t_lex	*lex)
-{
-	free(lex->line);
-	free(lex->line2);
-	free_array(lex->lexer);
-	free(lex);
-}
-
 void	initialize_struct(t_child	***child, t_exec **exec, t_lex *lex)
 {
 	*child = initialize_child(lex);
@@ -73,14 +22,15 @@ int	main(int ac, char **ag, char **envp)
 	t_env	*env;
 
 	if (ac != 1 || !ag[0])
-		return (1); /* Change that */
+		return (perror_return("Wrong number of argument"));
 	signal(SIGQUIT, SIG_IGN);
 	env = initialize_env(envp);
+	if (!env)
+		return (perror_return("Check initalization structures"));
 	while (1)
 	{
 		handle_signals();
 		lex = initialize_lex();
-		// print_lexer(lex);
 		if (lex)
 		{
 			if (!check_syntax(lex)) /* where is the parser and initialize ? */
@@ -104,10 +54,7 @@ int	main(int ac, char **ag, char **envp)
 		else
 			exit(g_exit_code);
 	}
-	free_array(env->envp_bis);
-	free_array(env->envp_path);
-	free(env->envp_line);
-	free(env);
+	free_env(env);
 	return (0);
 }
 

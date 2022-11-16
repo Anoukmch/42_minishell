@@ -118,7 +118,7 @@ void	close_pipe(t_exec *exec, t_child *child)
 void	env_command(t_child *child, t_env *env)
 {
 	if (child->command == NULL)
-		exit(127); /* Is it necessary to print a msg ? */
+		perror_exit_status(NULL, 127); /* Is it necessary to print a msg ? */
 	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)
 		perror_exit_child("execve command failed");
 }

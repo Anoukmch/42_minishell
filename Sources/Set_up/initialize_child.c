@@ -16,33 +16,56 @@ static void	count_processes(t_lex *lex)
 	lex->no_processes = c + 1;
 }
 
-static void	init_cmds(t_lex *lex, t_child **child, int k)
+static void	init_cmds(t_lex *lex, t_child *child)
 {
-	child[k]->no_cmd_opt = 0;
-	child[k]->input_counter = 0;
-	child[k]->output_counter = 0;
+	child->no_cmd_opt = 0;
+	child->input_counter = 0;
+	child->output_counter = 0;
 	while (lex->lexer[lex->iter]
 		&& ft_strncmp(lex->lexer[lex->iter], "|", 2) != 0)
 	{
 		if (ft_strncmp(lex->lexer[lex->iter], "<", 2) == 0
 			|| ft_strncmp(lex->lexer[lex->iter], "<<", 3) == 0)
 		{
-			child[k]->input_counter += 2;
+			child->input_counter += 2;
 			lex->iter += 2;
 		}
 		else if (ft_strncmp(lex->lexer[lex->iter], ">", 2) == 0
 			|| ft_strncmp(lex->lexer[lex->iter], ">>", 3) == 0)
 		{
-			child[k]->output_counter += 2;
+			child->output_counter += 2;
 			lex->iter += 2;
 		}
 		else
 		{
-			child[k]->no_cmd_opt++;
+			child->no_cmd_opt++;
 			lex->iter++;
 		}
 	}
 	lex->iter++;
+}
+
+t_child *init_single_child(t_lex *lex, t_child *child, int k)
+{
+	child = ft_calloc(1, sizeof(t_child));
+	if (child == NULL)
+		return (NULL);
+	init_cmds(lex, child);
+	child->parser_cmd
+		= ft_calloc(child->no_cmd_opt + 1, sizeof(char *));
+	child->parser_redirect_input
+		= ft_calloc(child->input_counter + 1, sizeof(char *));
+	child->parser_redirect_output
+		= ft_calloc(child->output_counter + 1, sizeof(char *));
+	if (child->parser_redirect_output == NULL
+		|| child->parser_redirect_input == NULL
+		|| child->parser_cmd == NULL)
+		return (NULL);
+	child->command = NULL;
+	child->fd_in = -1;
+	child->fd_out = -1;
+	child->id = k;
+	return (child);
 }
 
 t_child	**initialize_child(t_lex *lex)
@@ -58,24 +81,9 @@ t_child	**initialize_child(t_lex *lex)
 	lex->iter = 0;
 	while (k < lex->no_processes)
 	{
-		child[k] = ft_calloc(1, sizeof(t_child));
-		if (child[k] == NULL)
+		child[k] = init_single_child(lex, child[k], k);
+		if (!child[k])
 			return (NULL);
-		init_cmds(lex, child, k);
-		child[k]->parser_cmd
-			= ft_calloc(child[k]->no_cmd_opt + 1, sizeof(char *));
-		child[k]->parser_redirect_input
-			= ft_calloc(child[k]->input_counter + 1, sizeof(char *));
-		child[k]->parser_redirect_output
-			= ft_calloc(child[k]->output_counter + 1, sizeof(char *));
-		if (child[k]->parser_redirect_output == NULL
-			|| child[k]->parser_redirect_input == NULL
-			|| child[k]->parser_cmd == NULL)
-			return (NULL);
-		child[k]->command = NULL;
-		child[k]->fd_in = -1;
-		child[k]->fd_out = -1;
-		child[k]->id = k;
 		k++;
 	}
 	child[lex->no_processes] = NULL;

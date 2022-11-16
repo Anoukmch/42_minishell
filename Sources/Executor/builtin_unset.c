@@ -11,25 +11,13 @@ static int	invalid_identifier(char **cmd)
 	while (cmd && cmd[i])
 	{
 		if (cmd[i][j] == '\0')
-		{
-			// perror_return_status("unset: not a valid identifier\n", 1);
-			ft_putstr_fd("unset: '", 2);
-			ft_putstr_fd(cmd[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			return (1);
-		}
+			perror_return_status("unset: not a valid identifier\n", 1); /* Check */
 		while (cmd[i][j])
 		{
 			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
 				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_'
 					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
-			{
-				// perror_return_status("unset: not a valid identifier\n", 1);
-				ft_putstr_fd("unset: '", 2);
-				ft_putstr_fd(cmd[i], 2);
-				ft_putstr_fd("': not a valid identifier\n", 2);
-				return (1);
-			}
+				perror_return_status("unset: not a valid identifier\n", 1); /* Check */
 			j++;
 		}
 		j = 0;
@@ -62,7 +50,7 @@ void	unset_variable(t_env *env, char *str)
 
 	j = 0;
 	tmp = get_position_in_env(env, str);
-	if (tmp[0] != NULL)
+	if (tmp)
 	{
 		free(tmp[j]);
 		j++;
@@ -82,12 +70,14 @@ int	command_unset(t_child *child, t_env *env)
 	i = 1;
 	if (child->parser_cmd[i] == NULL)
 		return (0);
-	if (invalid_identifier(child->parser_cmd))
-		return (1);
 	while (child->parser_cmd[i])
 	{
-		if (get_position_in_env(env, child->parser_cmd[i]))
-			unset_variable(env, child->parser_cmd[i]);
+		if (!invalid_identifier(child->parser_cmd))
+		{
+			if (get_position_in_env(env, child->parser_cmd[i]))
+				unset_variable(env, child->parser_cmd[i]);
+
+		}
 		i++;
 	}
 	return (0);

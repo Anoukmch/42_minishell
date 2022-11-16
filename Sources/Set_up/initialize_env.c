@@ -21,7 +21,7 @@ static char	**init_environment(char **envp, t_env *env)
 	{
 		env->envp_bis = ft_calloc(3 + 1, sizeof(char *));
 		if (env->envp_bis == NULL)
-			return (NULL); /* Change that */
+			return (NULL);
 		env->envp_bis[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
 		env->envp_bis[1] = ft_strdup("SHLVL=1");
 		env->envp_bis[2] = ft_strdup("_=/usr/bin/env");
@@ -31,7 +31,7 @@ static char	**init_environment(char **envp, t_env *env)
 	{
 		env->envp_bis = ft_calloc(size + 1, sizeof(char *));
 		if (env->envp_bis == NULL)
-			return (NULL); /* Change that */
+			return (NULL);
 		while (envp[i])
 		{
 			env->envp_bis[i] = ft_strdup(envp[i]);
@@ -48,7 +48,7 @@ t_env	*initialize_env(char **envp)
 
 	env = ft_calloc(1, sizeof(t_env));
 	if (env == NULL)
-		return (NULL); /* Change that */
+		return (NULL);
 	env->envp_line = NULL;
 	env->envp_path = NULL;
 	env->envp_bis = init_environment(envp, env);
