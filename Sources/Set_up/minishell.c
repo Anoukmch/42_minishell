@@ -103,6 +103,8 @@ int	main(int ac, char **ag, char **envp)
 				free_lex(lex);
 			}
 		}
+		else
+			exit(exit_code);
 	}
 	free_array(env->envp_bis);
 	free_array(env->envp_path);

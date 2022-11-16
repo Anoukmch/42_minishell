@@ -1,6 +1,1 @@
-bash: line 3: tmp_x_file1: command not found
-bash: line 5: ./tmp_x_file1: Permission denied
-bash: line 9: tmp_x_file1: command not found
-bash: line 11: ./tmp_x_file1: Permission denied
-bash: line 14: tmp_x_file1: Permission denied
-bash: line 16: ./tmp_x_file1: Permission denied
+bash: line 2: export: `=============123': not a valid identifier

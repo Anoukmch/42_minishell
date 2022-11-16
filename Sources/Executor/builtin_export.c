@@ -78,9 +78,16 @@ static int	invalid_identifier(char **cmd)
 	{
 		while (cmd[i][j] != '\0')
 		{
-			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
+			if (cmd[i][0] == '=')
+			{
+				ft_putstr_fd("export: '", 2);
+				ft_putstr_fd(cmd[i], 2);
+				ft_putstr_fd("': not a valid identifier\n", 2);
+				return (1);
+			}
+			if (ft_isdigit(cmd[i][0]) != 0
 				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_'
-				&& cmd[i][j] != ' ' && cmd[i][j] != '='
+				&& cmd[i][j] != '='
 				&& cmd[i][j] != 39 && cmd[i][j] != '"'))
 			{
 				ft_putstr_fd("export: '", 2);
@@ -193,7 +200,7 @@ int	command_export(t_child *child, t_env *env)
 		no_options(env);
 		return (1);
 	}
-	if (invalid_identifier(child->parser_cmd))
+	if (invalid_identifier(child->parser_cmd) != 0)
 		return (1);
 	while (child->parser_cmd[i] && child->parser_cmd)
 	{
