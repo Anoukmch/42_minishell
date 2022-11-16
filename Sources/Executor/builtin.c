@@ -156,15 +156,15 @@ int	command_exit(t_child *child, t_exec *exec)
 
 	i = 0;
 	status = 0;
-	if (exec->nbr_process == 1)
-		printf("exit\n");
+	if (exec->nbr_process == 1 && isatty(STDIN_FILENO))
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (child->parser_cmd[1])
 	{
 		if (is_only_digits(child->parser_cmd[1]) || child->parser_cmd[1][0] == '\0')
-			perror_exit_child("exit: numeric argument required"); /* Exit code must be 255, check it */
+			perror_exit_status("exit: numeric argument required", 255); /* Exit code must be 255, check it */
 		istoobig = ft_atoilong(&buffer, child->parser_cmd[1]);
 		if (istoobig == true)
-			perror_exit_child("exit: numeric argument required"); /* Exit code must be 255, check it */
+			perror_exit_status("exit: numeric argument required", 255); /* Exit code must be 255, check it */
 		status = buffer % 256;
 		if (child->no_cmd_opt > 2)
 		{

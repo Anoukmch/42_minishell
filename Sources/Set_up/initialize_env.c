@@ -39,17 +39,6 @@ static char	**init_environment(char **envp, t_env *env)
 			i++;
 		}
 		env->envp_bis[i] = NULL;
-		env->envp_line = getenv("PATH");
-		env->envp_path = ft_split(env->envp_line, ':');
-		if (!env->envp_path)
-			errorexit("check initializiation of exec->envp_path");
-		i = 0;
-		while (env->envp_path[i])
-		{
-			free(env->envp_path[i]);
-			env->envp_path[i] = ft_strjoin(env->envp_path[i], "/");
-			i++;
-		}
 	}
 	return (env->envp_bis);
 }

@@ -10,14 +10,21 @@ static int	invalid_identifier(char **cmd)
 	j = 0;
 	while (cmd && cmd[i])
 	{
-		if (cmd[i][0] == '\0')
-			printf("unset: '%s': not a valid identifier\n", cmd[i]);
-		while (cmd[i][j] != '\0')
+		if (cmd[i][j] == '\0')
+		{
+			// perror_return_status("unset: not a valid identifier\n", 1);
+			ft_putstr_fd("unset: '", 2);
+			ft_putstr_fd(cmd[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			return (1);
+		}
+		while (cmd[i][j])
 		{
 			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
 				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_'
 					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
 			{
+				// perror_return_status("unset: not a valid identifier\n", 1);
 				ft_putstr_fd("unset: '", 2);
 				ft_putstr_fd(cmd[i], 2);
 				ft_putstr_fd("': not a valid identifier\n", 2);
@@ -75,8 +82,8 @@ int	command_unset(t_child *child, t_env *env)
 	i = 1;
 	if (child->parser_cmd[i] == NULL)
 		return (0);
-	if (invalid_identifier(child->parser_cmd) != 0)
-		return (0);
+	if (invalid_identifier(child->parser_cmd))
+		return (1);
 	while (child->parser_cmd[i])
 	{
 		if (get_position_in_env(env, child->parser_cmd[i]))

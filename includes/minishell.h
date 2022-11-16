@@ -79,6 +79,7 @@ void	print_lexer(t_lex *lex);
 void	print_parser(t_child **child);
 
 // INIT
+int		check_syntax(t_lex *lex);
 void	count_pipes(t_lex *lex);
 t_lex	*initialize_lex();
 t_child	**initialize_child(t_lex *lex);
@@ -131,7 +132,8 @@ char	**get_position_in_env(t_env *env, char *variable);
 // ERROR
 int    perror_return(char *str);
 void    perror_exit_child(char *str);
-int    perror_return_zero(char *str);
+void    perror_exit_status(char *str, int status);
+int    perror_return_status(char *str, int status);
 
 void	errorexit(char *message);
 

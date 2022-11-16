@@ -14,6 +14,7 @@ M_SRC = Set_up/minishell.c \
 		Set_up/signals.c \
 		Set_up/quotes.c \
 		Set_up/checker.c \
+		Set_up/syntax.c \
 		Lexer/freeing.c \
 		Parser/parser.c \
 		Parser/parser_command.c \

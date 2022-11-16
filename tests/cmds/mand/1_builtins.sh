@@ -103,10 +103,6 @@ cd ../../..
 pwd
 
 pwd
-cd "wtf" 2>/dev/null
-pwd
-
-pwd
 cd ..
 cd ..
 pwd
@@ -311,9 +307,9 @@ exit --12560
 
 exit 255
 
-exit 1 2
+exit 1 2 #CHECK
 
-exit 1 2 3
+exit 1 2 3 #CHECK "too many arguments"
 
 exit A
 

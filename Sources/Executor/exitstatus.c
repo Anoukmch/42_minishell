@@ -13,12 +13,17 @@ int    perror_return(char *str)
 	return (1);
 }
 
-int    perror_return_zero(char *str)
+void    perror_exit_status(char *str, int status)
 {
     perror(str);
-	return (0);
+    exit(status);
 }
 
+int    perror_return_status(char *str, int status)
+{
+    perror(str);
+	return (status);
+}
 // void	exit_status(t_child **child)
 // {
 	// int i;
