@@ -20,6 +20,7 @@ int	main(int ac, char **ag, char **envp)
 	t_child	**child;
 	t_exec	*exec;
 	t_env	*env;
+	int		tmp;
 
 	if (ac != 1 || !ag[0])
 		return (perror_return("Wrong number of argument"));
@@ -42,11 +43,11 @@ int	main(int ac, char **ag, char **envp)
 					if (!executor(child, exec, env))
 						close_piping(exec);
 				}
-				waitpid(exec->last_pid, &g_exit_code, 0);
-				// while (wait(&tmp) > 0)
-				// 	continue ;
-				// if (WIFEXITED(tmp))
-				// 	main_truct.g_exit_code = WEXITSTATUS(tmp); /* WEXITSTATUS(child_info) = $? */
+				//waitpid(exec->last_pid, &tmp, 0);
+				while (wait(&tmp) > 0)
+					continue ;
+				if (WIFEXITED(tmp))
+					g_exit_code = WEXITSTATUS(tmp); /* WEXITSTATUS(child_info) = $? */
 				free_struct(child, exec);
 				free_lex(lex);
 			}

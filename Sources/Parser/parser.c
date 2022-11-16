@@ -106,13 +106,14 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 			var[e++] = lex_string[env->c2++];
 		var[e] = '\0';
 		all_env_var = is_variable_in_env(var, env);
-		size = size + size_env_var(all_env_var, NULL);
+		if (all_env_var)
+			size = size + size_env_var(all_env_var, NULL);
 		free(var);
 		env->c1 = env->c2;
 		k++;
 	}
+	printf("size : %d\n", size + j);
 	return (size + j);
-	return (-1);
 }
 
 int	nbr_dollar_sign(char *lex_string)
@@ -158,7 +159,7 @@ char	*handle_var(char *lex_string, t_env *env)
 	else
 	{
 		sizearg = size_new_arg(lex_string, count, env);
-		if (sizearg == -1)
+		if (sizearg == 0)
 			return (NULL);
 		new_arg = ft_calloc((sizearg + 1), sizeof(char));
 		if (!new_arg)
@@ -190,14 +191,16 @@ char	*handle_var(char *lex_string, t_env *env)
 			printf("var : %s\n", var);
 			all_env_var = is_variable_in_env(var, env);
 			printf("all_env_var : %s\n", all_env_var);
-			env_var = fill_env_var(all_env_var);
-			if (!env_var)
-				return (NULL);
-			printf("env_var : %s\n", env_var);
-			i = 0;
-			while (env_var[i])
-				new_arg[env->c3++] = env_var[i++];
-			printf("new : %s\n", new_arg);
+			if (all_env_var)
+			{
+				env_var = fill_env_var(all_env_var);
+				if (!env_var)
+					return (NULL);
+				i = 0;
+				while (env_var[i])
+					new_arg[env->c3++] = env_var[i++];
+				free(env_var);
+			}
 			free(var);
 			env->c1 = env->c2;
 			jsp++;
@@ -213,12 +216,31 @@ char	*handle_var(char *lex_string, t_env *env)
 int	expand_variable(t_lex *lex, t_env *env)
 {
 	int	i;
+	int	j;
+	int	size;
+	char	*tmp;
 
+	size = 0;
 	i = 0;
+	j = 0;
 	while (lex->lexer[i])
 	{
-		/* Remplacer les -2 "alone" par des $ */
-		if (ft_strchr(lex->lexer[i], -2) != NULL)
+		size = ft_strlen(lex->lexer[i]);
+		if (lex->lexer[i][size - 1] == -2)
+			lex->lexer[i][size - 1] = '$';
+		if (lex->lexer[i][0] == -2 && lex->lexer[i][1] == '?' && !lex->lexer[i][2])
+		{
+			printf("exit code : %d\n", g_exit_code);
+			tmp = ft_itoa(g_exit_code);
+			if (!tmp)
+				return (1);
+			free(lex->lexer[i]);
+			lex->lexer[i] = ft_strdup(tmp);
+			if (!lex->lexer[i])
+				return (1);
+			free(tmp);
+		}
+		else if (ft_strchr(lex->lexer[i], -2) != NULL)
 			lex->lexer[i] = handle_var(lex->lexer[i], env);
 		i++;
 	}
@@ -274,7 +296,8 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 		}
 		k++;
 	}
-	expand_variable(lex, env);
+	if (expand_variable(lex, env))
+		return (1);
 	if (parse_commands(lex, child))
 		return (1);
 	if (parser_redirection(lex, child))
