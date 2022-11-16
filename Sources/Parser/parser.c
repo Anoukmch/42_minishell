@@ -1,6 +1,11 @@
 
 #include "../../includes/minishell.h"
 
+int	expand_variable()
+{
+	return (0);
+}
+
 int	parser(t_lex *lex, t_child	**child)
 {
 	int	i;
@@ -45,7 +50,7 @@ int	parser(t_lex *lex, t_child	**child)
 		}
 		k++;
 	}
-	/* expand */
+	expand_variable();
 	if (parse_commands(lex, child))
 		return (1);
 	if (parser_redirection(lex, child))
