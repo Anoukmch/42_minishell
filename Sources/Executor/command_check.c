@@ -55,21 +55,24 @@ static int	check_builtins_env(t_child *child)
 }
 
 // *** CHECK ABSOLUTE PATH ***
-static void	check_existing_path(t_env *env, t_child *child)
+static int	check_existing_path(t_env *env, t_child *child)
 {
 	if (env->envp_bis == NULL || env->envp_path == NULL
 		|| ft_strchr(child->parser_cmd[0], '/') != NULL)
 	{
 		child->command = ft_strdup(child->parser_cmd[0]);
+		if (!child->command)
+			return (1);
 		if (access(child->command, 0) == 0)
-			return ;
+			return (0);
 		else
 			child->command = NULL;
 	}
+	return (0);
 }
 
 // *** FIND PATH TO COMMAND ***
-static void	find_command_path(t_env *env, t_child *child)
+static int	find_command_path(t_env *env, t_child *child)
 {
 	int	i;
 
@@ -79,14 +82,15 @@ static void	find_command_path(t_env *env, t_child *child)
 		child->command = ft_strjoin(env->envp_path[i],
 				child->parser_cmd[0]);
 		if (!child->command)
-			return ;
+			return (1);
 		if (access(child->command, 0) == 0)
-			return ;
+			return (0);
 		free(child->command);
 		i++;
 	}
 	perror(NULL);
 	child->command = NULL;
+	return (0);
 }
 
 // *** NO PATH FOUND OR ENVIRONMENT DISABLED ***
@@ -156,7 +160,8 @@ static int	check_path(t_child *child, t_env *env)
 		return (1);
 	if (!child->command && ft_strchr(child->parser_cmd[0], '/'))
 	{
-		check_existing_path(env, child);
+		if (check_existing_path(env, child))
+			return (1);
 		if (!child->command)
 		{
 			perror_return_status("no absolute path", 127);
@@ -183,18 +188,23 @@ static int	check_path(t_child *child, t_env *env)
 		return (0); //path of command not found environment disabled
 	}	 //path of command not found -> path unset
 	env->envp_path = ft_split(env->envp_line, ':');
+	if (!env->envp_path)
+		return (1);
 	i = 0;
 	while (env->envp_path[i])
 	{
 		env->envp_path[i] = ft_strjoin(env->envp_path[i], "/");
+		if (!env->envp_path[i])
+			return (1);
 		i++;
 	}
-	find_command_path(env, child);
+	if (find_command_path(env, child))
+		return (1);
 	if (child->command)
 		return (0);
 	// if (command_not_found(child, env))
 	// 	return (1);
-	return (1);
+	return (0);
 }
 
 // CHECK IF BUILT-IN
