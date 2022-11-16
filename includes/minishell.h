@@ -105,6 +105,11 @@ void	handle_signals_heredoc(void);
 void	signal_for_heredoc(int signum);
 
 // LEXER
+void	skipquotes(char *quote, char lex);
+char	*convert_tabs_to_spaces(char *str);
+void	create_line2(t_lex *lex);
+int		lexer_count_spaces(t_lex *lex);
+
 char	**create_lexer_string(t_lex *lex);
 char	**split_lexer(char const *s, char c);
 void	errorexit(char *message);
@@ -121,6 +126,11 @@ void	count_pipes(t_lex *lex);
 // EXECUTOR
 int		executor(t_child **child, t_exec *exec, t_env *env);
 int		processes(t_child *child, t_exec *exec, t_env *env);
+
+int		check_builtins_other(t_child *child);
+int		check_builtins_env(t_child *child);
+int		get_env_path(t_env *env);
+int		get_path_from_env(t_env *env, t_child *child);
 
 // BUILTIN
 int		command_env(t_env *env);

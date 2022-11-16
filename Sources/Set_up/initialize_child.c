@@ -45,7 +45,7 @@ static void	init_cmds(t_lex *lex, t_child *child)
 	lex->iter++;
 }
 
-t_child *init_single_child(t_lex *lex, t_child *child, int k)
+t_child	*init_single_child(t_lex *lex, t_child *child, int k)
 {
 	child = ft_calloc(1, sizeof(t_child));
 	if (child == NULL)
