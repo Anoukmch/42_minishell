@@ -1,30 +1,6 @@
 
 #include "../../includes/minishell.h"
 
-/* Is it necessary to connect this function ? */
-// void	check_redirection_table(char **parser_redirect_input, int i, int j)
-// {
-// 	int	k;
-
-// 	k = 0;
-// 	if (ft_strcmp(parser_redirect_input[i], "<")
-// 		&& ft_strcmp(parser_redirect_input[i], "<<"))
-// 		errorexit("Wrong redirection input\n");
-// 	while (parser_redirect_input[j][k])
-// 	{
-// 		if (parser_redirect_input[j][k] == '|'
-// 			|| parser_redirect_input[j][k] == '&'
-// 			|| parser_redirect_input[j][k] == ';'
-// 			|| parser_redirect_input[j][k] == '('
-// 			|| parser_redirect_input[j][k] == ')'
-// 			|| parser_redirect_input[j][k] == '<'
-// 			|| parser_redirect_input[j][k] == '>'
-// 			|| parser_redirect_input[j][k] == '$')
-// 			errorexit("wrong token filename");
-// 		k++;
-// 	}
-// }
-
 int	parser(t_lex *lex, t_child	**child)
 {
 	int	i;
@@ -38,7 +14,7 @@ int	parser(t_lex *lex, t_child	**child)
 	// MARKING VARIABLES THAT SHOULD GET EXPAND AS -2
 	while (child[k])
 	{
-		while (lex->lexer[i] && lex->lexer) 
+		while (lex->lexer[i] && lex->lexer)
 		{
 			if (!ft_strcmp(lex->lexer[i], "<<"))
 			{

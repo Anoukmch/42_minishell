@@ -64,7 +64,7 @@ static void	no_options(t_env *env)
 		ft_printf("%s\n", export[i]);
 		i++;
 	}
-	free_doublepointer(export);
+	free_array(export);
 }
 
 static int	invalid_identifier(char **cmd)
@@ -122,7 +122,7 @@ char **add_variable (t_env *env, char *variablename, char *content)
 	}
 	size++;
 	new[size] = NULL;
-	free_doublepointer(env->envp_bis);
+	free_array(env->envp_bis);
 	return (new);
 }
 

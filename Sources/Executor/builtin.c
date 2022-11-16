@@ -64,12 +64,12 @@ int	command_cd(t_child *child)
 	if (child->parser_cmd[1] == NULL || !ft_strcmp(child->parser_cmd[1], "~"))
 	{
 		if (chdir(getenv("HOME")) != 0)
-			perror_return("cd: No such file or directory");
+			return(perror_return(NULL));
 	}
 	else
 	{
 		if (child->parser_cmd[1][0] != '\0' && chdir(child->parser_cmd[1]) != 0)
-			perror_return("cd: No such file or directory");
+			return(perror_return(NULL));
 	}
 	return (0);
 }
@@ -160,7 +160,7 @@ int	command_exit(t_child *child, t_exec *exec)
 		printf("exit\n");
 	if (child->parser_cmd[1])
 	{
-		if (is_only_digits(child->parser_cmd[1]))
+		if (is_only_digits(child->parser_cmd[1]) || child->parser_cmd[1][0] == '\0')
 			perror_exit_child("exit: numeric argument required"); /* Exit code must be 255, check it */
 		istoobig = ft_atoilong(&buffer, child->parser_cmd[1]);
 		if (istoobig == true)
@@ -171,7 +171,7 @@ int	command_exit(t_child *child, t_exec *exec)
 			if (exec->nbr_process > 1)
 				perror_exit_child("exit: too many arguments"); /* Exit code must be 1, check it */
 			else
-				return (1);
+				return(perror_return("exit: too many arguments"));
 		}
 		exit(status);
 	}

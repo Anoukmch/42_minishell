@@ -24,7 +24,7 @@
 // RETURN 1 --> error message, stay in shell
 // RETURN 2 --> error message (?), exit shell
 
-int exit_code;
+extern int exit_code;
 
 typedef struct s_lex
 {
@@ -99,23 +99,24 @@ char	**create_lexer_string(t_lex *lex);
 char	**split_lexer(char const *s, char c);
 void	errorexit(char *message);
 // LEXER FREEING
-void	free_doublepointer (char **str);
+void	free_array(char **array);
 
 // PARSER
 int		parser(t_lex *lex, t_child	**child);
 int		parse_commands(t_lex *lex, t_child **child);
 int		parser_redirection(t_lex *lex, t_child **child);
+int		check_redirection_table(char **array);
 // PARSER INIT
 t_child **init_child(t_lex *lex, t_child **child);
 void	count_pipes(t_lex *lex);
 
 // EXECUTOR
-int		executor(t_lex *lex, t_child **child, t_exec *exec, t_env *env);
+int		executor (t_child **child, t_exec *exec, t_env *env);
 int		processes(t_child *child, t_exec *exec, t_env *env);
 
 // BUILTIN
 int		command_env(t_env *env);
-int		command_path(t_lex *lex, t_child **child, t_env *env);
+int		command_path(t_child *child, t_env *env);
 int		command_echo(t_child *child);
 int		command_cd(t_child *child);
 int		command_pwd();
@@ -130,6 +131,7 @@ char	**get_position_in_env(t_env *env, char *variable);
 // ERROR
 int    perror_return(char *str);
 void    perror_exit_child(char *str);
+int    perror_return_zero(char *str);
 
 void	errorexit(char *message);
 

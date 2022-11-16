@@ -46,6 +46,7 @@ static char	**init_environment(char **envp, t_env *env)
 		i = 0;
 		while (env->envp_path[i])
 		{
+			free(env->envp_path[i]);
 			env->envp_path[i] = ft_strjoin(env->envp_path[i], "/");
 			i++;
 		}

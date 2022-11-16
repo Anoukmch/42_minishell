@@ -4,13 +4,19 @@
 void    perror_exit_child(char *str)
 {
     perror(str);
-    exit(errno);
+    exit(1);
 }
 
 int    perror_return(char *str)
 {
     perror(str);
 	return (1);
+}
+
+int    perror_return_zero(char *str)
+{
+    perror(str);
+	return (0);
 }
 
 // void	exit_status(t_child **child)

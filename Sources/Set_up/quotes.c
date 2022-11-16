@@ -74,5 +74,6 @@ char	*delete_quotes(char *str)
 		i++;
 	}
 	final[count] = '\0';
+	free(str);
 	return (final);
 }

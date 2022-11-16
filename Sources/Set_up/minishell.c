@@ -2,7 +2,7 @@
 
 #include "../../includes/minishell.h"
 
-//char *exit_string;
+int exit_code = 12;
 
 void	free_array(char **array)
 {
@@ -49,13 +49,10 @@ void	close_piping(t_exec	*exec)
 
 void	free_lex(t_lex	*lex) /* Check that I'm not freeing smtgh not allocated */
 {
-	if (lex)
-	{
-		free(lex->line);
-		free(lex->line2);
-		free_array(lex->lexer);
-		free(lex);
-	}
+	free(lex->line);
+	free(lex->line2);
+	free_array(lex->lexer);
+	free(lex);
 }
 
 void	initialize_struct(t_child	***child, t_exec	**exec, t_lex *lex)
@@ -94,19 +91,17 @@ int	main(int ac, char **ag, char **envp)
 				if (!executor(child, exec, env))
 					close_piping(exec);
 			}
-			waitpid(exec->last_pid, &errno, 0);
-			while (wait(NULL) > 0)
-				continue ;
-			if (WIFEXITED(errno))
-				printf("%d\n", WEXITSTATUS(errno)); /* WEXITSTATUS(child_info) = $? */
+			waitpid(exec->last_pid, &exit_code, 0);
+			// while (wait(&tmp) > 0)
+			// 	continue ;
+			// if (WIFEXITED(tmp))
+			// 	main_truct.exit_code = WEXITSTATUS(tmp); /* WEXITSTATUS(child_info) = $? */
 			free_struct(child, exec);
 			free_lex(lex);
 		}
-		else
-			free_lex(lex);
 	}
-	free_doublepointer(env->envp_bis);
-	free_doublepointer(env->envp_path);
+	free_array(env->envp_bis);
+	free_array(env->envp_path);
 	free(env->envp_line);
 	free(env);
 	return(0);
