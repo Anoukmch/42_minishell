@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 int	parser(t_lex *lex, t_child	**child)
@@ -30,7 +29,10 @@ int	parser(t_lex *lex, t_child	**child)
 					z++;
 				}
 			}
-			else if (!strcmp(lex->lexer[i], "<") || !strcmp(lex->lexer[i], ">") || !strcmp(lex->lexer[i], ">>") || !strcmp(lex->lexer[i], "<<"))
+			else if (!strcmp(lex->lexer[i], "<")
+				|| !strcmp(lex->lexer[i], ">")
+				|| !strcmp(lex->lexer[i], ">>")
+				|| !strcmp(lex->lexer[i], "<<"))
 				i++;
 			else
 			{
@@ -38,14 +40,11 @@ int	parser(t_lex *lex, t_child	**child)
 				if (mark_quotes(lex->lexer[i], lex->lexer[i - 1]) != 0)
 					return (1); //RETURN(1);
 				lex->lexer[i] = delete_quotes(lex->lexer[i]);
-				if (!lex->lexer[i])
-					return (1);
+				i++;
 			}
-			i++;
 		}
 		k++;
 	}
-	/* expand */
 	if (parse_commands(lex, child))
 		return (1);
 	if (parser_redirection(lex, child))

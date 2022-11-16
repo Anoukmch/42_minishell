@@ -13,7 +13,7 @@ int open_outfile(t_child *child, int nbr_elements)
 			child->fd_out = open(child->parser_redirect_output[i + 1],
 				O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (child->fd_out < 0)
-				return (perror_return("Error outfile :"));
+				return (perror_return("Error outfile"));
 			if (i < nbr_elements - 2)
 				close(child->fd_out);
 		}
@@ -21,7 +21,7 @@ int open_outfile(t_child *child, int nbr_elements)
 		{
 			child->fd_out = open(child->parser_redirect_output[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (child->fd_out < 0)
-				return (perror_return("Error outfile :"));
+				return (perror_return("Error outfile"));
 			if (i < nbr_elements - 2)
 				close(child->fd_out);
 		}
@@ -62,7 +62,7 @@ int	get_infile(t_child *child)
 		{
 			tmp = open(child->parser_redirect_input[i + 1], O_RDONLY);
 			if (tmp < 0)
-				return (perror_return("Error infile :"));
+				return (perror_return("Error infile"));
 			if (i < nbr_elements - 2)
 				close(tmp);
 			else
