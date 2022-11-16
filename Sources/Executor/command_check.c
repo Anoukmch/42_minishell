@@ -93,50 +93,10 @@ static int	find_command_path(t_env *env, t_child *child)
 	return (0);
 }
 
-// *** NO PATH FOUND OR ENVIRONMENT DISABLED ***
-// static int	command_not_found(t_child *child, t_env *env)
-// {
-// 	if (env->envp_bis == NULL || env->envp_path == NULL
-// 		|| ft_strchr(child->parser_cmd[0], '/') != NULL)
-// 		return (0);
-// 	return (0);
-// }
-
 // *** 1. CHECK CURRENT DIRECTORY AS PATH IF ITS NOT AN ABSOLUTE PATH ***
 // *** 2. CHECK ABSOLUTE PATH ***
 // *** 3. FIND PATH FOR COMMAND ***
 // *** 4. PATH NOT FOUND & ENVIRONMENT DISABLED ***
-	// if (!ft_strchr(child->parser_cmd[0], '/')
-	// 	&& (env->envp_path == NULL || env->envp_bis == NULL))
-	// {
-	// 	child->command = ft_strjoin(getcwd(NULL, 0), "/");
-	// 	child->command = ft_strjoin(child->command,
-	// 			child->parser_cmd[0]);
-	// 	if (!child->command)
-	// 		return(1);
-	// 	if (access(child->command, 0) == 0)
-	// 		return (0);
-	// 	return(1);
-	// }
-// static int	get_environment_path(t_child *child, t_env *env)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!env->envp_bis && !ft_strchr(child->parser_cmd[0], '/'))
-// 	{
-// 		child->command = ft_strjoin(getcwd(NULL, 0), "/");
-// 		child->command = ft_strjoin(child->command,
-// 				child->parser_cmd[0]);
-// 		if (!child->command)
-// 			return(1);
-// 		if (access(child->command, 0) == 0)
-// 			return (0);
-// 		return(1);
-// 	}
-// 	return (0);
-// }
-
 static int	check_current_directorypath(t_child *child)
 {
 	child->command = ft_strjoin(getcwd(NULL, 0), "/");
@@ -147,6 +107,7 @@ static int	check_current_directorypath(t_child *child)
 		return (1);
 	if (access(child->command, 0) == 0)
 		return (0);
+	free (child->command);
 	child->command = NULL;
 	return (0);
 }
@@ -193,6 +154,7 @@ static int	check_path(t_child *child, t_env *env)
 	i = 0;
 	while (env->envp_path[i])
 	{
+		free (env->envp_path[i]);
 		env->envp_path[i] = ft_strjoin(env->envp_path[i], "/");
 		if (!env->envp_path[i])
 			return (1);
@@ -202,8 +164,6 @@ static int	check_path(t_child *child, t_env *env)
 		return (1);
 	if (child->command)
 		return (0);
-	// if (command_not_found(child, env))
-	// 	return (1);
 	return (0);
 }
 

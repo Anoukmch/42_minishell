@@ -43,7 +43,6 @@ int	check_syntax(t_lex *lex)
 			return (2);
 		}
 		i++;
-		j++;
 	}
 	// if (!lex->lexer[1] && lex)
 	return (0);

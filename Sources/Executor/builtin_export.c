@@ -68,27 +68,19 @@ int	no_options(t_env *env)
 	return (0);
 }
 
-static int	invalid_identifier(char **cmd)
+static int	invalid_identifier(char *cmd)
 {
 	int	i;
 	int	j;
 
 	i = 1;
 	j = 0;
-	while (cmd && cmd[i])
+	while (cmd[i])
 	{
-		while (cmd[i][j] != '\0')
-		{
-			if (cmd[i][0] == '=')
-				perror_return_status("export: not a valid identifier\n", 1);
-			if (ft_isdigit(cmd[i][0]) != 0
-				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_'
-				&& cmd[i][j] != '='
-				&& cmd[i][j] != 39 && cmd[i][j] != '"'))
-				perror_return_status("export: not a valid identifier\n", 1);
-			j++;
-		}
-		j = 0;
+		if ((ft_isdigit(cmd[0]) != 0 || cmd[0] == '=')
+			|| (ft_isalnum(cmd[i]) == 0 && cmd[i] != '_'
+			&& cmd[i] != '=' && cmd[i] != 39 && cmd[i] != '"'))
+			return(perror_return_status("export: not a valid identifier\n", 1));
 		i++;
 	}
 	return (0);
@@ -114,9 +106,11 @@ char	**add_variable(t_env *env, char *variablename, char *content)
 		i++;
 	}
 	if (content == NULL)
+	{
 		new[size] = ft_strdup(variablename);
 		if (!new[size])
 			return (NULL);
+	}
 	else
 	{
 		new[size] = ft_strjoin(variablename, "=");
@@ -157,7 +151,7 @@ int	export_variable(char *str, t_env *env)
 		}
 		i++;
 	}
-	env->envp_bis = add_variable (env, variable, NULL);
+	env->envp_bis = add_variable(env, variable, NULL);
 	if (!env->envp_bis)
 		return (1);
 	return (0);
@@ -177,10 +171,10 @@ int	env_variable(char *str, t_env *env)
 			ft_strlen(str) - ft_strlen(ft_strchr(str, '=')));
 	content = ft_substr(str, ft_strlen(variablename) + 1,
 			ft_strlen(ft_strchr(str, '=')) + 1);
+	if (ft_strlen(content) == 0)
+		content = ft_strdup("");
 	if (!content || !variablename)
 		return (1);
-	if (ft_strlen(content) == 0)
-		content = "";
 	while (env->envp_bis[i])
 	{
 		if (ft_strncmp(env->envp_bis[i], variablename,
@@ -217,9 +211,9 @@ int	command_export(t_child *child, t_env *env)
 			return (1);
 		return (0);
 	}
-	while (child->parser_cmd[i] && child->parser_cmd)
+	while (child->parser_cmd[i])
 	{
-		if (!invalid_identifier(child->parser_cmd))
+		if (!invalid_identifier(child->parser_cmd[i]))
 		{
 			if (ft_strchr(child->parser_cmd[i], '=') != NULL)
 			{

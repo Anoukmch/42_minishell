@@ -1,26 +1,19 @@
 
 #include "../../includes/minishell.h"
 
-static int	invalid_identifier(char **cmd)
+static int	invalid_identifier(char *cmd)
 {
 	int	i;
-	int	j;
 
 	i = 1;
-	j = 0;
-	while (cmd && cmd[i])
+	if (cmd[i] == '\0')
+		return(perror_return_status("unset: not a valid identifier\n", 1)); /* Check */
+	while (cmd[i])
 	{
-		if (cmd[i][j] == '\0')
-			perror_return_status("unset: not a valid identifier\n", 1); /* Check */
-		while (cmd[i][j])
-		{
-			if (ft_isdigit(cmd[i][0]) != 0 || cmd[i][0] == '='
-				|| (ft_isalnum(cmd[i][j]) == 0 && cmd[i][j] != '_'
-					&& cmd[i][j] != '=' && cmd[i][j] != 39 && cmd[i][j] != '"'))
-				perror_return_status("unset: not a valid identifier\n", 1); /* Check */
-			j++;
-		}
-		j = 0;
+		if (ft_isdigit(cmd[0]) != 0 || cmd[0] == '='
+			|| (ft_isalnum(cmd[i]) == 0 && cmd[i] != '_'
+				&& cmd[i] != '=' && cmd[i] != 39 && cmd[i] != '"'))
+			return(perror_return_status("unset: not a valid identifier\n", 1)); /* Check */
 		i++;
 	}
 	return (0);
@@ -72,7 +65,7 @@ int	command_unset(t_child *child, t_env *env)
 		return (0);
 	while (child->parser_cmd[i])
 	{
-		if (!invalid_identifier(child->parser_cmd))
+		if (!invalid_identifier(child->parser_cmd[i]))
 		{
 			if (get_position_in_env(env, child->parser_cmd[i]))
 				unset_variable(env, child->parser_cmd[i]);

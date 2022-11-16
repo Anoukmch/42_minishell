@@ -35,6 +35,8 @@ static char	**init_environment(char **envp, t_env *env)
 		while (envp[i])
 		{
 			env->envp_bis[i] = ft_strdup(envp[i]);
+			if (!env->envp_bis[i])
+				return (NULL);
 			i++;
 		}
 		env->envp_bis[i] = NULL;
@@ -52,5 +54,7 @@ t_env	*initialize_env(char **envp)
 	env->envp_line = NULL;
 	env->envp_path = NULL;
 	env->envp_bis = init_environment(envp, env);
+	if (!env->envp_bis)
+		return (NULL);
 	return (env);
 }
