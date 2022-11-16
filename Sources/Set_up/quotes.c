@@ -33,7 +33,7 @@ int	mark_quotes(char *str, char *before_str)
 			str[i] = -1;
 		}
 		else if ((quote == '\"' || quote == '\0') && str[i] == '$'
-			&& strcmp(before_str, "<<"))
+			&& ft_strcmp(before_str, "<<"))
 			str[i] = -2;
 		i++;
 	}

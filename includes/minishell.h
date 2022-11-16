@@ -72,6 +72,9 @@ typedef struct s_env
 	char	**envp_bis;
 	char	**envp_path;
 	char	*envp_line;
+	int		c1;
+	int		c2;
+	int		c3;
 }	t_env;
 
 // CHECKERS
@@ -107,7 +110,7 @@ char	**split_lexer(char const *s, char c);
 void	errorexit(char *message);
 
 // PARSER
-int		parser(t_lex *lex, t_child	**child);
+int		parser(t_lex *lex, t_child	**child, t_env	*env);
 int		parse_commands(t_lex *lex, t_child **child);
 int		parser_redirection(t_lex *lex, t_child **child);
 int		check_redirection_table(char **array);

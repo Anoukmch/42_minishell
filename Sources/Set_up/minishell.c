@@ -37,7 +37,7 @@ int	main(int ac, char **ag, char **envp)
 			{
 				add_history(lex->line);
 				initialize_struct(&child, &exec, lex);
-				if (!parser(lex, child))
+				if (!parser(lex, child, env))
 				{
 					if (!executor(child, exec, env))
 						close_piping(exec);
