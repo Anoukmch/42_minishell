@@ -90,45 +90,111 @@ static void	find_command_path(t_env *env, t_child *child)
 }
 
 // *** NO PATH FOUND OR ENVIRONMENT DISABLED ***
-static int	command_not_found(t_child *child, t_env *env)
-{
-	if (env->envp_bis == NULL || env->envp_path == NULL
-		|| ft_strchr(child->parser_cmd[0], '/') != NULL)
-		return (0);
-	return (0);
-}
+// static int	command_not_found(t_child *child, t_env *env)
+// {
+// 	if (env->envp_bis == NULL || env->envp_path == NULL
+// 		|| ft_strchr(child->parser_cmd[0], '/') != NULL)
+// 		return (0);
+// 	return (0);
+// }
 
 // *** 1. CHECK CURRENT DIRECTORY AS PATH IF ITS NOT AN ABSOLUTE PATH ***
 // *** 2. CHECK ABSOLUTE PATH ***
 // *** 3. FIND PATH FOR COMMAND ***
 // *** 4. PATH NOT FOUND & ENVIRONMENT DISABLED ***
+	// if (!ft_strchr(child->parser_cmd[0], '/')
+	// 	&& (env->envp_path == NULL || env->envp_bis == NULL))
+	// {
+	// 	child->command = ft_strjoin(getcwd(NULL, 0), "/");
+	// 	child->command = ft_strjoin(child->command,
+	// 			child->parser_cmd[0]);
+	// 	if (!child->command)
+	// 		return(1);
+	// 	if (access(child->command, 0) == 0)
+	// 		return (0);
+	// 	return(1);
+	// }
+// static int	get_environment_path(t_child *child, t_env *env)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (!env->envp_bis && !ft_strchr(child->parser_cmd[0], '/'))
+// 	{
+// 		child->command = ft_strjoin(getcwd(NULL, 0), "/");
+// 		child->command = ft_strjoin(child->command,
+// 				child->parser_cmd[0]);
+// 		if (!child->command)
+// 			return(1);
+// 		if (access(child->command, 0) == 0)
+// 			return (0);
+// 		return(1);
+// 	}
+// 	return (0);
+// }
+
+static int	check_current_directorypath(t_child *child)
+{
+	child->command = ft_strjoin(getcwd(NULL, 0), "/");
+	free (child->command);
+	child->command = ft_strjoin(child->command,
+			child->parser_cmd[0]);
+	if (!child->command)
+		return (1);
+	if (access(child->command, 0) == 0)
+		return (0);
+	child->command = NULL;
+	return (0);
+}
+
 static int	check_path(t_child *child, t_env *env)
 {
-	if (!ft_strchr(child->parser_cmd[0], '/')
-		&& (env->envp_path == NULL || env->envp_bis == NULL))
-	{
-		child->command = ft_strjoin(getcwd(NULL, 0), "/");
-		child->command = ft_strjoin(child->command,
-				child->parser_cmd[0]);
-		if (!child->command)
-			return(0);
-		if (access(child->command, 0) == 0)
-			return (0);
-		return(0);
-	}
-	if (ft_strchr(child->parser_cmd[0], '/'))
+	int	i;
+
+	i = 0;
+	if (check_current_directorypath(child))
+		return (1);
+	if (!child->command && ft_strchr(child->parser_cmd[0], '/'))
 	{
 		check_existing_path(env, child);
-		if (child->command)
-			return (0);
+		if (!child->command)
+		{
+			perror_return_status("no absolute path", 127);
+			return (0); //absolute path not found
+		}
 	}
-	else
-		find_command_path(env, child);
+	if (!env->envp_bis && !child->command && !ft_strchr(child->parser_cmd[0], '/'))
+	{
+		perror_return_status("command not found", 127);
+		return (0); //path of command not found environment disabled
+	}
+	while (env->envp_bis[i])
+	{
+		if (!ft_strncmp(env->envp_bis[i], "PATH", 4))
+		{
+			env->envp_line = ft_strchr(env->envp_bis[i], '/'); //PATH FROM OWN ENVIRONMENT
+			break ;
+		}
+		i++;
+	}
+	if (!env->envp_line)
+	{
+		perror_return_status("command not found", 127);
+		return (0); //path of command not found environment disabled
+	}	 //path of command not found -> path unset
+	env->envp_path = ft_split(env->envp_line, ':');
+	i = 0;
+	while (env->envp_path[i])
+	{
+		env->envp_path[i] = ft_strjoin(env->envp_path[i], "/");
+		i++;
+	}
+	find_command_path(env, child);
 	if (child->command)
 		return (0);
-	if (command_not_found(child, env))
-		return (0);
-	return (0);
+	// if (command_not_found(child, env))
+	// 	return (1);
+	return (1);
 }
 
 // CHECK IF BUILT-IN

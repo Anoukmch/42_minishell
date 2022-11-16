@@ -5,6 +5,7 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 {
     int		file;
     char	*line;
+	char	*temp;
     int		set_stdin_back;
 
     line = NULL;
@@ -18,8 +19,9 @@ int	here_doc(char *limiter, int i, int nbr_elements)
     //  expand variables in heredoc
     // if (child[k]-->heredoc_quotes == 1)
     //  DO NOT expand variables in heredoc
+	temp = ft_strjoin(limiter, "\n");
     set_stdin_back = dup(STDIN_FILENO);
-    while (ft_strncmp(line, limiter, (ft_strlen(limiter) + 1)))
+    while (ft_strncmp(line, temp, (ft_strlen(limiter) + 1)))
     {
         handle_signals_heredoc(); //closing stdin --> closing readline
         if (i == nbr_elements - 2 && line)
@@ -35,12 +37,13 @@ int	here_doc(char *limiter, int i, int nbr_elements)
     		if (i < nbr_elements - 2)
         		unlink("heredoc");
             if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
-                return (0);
+                return (1); /* exit code 0 ? */
             return (1);
         }
-        //line = ft_strjoin(line, "\n");
+        line = ft_strjoin(line, "\n");
     }
     free(line);
+	free(temp);
     close(file);
     if (i < nbr_elements - 2)
         unlink("heredoc");
@@ -97,7 +100,8 @@ int	executor (t_child **child, t_exec *exec, t_env *env)
 	int	i;
 
 	i = 0;
-	open_heredoc(child, exec);
+	if (open_heredoc(child, exec))
+		return (1);
 	while (child[i])
 	{
 		if (command_path(child[i], env))
