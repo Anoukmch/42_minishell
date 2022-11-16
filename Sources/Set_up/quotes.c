@@ -1,5 +1,10 @@
 #include "../../includes/minishell.h"
 
+// int	quote_start_and_end(char str, char *quote)
+// {
+
+// }
+
 // 1. handle varaibles, then quotes
 // INT FUNCTION
 // Marking $ signs outside of quotes & in double quotes with -2

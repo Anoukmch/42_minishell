@@ -10,37 +10,42 @@ int	doublepoint_size(char **str)
 	return (i);
 }
 
-static char	**init_environment(char **envp, t_env *env)
+static char	**init_disabled_env(t_env *env)
+{
+	env->envp_bis = ft_calloc(3 + 1, sizeof(char *));
+	if (!env->envp_bis)
+		return (NULL);
+	env->envp_bis[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
+	if (!env->envp_bis[0])
+		return (NULL);
+	env->envp_bis[1] = ft_strdup("SHLVL=1");
+	if (!env->envp_bis[1])
+		return (NULL);
+	env->envp_bis[2] = ft_strdup("_=/usr/bin/env");
+	if (!env->envp_bis[2])
+		return (NULL);
+	env->envp_bis[3] = NULL;
+	return (env->envp_bis);
+}
+
+static char	**init_env(char **envp, t_env *env)
 {
 	int	size;
 	int	i;
 
 	size = doublepoint_size(envp);
 	i = 0;
-	if (envp[0] == NULL)
+	env->envp_bis = ft_calloc(size + 1, sizeof(char *));
+	if (env->envp_bis == NULL)
+		return (NULL);
+	while (envp[i])
 	{
-		env->envp_bis = ft_calloc(3 + 1, sizeof(char *));
-		if (env->envp_bis == NULL)
+		env->envp_bis[i] = ft_strdup(envp[i]);
+		if (!env->envp_bis[i])
 			return (NULL);
-		env->envp_bis[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
-		env->envp_bis[1] = ft_strdup("SHLVL=1");
-		env->envp_bis[2] = ft_strdup("_=/usr/bin/env");
-		env->envp_bis[3] = NULL;
+		i++;
 	}
-	else
-	{
-		env->envp_bis = ft_calloc(size + 1, sizeof(char *));
-		if (env->envp_bis == NULL)
-			return (NULL);
-		while (envp[i])
-		{
-			env->envp_bis[i] = ft_strdup(envp[i]);
-			if (!env->envp_bis[i])
-				return (NULL);
-			i++;
-		}
-		env->envp_bis[i] = NULL;
-	}
+	env->envp_bis[i] = NULL;
 	return (env->envp_bis);
 }
 
@@ -53,7 +58,10 @@ t_env	*initialize_env(char **envp)
 		return (NULL);
 	env->envp_line = NULL;
 	env->envp_path = NULL;
-	env->envp_bis = init_environment(envp, env);
+	if (envp[0] == NULL)
+		env->envp_bis = init_disabled_env(env);
+	else
+		env->envp_bis = init_env(envp, env);
 	if (!env->envp_bis)
 		return (NULL);
 	return (env);

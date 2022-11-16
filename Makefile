@@ -16,10 +16,15 @@ M_SRC = Set_up/minishell.c \
 		Set_up/checker.c \
 		Set_up/syntax.c \
 		Set_up/free_program.c \
+		Lexer/lex_helpers.c \
+		Lexer/count_spaces.c \
+		Lexer/create_lexline2.c \
 		Parser/parser.c \
 		Parser/parser_command.c \
 		Parser/parser_redirection.c \
+		Executor/environment_path.c \
 		Executor/command_check.c \
+		Executor/builtin_check.c \
 		Executor/executor.c \
 		Executor/processes.c \
 		Executor/builtin.c \
