@@ -1,8 +1,6 @@
-
-
 #include "../../includes/minishell.h"
 
-int exit_code = 12;
+int	g_exit_code = 0;
 
 void	free_array(char **array)
 {
@@ -47,7 +45,7 @@ void	close_piping(t_exec	*exec)
 	}
 }
 
-void	free_lex(t_lex	*lex) /* Check that I'm not freeing smtgh not allocated */
+void	free_lex(t_lex	*lex)
 {
 	free(lex->line);
 	free(lex->line2);
@@ -55,7 +53,7 @@ void	free_lex(t_lex	*lex) /* Check that I'm not freeing smtgh not allocated */
 	free(lex);
 }
 
-void	initialize_struct(t_child	***child, t_exec	**exec, t_lex *lex)
+void	initialize_struct(t_child	***child, t_exec **exec, t_lex *lex)
 {
 	*child = initialize_child(lex);
 	*exec = initialize_exec(lex);
@@ -75,7 +73,7 @@ int	main(int ac, char **ag, char **envp)
 	t_env	*env;
 
 	if (ac != 1 || !ag[0])
-		errorexit("Wrong number of arguments");
+		return (1); /* Change that */
 	signal(SIGQUIT, SIG_IGN);
 	env = initialize_env(envp);
 	while (1)
@@ -94,11 +92,11 @@ int	main(int ac, char **ag, char **envp)
 					if (!executor(child, exec, env))
 						close_piping(exec);
 				}
-				waitpid(exec->last_pid, &exit_code, 0);
+				waitpid(exec->last_pid, &g_exit_code, 0);
 				// while (wait(&tmp) > 0)
 				// 	continue ;
 				// if (WIFEXITED(tmp))
-				// 	main_truct.exit_code = WEXITSTATUS(tmp); /* WEXITSTATUS(child_info) = $? */
+				// 	main_truct.g_exit_code = WEXITSTATUS(tmp); /* WEXITSTATUS(child_info) = $? */
 				free_struct(child, exec);
 				free_lex(lex);
 			}
@@ -108,9 +106,8 @@ int	main(int ac, char **ag, char **envp)
 	free_array(env->envp_path);
 	free(env->envp_line);
 	free(env);
-	return(exit_code);
+	return (0);
 }
-
 
 // waitpid(exec->last_pid, &errno, 0);
 // 				while (wait(NULL) > 0)

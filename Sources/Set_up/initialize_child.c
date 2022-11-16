@@ -1,5 +1,3 @@
-
-
 #include "../../includes/minishell.h"
 
 static void	count_processes(t_lex *lex)
@@ -73,7 +71,7 @@ t_child	**initialize_child(t_lex *lex)
 		if (child[k]->parser_redirect_output == NULL
 			|| child[k]->parser_redirect_input == NULL
 			|| child[k]->parser_cmd == NULL)
-			return(NULL);
+			return (NULL);
 		child[k]->command = NULL;
 		child[k]->fd_in = -1;
 		child[k]->fd_out = -1;

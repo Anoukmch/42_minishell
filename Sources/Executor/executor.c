@@ -1,12 +1,12 @@
 
 #include "../../includes/minishell.h"
 
-int here_doc(char *limiter, int i, int nbr_elements)
+int	here_doc(char *limiter, int i, int nbr_elements)
 {
-    int     file;
-    char    *line;
-    char    *temp;
-    int     set_stdin_back;
+    int		file;
+    char	*line;
+    int		set_stdin_back;
+
     line = NULL;
     // what happens if we don't have permissions for heredoc or
     // heredoc exists?
@@ -18,12 +18,11 @@ int here_doc(char *limiter, int i, int nbr_elements)
     //  expand variables in heredoc
     // if (child[k]-->heredoc_quotes == 1)
     //  DO NOT expand variables in heredoc
-    temp = ft_strjoin(limiter, "\n");
     set_stdin_back = dup(STDIN_FILENO);
-    while (ft_strncmp(line, temp, (ft_strlen(temp) + 1)))
+    while (ft_strncmp(line, limiter, (ft_strlen(limiter) + 1)))
     {
         handle_signals_heredoc(); //closing stdin --> closing readline
-        if (i == nbr_elements - 2)
+        if (i == nbr_elements - 2 && line)
             ft_putstr_fd(line, file);
         free(line);
         line = readline("Heredoc> ");
@@ -31,24 +30,27 @@ int here_doc(char *limiter, int i, int nbr_elements)
         {
             dup2(set_stdin_back, STDIN_FILENO); //set stdin back --> minishell is not closed
             close(set_stdin_back);
+			free(line);
+    		close(file);
+    		if (i < nbr_elements - 2)
+        		unlink("heredoc");
             if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
-                break ;
+                return (0);
             return (1);
         }
-        line = ft_strjoin(line, "\n");
+        //line = ft_strjoin(line, "\n");
     }
     free(line);
-    free(temp);
     close(file);
     if (i < nbr_elements - 2)
         unlink("heredoc");
     return (0);
 }
 
-int get_heredoc(t_child *child, t_exec *exec)
+int	get_heredoc(t_child *child, t_exec *exec)
 {
-    int i;
-    int nbr_elements;
+    int	i;
+    int	nbr_elements;
 
     i = 0;
     nbr_elements = 0;
@@ -64,7 +66,7 @@ int get_heredoc(t_child *child, t_exec *exec)
             {
                 child->fd_in = open("heredoc", O_RDONLY);
                 if (child->fd_in < 0)
-                    return(perror_return("Error heredoc : "));
+                    return (perror_return("Error heredoc : "));
                 exec->isheredoc = 1;
             }
         }

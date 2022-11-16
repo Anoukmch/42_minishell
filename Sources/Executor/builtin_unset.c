@@ -55,10 +55,10 @@ char	**get_position_in_env(t_env *env, char *variable)
 	return (NULL);
 }
 
-void unset_variable(t_env *env, char *str)
+void	unset_variable(t_env *env, char *str)
 {
-	int	j;
-	char **tmp;
+	int		j;
+	char	**tmp;
 
 	j = 0;
 	tmp = get_position_in_env(env, str);

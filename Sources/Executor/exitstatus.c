@@ -1,27 +1,27 @@
 
 #include "../../includes/minishell.h"
 
-void    perror_exit_child(char *str)
+void	perror_exit_child(char *str)
 {
-    perror(str);
-    exit(1);
+	perror(str);
+	exit(1);
 }
 
-int    perror_return(char *str)
+int	perror_return(char *str)
 {
-    perror(str);
+	perror(str);
 	return (1);
 }
 
-void    perror_exit_status(char *str, int status)
+void	perror_exit_status(char *str, int status)
 {
-    perror(str);
-    exit(status);
+	perror(str);
+	exit(status);
 }
 
-int    perror_return_status(char *str, int status)
+int	perror_return_status(char *str, int status)
 {
-    perror(str);
+	perror(str);
 	return (status);
 }
 // void	exit_status(t_child **child)

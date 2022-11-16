@@ -1,8 +1,4 @@
-
-
 #include "../../includes/minishell.h"
-
-int exit_code;
 
 static void	control_c(int signum)
 {
@@ -12,7 +8,6 @@ static void	control_c(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		exit_code = 1;
 	}
 }
 
@@ -23,7 +18,6 @@ void	control_c_heredoc(int signum)
 		close(STDIN_FILENO); //Handlen, nicht shell schliessen
 		// auf alten STDIN setzen
 		ft_putstr_fd("\n", STDERR_FILENO);
-		exit_code = 1;
 	}
 }
 
@@ -52,7 +46,6 @@ void	handle_signals(void)
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 }
-
 
 // void	signal_ctlc_heredoc(int sig)
 // {

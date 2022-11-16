@@ -24,7 +24,7 @@
 // RETURN 1 --> error message, stay in shell
 // RETURN 2 --> error message (?), exit shell
 
-extern int exit_code;
+extern int	g_exit_code;
 
 typedef struct s_lex
 {
@@ -45,15 +45,15 @@ typedef struct s_child
 	char	**parser_cmd;
 	int		no_cmd_opt;
 	char	**parser_redirect_input;
-	int 	input_counter;
+	int		input_counter;
 	char	**parser_redirect_output;
-	int 	output_counter;
+	int		output_counter;
 	int		fd_in;
 	int		fd_out;
 	int		id;
 	int		heredoc_quotes;
 	char	*command;
-	bool isbuiltin;
+	bool	isbuiltin;
 
 }	t_child;
 
@@ -81,13 +81,12 @@ void	print_parser(t_child **child);
 // INIT
 int		check_syntax(t_lex *lex);
 void	count_pipes(t_lex *lex);
-t_lex	*initialize_lex();
+t_lex	*initialize_lex(void);
 t_child	**initialize_child(t_lex *lex);
 t_exec	*initialize_exec(t_lex *lex);
 t_env	*initialize_env(char **envp);
 
-
-char	*delete_quotes (char *str);
+char	*delete_quotes(char *str);
 int		mark_quotes(char *str, char *before_str);
 
 // SIGNALS
@@ -108,11 +107,11 @@ int		parse_commands(t_lex *lex, t_child **child);
 int		parser_redirection(t_lex *lex, t_child **child);
 int		check_redirection_table(char **array);
 // PARSER INIT
-t_child **init_child(t_lex *lex, t_child **child);
+t_child	**init_child(t_lex *lex, t_child **child);
 void	count_pipes(t_lex *lex);
 
 // EXECUTOR
-int		executor (t_child **child, t_exec *exec, t_env *env);
+int		executor(t_child **child, t_exec *exec, t_env *env);
 int		processes(t_child *child, t_exec *exec, t_env *env);
 
 // BUILTIN
@@ -120,20 +119,20 @@ int		command_env(t_env *env);
 int		command_path(t_child *child, t_env *env);
 int		command_echo(t_child *child);
 int		command_cd(t_child *child);
-int		command_pwd();
+int		command_pwd(void);
 int		command_exit(t_child *child, t_exec *exec);
-int		command_export (t_child *child, t_env *env);
+int		command_export(t_child *child, t_env *env);
 int		command_unset(t_child *child, t_env *env);
 
 // ENV
-int	doublepoint_size(char **str);
+int		doublepoint_size(char **str);
 char	**get_position_in_env(t_env *env, char *variable);
 
 // ERROR
-int    perror_return(char *str);
-void    perror_exit_child(char *str);
-void    perror_exit_status(char *str, int status);
-int    perror_return_status(char *str, int status);
+int		perror_return(char *str);
+void	perror_exit_child(char *str);
+void	perror_exit_status(char *str, int status);
+int		perror_return_status(char *str, int status);
 
 void	errorexit(char *message);
 

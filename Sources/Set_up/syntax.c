@@ -13,14 +13,14 @@ int	check_syntax(t_lex *lex)
 		if (!ft_strcmp(lex->lexer[0], "|"))
 		{
 			perror_return_status("syntax error near unexpected token", 2);
-			exit_code = 2;
+			g_exit_code = 2;
 			return (2);
 		}
 		else if (!ft_strcmp(lex->lexer[i], "|") && (!ft_strcmp(lex->lexer[i + 1], "|")
 			|| !lex->lexer[i + 1]))
 		{
 			perror_return_status("syntax error near unexpected token", 2);
-			exit_code = 2;
+			g_exit_code = 2;
 			return (2);
 		}
 		else if (!ft_strcmp(lex->lexer[i], "|"))
@@ -29,7 +29,7 @@ int	check_syntax(t_lex *lex)
 			|| !ft_strcmp(lex->lexer[i], ".")))
 		{
 			perror_return_status("syntax error near unexpected token", 2);
-			exit_code = 2;
+			g_exit_code = 2;
 			return (2);
 		}
 		else if ((!ft_strcmp(lex->lexer[i], ">") || !ft_strcmp(lex->lexer[i], "<")
@@ -39,8 +39,8 @@ int	check_syntax(t_lex *lex)
 				|| !ft_strcmp(lex->lexer[i + 1], "<<")))
 		{
 			perror_return_status("syntax error near unexpected token", 2);
-			exit_code = 2;
-			return (2);			
+			g_exit_code = 2;
+			return (2);
 		}
 		i++;
 		j++;

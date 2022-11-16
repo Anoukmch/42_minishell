@@ -1,5 +1,3 @@
-
-
 #include "../../includes/minishell.h"
 
 // ***** FOR MINISHELL TESTER *****
@@ -233,8 +231,8 @@ t_lex	*initialize_lex(void)
 
 	lex = ft_calloc(1, sizeof(t_lex));
 	if (!lex)
-		return(NULL);
-	if (isatty(STDIN_FILENO)) 	// ***** FOR MINISHELL TESTER *****
+		return (NULL);
+	if (isatty(STDIN_FILENO))// ***** FOR MINISHELL TESTER *****
 		lex->line = readline("input: "); // lex->line = readline("input: "); // comment out for MINISHELL TESTER
 	else
 		lex->line = minishell_get_next_line(STDIN_FILENO);
@@ -253,12 +251,13 @@ t_lex	*initialize_lex(void)
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;
 	lex->no_processes = 0;
-	lex->line2 = ft_calloc((ft_strlen(lex->line) + lex->counter + 1), sizeof(char));
+	lex->line2 = ft_calloc((ft_strlen(lex->line)
+		+ lex->counter + 1), sizeof(char));
 	if (!lex->line2)
-		return(NULL);
+		return (NULL);
 	create_line2(lex);
 	lex->lexer = ft_split(lex->line2, -1);
 	if (!lex->lexer)
-		return(NULL);
+		return (NULL);
 	return (lex);
 }

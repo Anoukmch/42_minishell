@@ -1,5 +1,3 @@
-
-
 #include "../../includes/minishell.h"
 
 /*

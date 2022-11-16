@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 int	doublepoint_size(char **str)
@@ -22,7 +21,7 @@ static char	**init_environment(char **envp, t_env *env)
 	{
 		env->envp_bis = ft_calloc(3 + 1, sizeof(char *));
 		if (env->envp_bis == NULL)
-			errorexit("ALLOC ERROR");
+			return (NULL); /* Change that */
 		env->envp_bis[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
 		env->envp_bis[1] = ft_strdup("SHLVL=1");
 		env->envp_bis[2] = ft_strdup("_=/usr/bin/env");
@@ -32,7 +31,7 @@ static char	**init_environment(char **envp, t_env *env)
 	{
 		env->envp_bis = ft_calloc(size + 1, sizeof(char *));
 		if (env->envp_bis == NULL)
-			errorexit("ALLOC ERROR");
+			return (NULL); /* Change that */
 		while (envp[i])
 		{
 			env->envp_bis[i] = ft_strdup(envp[i]);
@@ -43,15 +42,15 @@ static char	**init_environment(char **envp, t_env *env)
 	return (env->envp_bis);
 }
 
-t_env *initialize_env(char **envp)
+t_env	*initialize_env(char **envp)
 {
-	t_env *env;
+	t_env	*env;
 
 	env = ft_calloc(1, sizeof(t_env));
 	if (env == NULL)
-		errorexit("check initializiation of env");
+		return (NULL); /* Change that */
 	env->envp_line = NULL;
 	env->envp_path = NULL;
 	env->envp_bis = init_environment(envp, env);
-	return(env);
+	return (env);
 }

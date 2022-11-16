@@ -20,7 +20,7 @@ char	*add_quotes(char *adding)
 	tmp = NULL;
 	tmp = ft_calloc(ft_strlen(adding) + 3, sizeof(char));
 	if (tmp == NULL)
-		errorexit("Allocation fail\n");
+		return (NULL); /* Change that */
 	while (adding[i] != '\0')
 	{
 		if (adding[j] == '=')
@@ -39,7 +39,7 @@ char	*add_quotes(char *adding)
 	return (tmp);
 }
 
-static void	no_options(t_env *env)
+int	no_options(t_env *env)
 {
 	int		i;
 	char	**export;
@@ -50,7 +50,7 @@ static void	no_options(t_env *env)
 		i++;
 	export = ft_calloc(i + 1, sizeof(char *));
 	if (export == NULL)
-		errorexit("Allocation error");
+		return (perror_return("ALLOC ERROR"));
 	i = 0;
 	while (env->envp_bis[i])
 	{
@@ -65,6 +65,7 @@ static void	no_options(t_env *env)
 		i++;
 	}
 	free_array(export);
+	return (0);
 }
 
 static int	invalid_identifier(char **cmd)
@@ -96,19 +97,19 @@ static int	invalid_identifier(char **cmd)
 	return (0);
 }
 
-char **add_variable (t_env *env, char *variablename, char *content)
+char	**add_variable(t_env *env, char *variablename, char *content)
 {
-	char **new;
-	int	size;
-	int	i;
+	char	**new;
+	int		size;
+	int		i;
 
 	new = NULL;
 	size = doublepoint_size(env->envp_bis);
 	new = ft_calloc(size + 2, sizeof(char *));
-	if (new  == NULL)
-		errorexit("allocation error");
+	if (new == NULL)
+		return (NULL); /* Change that */
 	i = 0;
-	while(env->envp_bis[i])
+	while (env->envp_bis[i])
 	{
 		new[i] = ft_strdup(env->envp_bis[i]);
 		i++;
@@ -139,7 +140,8 @@ static void	export_variable(char *str, t_env *env)
 	variable = str;
 	while (env->envp_bis[i])
 	{
-		if (ft_strncmp(env->envp_bis[i], variable, ft_strlen(variable) + 1) == 0)
+		if (ft_strncmp(env->envp_bis[i],
+			variable, ft_strlen(variable) + 1) == 0)
 		{
 			free (env->envp_bis[i]);
 			env->envp_bis[i] = ft_strdup(variable);

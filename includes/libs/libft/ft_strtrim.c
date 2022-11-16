@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 11:38:20 by amechain          #+#    #+#             */
-/*   Updated: 2022/11/07 16:25:00 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/16 10:38:28 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 	ft_strlcpy(new, str + beg, end - beg + 1);
 	return (new);
 }
-

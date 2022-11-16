@@ -1,11 +1,9 @@
-
-
 #include "../../includes/minishell.h"
 
 // 1. handle varaibles, then quotes
 // INT FUNCTION
 // Marking $ signs outside of quotes & in double quotes with -2
-int mark_quotes(char *str, char *before_str)
+int	mark_quotes(char *str, char *before_str)
 {
 	char	quote;
 	int		i;
@@ -40,7 +38,7 @@ int mark_quotes(char *str, char *before_str)
 		i++;
 	}
 	if (quote == '\'' || quote == '\"')
-		return(perror_return("Unclosed pair of quotes"));
+		return (perror_return("Unclosed pair of quotes"));
 	return (0);
 }
 

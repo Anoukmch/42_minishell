@@ -6,7 +6,7 @@
 /*   By: amechain <amechain@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 16:50:46 by amechain          #+#    #+#             */
-/*   Updated: 2022/04/15 14:07:59 by amechain         ###   ########.fr       */
+/*   Updated: 2022/11/16 10:45:52 by amechain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ size_t	ft_strlen(const char *s)
 
 	c = 0;
 	str = (char *)s;
+	if (!s)
+		return (0);
 	while (str[c])
 		c++;
 	return (c);

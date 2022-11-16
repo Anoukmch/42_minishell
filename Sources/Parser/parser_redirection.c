@@ -1,5 +1,3 @@
-
-
 #include "../../includes/minishell.h"
 
 int	fill_redirection_table(t_lex *lex, t_child *child)

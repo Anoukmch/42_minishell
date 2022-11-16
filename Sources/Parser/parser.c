@@ -20,7 +20,7 @@ int	parser(t_lex *lex, t_child	**child)
 			{
 				i++;
 				z = 0;
-				while(lex->lexer[i][z])
+				while (lex->lexer[i][z])
 				{
 					if (lex->lexer[i][z] == 39 || lex->lexer[i][z] == '"')
 					{

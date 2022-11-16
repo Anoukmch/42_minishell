@@ -3,10 +3,10 @@
 
 bool	ft_atoilong(long long int *buffer, const char *str)
 {
-	char			*s;
+	char				*s;
 	unsigned long long	res;
-	int				sign;
-	int				c;
+	int					sign;
+	int					c;
 
 	s = (char *)str;
 	c = 0;
@@ -26,16 +26,17 @@ bool	ft_atoilong(long long int *buffer, const char *str)
 		res = (res * 10) + (s[c] - '0');
 		c++;
 	}
-	if ((res == ((unsigned long long)LLONG_MAX + 1) && sign == 1) || res > ((unsigned long long)LLONG_MAX + 1))
-		return(true);
+	if ((res == ((unsigned long long)LLONG_MAX + 1) && sign == 1)
+		|| res > ((unsigned long long)LLONG_MAX + 1))
+		return (true);
 	*buffer = (long long int)res * sign;
 	return (false);
 }
 
 int	command_echo(t_child *child)
 {
-	int	i;
-	bool newline;
+	int		i;
+	bool	newline;
 
 	i = 1;
 	newline = true;
@@ -64,12 +65,12 @@ int	command_cd(t_child *child)
 	if (child->parser_cmd[1] == NULL || !ft_strcmp(child->parser_cmd[1], "~"))
 	{
 		if (chdir(getenv("HOME")) != 0)
-			return(perror_return(NULL));
+			return (perror_return(NULL));
 	}
 	else
 	{
 		if (child->parser_cmd[1][0] != '\0' && chdir(child->parser_cmd[1]) != 0)
-			return(perror_return(NULL));
+			return (perror_return(NULL));
 	}
 	return (0);
 }
@@ -97,7 +98,7 @@ int	get_position_of_variable(t_env *env, char *variable)
 	return (-1);
 }
 
-int	command_pwd()
+int	command_pwd(void)
 {
 	char	*s;
 
@@ -121,7 +122,7 @@ int	command_env(t_env *env)
 	int	i;
 
 	i = 0;
-	while(env->envp_bis[i])
+	while (env->envp_bis[i])
 	{
 		if (ft_strchr(env->envp_bis[i], '=') != NULL)
 			ft_printf("%s\n", env->envp_bis[i]);
@@ -151,7 +152,7 @@ int	command_exit(t_child *child, t_exec *exec)
 {
 	long long int	buffer;
 	bool			istoobig;
-	int 			status;
+	int				status;
 	int				i;
 
 	i = 0;
@@ -171,11 +172,11 @@ int	command_exit(t_child *child, t_exec *exec)
 			if (exec->nbr_process > 1)
 				perror_exit_child("exit: too many arguments"); /* Exit code must be 1, check it */
 			else
-				return(perror_return("exit: too many arguments"));
+				return (perror_return("exit: too many arguments"));
 		}
 		exit(status);
 	}
 	else if (!child->parser_cmd[1]) /* I don't know if it's correct */
-		exit(exit_code % 256);
+		exit(g_exit_code % 256);
 	return (0);
 }
