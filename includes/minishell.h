@@ -156,4 +156,6 @@ int		perror_return_status(char *str, int status);
 
 void	errorexit(char *message);
 
+char	*handle_var(char *lex_string, t_env *env);
+int		expand_variable(t_lex *lex, t_env *env);
 #endif

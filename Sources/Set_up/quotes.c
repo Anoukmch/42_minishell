@@ -37,8 +37,8 @@ int	mark_quotes_cmds_and_outdir(char *str)
 			quote = '\0';
 			str[i] = -1;
 		}
-		else if ((quote == '\"' || quote == '\0') && str[i] == '$')
-			str[i] = -2;
+		// else if ((quote == '\"' || quote == '\0') && str[i] == '$')
+		// 	str[i] = -2;
 		i++;
 	}
 	if (quote == '\'' || quote == '\"')
@@ -80,44 +80,44 @@ char	*delete_quotes_cmds_and_outdir(char *str)
 	return (final);
 }
 
-int	mark_quotes(char *str, char *before_str)
-{
-	char	quote;
-	int		i;
+// int	mark_quotes(char *str, char *before_str)
+// {
+// 	char	quote;
+// 	int		i;
 
-	i = 0;
-	quote = '\0';
-	while (str[i])
-	{
-		if (quote == '\0' && str[i] == '\'')
-		{
-			quote = '\'';
-			str[i] = -1;
-		}
-		else if (quote == '\0' && str[i] == '\"')
-		{
-			quote = '\"';
-			str[i] = -1;
-		}
-		else if (quote == '\'' && str[i] == '\'')
-		{
-			quote = '\0';
-			str[i] = -1;
-		}
-		else if (quote == '\"' && str[i] == '\"')
-		{
-			quote = '\0';
-			str[i] = -1;
-		}
-		else if ((quote == '\"' || quote == '\0') && str[i] == '$'
-			&& ft_strcmp(before_str, "<<"))
-			str[i] = -2;
-		i++;
-	}
-	if (quote == '\'' || quote == '\"')
-		return (perror_return("Unclosed pair of quotes"));
-	return (0);
-}
+// 	i = 0;
+// 	quote = '\0';
+// 	while (str[i])
+// 	{
+// 		if (quote == '\0' && str[i] == '\'')
+// 		{
+// 			quote = '\'';
+// 			str[i] = -1;
+// 		}
+// 		else if (quote == '\0' && str[i] == '\"')
+// 		{
+// 			quote = '\"';
+// 			str[i] = -1;
+// 		}
+// 		else if (quote == '\'' && str[i] == '\'')
+// 		{
+// 			quote = '\0';
+// 			str[i] = -1;
+// 		}
+// 		else if (quote == '\"' && str[i] == '\"')
+// 		{
+// 			quote = '\0';
+// 			str[i] = -1;
+// 		}
+// 		// else if ((quote == '\"' || quote == '\0') && str[i] == '$'
+// 		// 	&& ft_strcmp(before_str, "<<"))
+// 		// 	str[i] = -2;
+// 		i++;
+// 	}
+// 	if (quote == '\'' || quote == '\"')
+// 		return (perror_return("Unclosed pair of quotes"));
+// 	return (0);
+// }
 
 char	*delete_quotes(char *str)
 {

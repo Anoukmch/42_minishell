@@ -2,7 +2,7 @@
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
 
 NAME =  minishell
 
@@ -22,6 +22,7 @@ M_SRC = Set_up/minishell.c \
 		Parser/parser.c \
 		Parser/parser_command.c \
 		Parser/parser_redirection.c \
+		Parser/variables.c \
 		Executor/environment_path.c \
 		Executor/command_check.c \
 		Executor/builtin_check.c \

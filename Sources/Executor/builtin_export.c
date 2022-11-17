@@ -73,11 +73,14 @@ static int	invalid_identifier(char *cmd)
 	int	i;
 
 	i = 0;
-	while (cmd[i])
+	if ((!ft_isalpha(cmd[0]) && cmd[0] != '_'))
 	{
-		if (ft_isdigit(cmd[0]) != 0 || cmd[0] == '='
-			|| (ft_isalnum(cmd[i]) == 0 && cmd[i] != '_' && cmd[i] != ' '
-			&& cmd[i] != '=' && cmd[i] != 39 && cmd[i] != '"'))
+		perror_return_status("export: not a valid identifier\n", 1);
+		return (0);
+	}
+	while (cmd[i] && cmd[i] != '=')
+	{
+		if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
 		{
 			perror_return_status("export: not a valid identifier\n", 1);
 			return (0);

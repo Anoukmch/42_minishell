@@ -1,251 +1,187 @@
 
 #include "../../includes/minishell.h"
 
-char	*is_variable_in_env(char *var, t_env	*env)
+int	mark_variables(char *str)
+{
+	char	quote;
+	int		i;
+
+	i = 0;
+	quote = '\0';
+	while (str[i])
+	{
+		if (quote == '\0' && str[i] == '\'')
+			quote = '\'';
+		else if (quote == '\0' && str[i] == '\"')
+			quote = '\"';
+		else if (quote == '\'' && str[i] == '\'')
+			quote = '\0';
+		else if (quote == '\"' && str[i] == '\"')
+			quote = '\0';
+		else if ((quote == '\"' || quote == '\0') && str[i] == '$')
+			str[i] = -2;
+		i++;
+	}
+	if (quote == '\'' || quote == '\"')
+		return (perror_return_status("Unclosed pair of quotes", 1));
+	return (0);
+}
+
+int	check_dollarsign(char *str)
+{
+	char tmp[4];
+	char *replace;
+	int	i;
+
+	tmp[0] = '\"';
+	tmp[1] = -2;
+	tmp[2] = '\"';
+	tmp[3] = '\0';
+	replace = ft_strnstr(str, tmp, ft_strlen(str));
+	while (ft_strchr(str, -2) && replace)
+	{
+		replace[1] = '$';
+		replace = ft_strnstr(str, tmp, ft_strlen(str));
+	}
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == -2 && (str[i + 1] == -2 || !str[i + 1]))
+			str[i] = '$';
+		i++;
+	}
+	return (0);
+}
+
+int	quotes_after_dollarsign(char *str)
 {
 	int	i;
 
 	i = 0;
+	while (str[i])
+	{
+		if (str[i] == -2 && (str[i + 1] == '\'' || str[i + 1] == '\"'))
+			str[i] = -3;
+		i++;
+	}
+	return (0);
+}
+
+char	*variable_in_env(char *var, t_env *env)
+{
+	int	i;
+
+	i = 0;
+	printf("VAR IN ENV: %s\n", var);
 	while (env->envp_bis[i])
 	{
 		if (!ft_strncmp(var, env->envp_bis[i], ft_strlen(var)))
+		{
+			if (!ft_strchr(env->envp_bis[i], '='))
+				return (NULL);
 			return (env->envp_bis[i]);
+		}
 		i++;
 	}
 	return (NULL);
 }
 
-int	size_env_var(char *all_env_var, int *j)
-{
-	int	i;
-	int size;
-
-	i = 0;
-	size = 0;
-	while(all_env_var[i])
-	{
-		if (all_env_var[i] == '=')
-		{
-			if (j)
-				*j = i + 1;
-			size = ft_strlen(all_env_var) - i - 1;
-			return (size);
-		}
-		i++;
-	}
-	return (1); /* no = means an error */
-}
-
-char	*fill_env_var(char *all_env_var)
-{
-	int		i;
-	int		j;
-	int		size;
-	char	*env_var;
-
-	i = 0;
-	j = 0;
-	size = size_env_var(all_env_var, &j);
-	env_var = ft_calloc(size + 1, sizeof(char));
-	if (!env_var)
-		return (NULL);
-	while (all_env_var[j])
-		env_var[i++] = all_env_var[j++];
-	env_var[i] = '\0';
-	return (env_var);
-}
-
-bool	is_there_sign_before(char *lex_string, int j)
-{
-	j = j - 1;
-	while (j >= 0)
-	{
-		if (lex_string[j] == -2)
-			return (true);
-		j--;
-	}
-	return (false);
-}
-
-int	size_new_arg(char *lex_string, int count, t_env *env)
-{
-	int	j;
-	int	k;
-	int size;
-	int e;
-	char *all_env_var;
-	char	*var;
-
-	size = 0;
-	k = 0;
-	j = 0;
-	while (k < count)
-	{
-		if (k == 0)
-		{
-			while (lex_string[j])
-			{
-				if (lex_string[j] == -2)
-					break ;
-				j++;
-			}
-		}
-		e = 0;
-		env->c2 = env->c1 + 1;
-		while (lex_string[env->c1] && lex_string[env->c1] != -2)
-			env->c1++;
-		if (!lex_string[env->c1])
-			return (0);
-		while (lex_string[env->c2] && lex_string[env->c2] != -2)
-			env->c2++;
-		var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1));
-		if (!var)
-			return (0);
-		env->c2 = env->c1 + 1;
-		while (lex_string[env->c2] && lex_string[env->c2] != -2)
-			var[e++] = lex_string[env->c2++];
-		var[e] = '\0';
-		all_env_var = is_variable_in_env(var, env);
-		if (all_env_var)
-			size = size + size_env_var(all_env_var, NULL);
-		free(var);
-		env->c1 = env->c2;
-		k++;
-	}
-	printf("size : %d\n", size + j);
-	return (size + j);
-}
-
-int	nbr_dollar_sign(char *lex_string)
-{
-	int	size;
-	int count;
-
-	count = 0;
-	size = ft_strlen(lex_string) - 1;
-	while (size >= 0)
-	{
-		if (lex_string[size] == -2)
-			count++;
-		size--;
-	}
-	return (count);
-}
-
-char	*handle_var(char *lex_string, t_env *env)
-{
-	int	d;
-	int	e;
-	int sizearg;
-	char	*var;
-	char	*new_arg;
-	char	*all_env_var; /* do I need to calloc all_env_var ? */
-	char	*env_var;
-	int count;
-	int jsp;
-	int	i;
-
-	i = 0;
-	jsp = 0;
-	env->c1 = 0;
-	env->c2 = env->c1 + 1;
-	d = 0;
-	env->c3 = 0;
-	e = 0;
-	sizearg = 0;
-	count = nbr_dollar_sign(lex_string);
-	if (!lex_string || !env)
-		printf("Fail");
-	else
-	{
-		sizearg = size_new_arg(lex_string, count, env);
-		if (sizearg == 0)
-			return (NULL);
-		new_arg = ft_calloc((sizearg + 1), sizeof(char));
-		if (!new_arg)
-			return (NULL);
-		env->c1 = 0;
-		env->c2 = env->c1 + 1;
-		while (jsp < count)
-		{
-			if (jsp == 0)
-			{
-				while (lex_string[d] != -2)
-					new_arg[env->c3++] = lex_string[d++];
-			}
-			e = 0;
-			env->c2 = env->c1 + 1;
-			while (lex_string[env->c1] && lex_string[env->c1] != -2)
-				env->c1++;
-			if (!lex_string[env->c1])
-				return (0);
-			while (lex_string[env->c2] && lex_string[env->c2] != -2)
-				env->c2++;
-			var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1));
-			if (!var)
-				return (0);
-			env->c2 = env->c1 + 1;
-			while (lex_string[env->c2] && lex_string[env->c2] != -2)
-				var[e++] = lex_string[env->c2++];
-			var[e] = '\0';
-			printf("var : %s\n", var);
-			all_env_var = is_variable_in_env(var, env);
-			printf("all_env_var : %s\n", all_env_var);
-			if (all_env_var)
-			{
-				env_var = fill_env_var(all_env_var);
-				if (!env_var)
-					return (NULL);
-				i = 0;
-				while (env_var[i])
-					new_arg[env->c3++] = env_var[i++];
-				free(env_var);
-			}
-			free(var);
-			env->c1 = env->c2;
-			jsp++;
-		}
-		new_arg[env->c3] = '\0';
-		free(lex_string);
-		lex_string = ft_strdup(new_arg);
-		free(new_arg);
-	}
-	return (lex_string);
-}
-
-int	expand_variable(t_lex *lex, t_env *env)
+int	not_in_env (char *str, char *var)
 {
 	int	i;
 	int	j;
-	int	size;
-	char	*tmp;
 
-	size = 0;
 	i = 0;
 	j = 0;
-	while (lex->lexer[i])
+	while (str[i])
 	{
-		size = ft_strlen(lex->lexer[i]);
-		if (lex->lexer[i][size - 1] == -2)
-			lex->lexer[i][size - 1] = '$';
-		if (lex->lexer[i][0] == -2 && lex->lexer[i][1] == '?' && !lex->lexer[i][2])
+		if (str[i] == -2)
 		{
-			printf("exit code : %d\n", g_exit_code);
-			tmp = ft_itoa(g_exit_code);
-			if (!tmp)
-				return (1);
-			free(lex->lexer[i]);
-			lex->lexer[i] = ft_strdup(tmp);
-			if (!lex->lexer[i])
-				return (1);
-			free(tmp);
+			ft_memset(&str[i], -3, ft_strlen(var) + 1);
+			return (0);
 		}
-		else if (ft_strchr(lex->lexer[i], -2) != NULL)
-			lex->lexer[i] = handle_var(lex->lexer[i], env);
-		i++;
 	}
 	return (0);
 }
+
+char	*replace_var_with_content(char *str, char *var, char *env_var)
+{
+	char *pos_in_str;
+	char *new_lexline;
+	int	size;
+	int	count_size;
+
+	pos_in_str = NULL;
+	pos_in_str = ft_strchr(str, -2);
+	size = ft_strlen(var) + 1;
+	count_size = ft_strlen(ft_strchr(env_var, '=')) - 1;
+	new_lexline  = ft_calloc(ft_strlen(str) - size + count_size, sizeof(char));
+	if (!new_lexline)
+		return (NULL);
+	new_lexline = ft_memcpy(new_lexline, str, pos_in_str - str);
+	new_lexline = ft_memcpy(new_lexline + (pos_in_str - str), ft_strchr(env_var, '=') + 1, count_size);
+	new_lexline = ft_memcpy(new_lexline + (pos_in_str - str) + count_size, pos_in_str + size, (pos_in_str - str) + size);
+	return (new_lexline);
+}
+
+int check_if_var_in_env(t_lex *lex, int i, char *var, t_env *env)
+{
+	char *env_var;
+
+	env_var = variable_in_env(var, env);
+	if (env_var)
+	{
+		lex->lexer[i] = replace_var_with_content(lex->lexer[i], var, env_var);
+		printf("REPLACE\n");
+	}
+	else
+	{
+		if (not_in_env(lex->lexer[i], var))
+			return (1);
+		printf("MARK AS -3");
+	}
+	return (0);
+}
+
+int get_variable_name(t_lex *lex, int i, t_env *env)
+{
+	int	j;
+	int	start;
+	int end;
+	char *var;
+
+	j = 0;
+	start = -1;
+	end = -1;
+	var = NULL;
+	while(lex->lexer[i][j])
+	{
+		if (lex->lexer[i][j] == -2)
+			start = j;
+		else if (i > start && !ft_isalnum(lex->lexer[i][j]) && lex->lexer[i][j] != '_')
+		{
+			end = j;
+			break ;
+		}
+		j++;
+	}
+	if (start != -1 && end == -1)
+		end = j;
+	if (end != -1)
+	{
+		var = ft_substr(lex->lexer[i], start + 1, end - 1);
+		if (!var)
+			return (1);
+		if (check_if_var_in_env(lex, i, var, env))
+			return (1);
+		// CHECK VAR IN ENV
+	}
+	printf("VAR: %s\n", var);
+	return (0);
+}
+
+// while (lex_string[env->c2] && (lex_string[env->c2] == '_'
+// 			|| ft_isalnum(lex_string[env->c2]))) //GET END OF VAR
 
 int	parser(t_lex *lex, t_child	**child, t_env	*env)
 {
@@ -256,54 +192,27 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 	i = 0;
 	k = 0;
 	z = 0;
-	// DELETE QUOTES EXCEPT HERE_DOC
-	// MARKING VARIABLES THAT SHOULD GET EXPAND AS -2
-	// while (child[k])
-	// {
-	// 	while (lex->lexer[i] && lex->lexer)
-	// 	{
-	// 		if (!ft_strcmp(lex->lexer[i], "<<"))
-	// 		{
-	// 			i++;
-	// 			z = 0;
-	// 			while (lex->lexer[i][z])
-	// 			{
-	// 				if (lex->lexer[i][z] == 39 || lex->lexer[i][z] == '"')
-	// 				{
-	// 					child[k]->heredoc_quotes = 1;
-	// 					break ;
-	// 				}
-	// 				z++;
-	// 			}
-	// 		}
-	// 		// else if (!strcmp(lex->lexer[i], "\'|\'") || !strcmp(lex->lexer[i], "\"|\"")
-	// 		// 	|| !strcmp(lex->lexer[i], "\'<\'") || !strcmp(lex->lexer[i], "\"<\"")
-	// 		// 	|| !strcmp(lex->lexer[i], "\'>\'") || !strcmp(lex->lexer[i], "\">\"")
-	// 		// 	|| !strcmp(lex->lexer[i], "\'<<\'") || !strcmp(lex->lexer[i], "\"<<\"")
-	// 		// 	|| !strcmp(lex->lexer[i], "\'>>\'") || !strcmp(lex->lexer[i], "\">>\""))
-	// 		// 	i++;
-	// 		else if (!strcmp(lex->lexer[i], "<") || !strcmp(lex->lexer[i], ">") || !strcmp(lex->lexer[i], ">>") || !strcmp(lex->lexer[i], "<<"))
-	// 			i++;
-	// 		else
-	// 		{
-	// 			// HERE_DOC EOF $ IS NOT ALLOWED TO BE MARKED (should work now)
-	// 			if (i == 0)
-	// 			{
-	// 				if (mark_quotes(lex->lexer[i], NULL) != 0)
-	// 					return (1);
-	// 			}
-	// 			else if (mark_quotes(lex->lexer[i], lex->lexer[i - 1]) != 0)
-	// 				return (1);
-	// 			lex->lexer[i] = delete_quotes(lex->lexer[i]); //deleting quotes
-	// 			if (!lex->lexer[i])
-	// 				return (1);
-	// 			i++;
-	// 		}
-	// 	}
-	// 	k++;
-	// }
-	if (expand_variable(lex, env)) // NEED TO CHECK PARSER CMDS & REDIRECTIONS SEPARATED
-		return (1);
+	// MARK VARIABLES AS -2
+	while (lex->lexer[i])
+	{
+		if (mark_variables(lex->lexer[i]))
+			return (1);
+		if (check_dollarsign(lex->lexer[i]))
+			return (1);
+		if (quotes_after_dollarsign(lex->lexer[i]))
+			return (1);
+		if (get_variable_name(lex, i, env))
+			return (1);
+		// EXPAND VARIABLES IF FOUND IN ENV
+		// IF NOT FOUND MARK WHOLE VAR AS -3
+		// printf("str after function: %s\n", lex->lexer[i]);
+		i++;
+	}
+	// print_lexer(lex);
+	// if (expand_variable(lex, env)) // NEED TO CHECK PARSER CMDS & REDIRECTIONS SEPARATED
+	// 	return (1);
+	if (env)
+		printf("test");
 		// CHECK PARSE_COMMANDS, PARSE_REDIRECTIONS FOR VARIABLES
 	if (parse_commands(lex, child))
 		return (1);
