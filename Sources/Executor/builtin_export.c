@@ -71,16 +71,17 @@ int	no_options(t_env *env)
 static int	invalid_identifier(char *cmd)
 {
 	int	i;
-	int	j;
 
-	i = 1;
-	j = 0;
+	i = 0;
 	while (cmd[i])
 	{
-		if ((ft_isdigit(cmd[0]) != 0 || cmd[0] == '=')
-			|| (ft_isalnum(cmd[i]) == 0 && cmd[i] != '_'
+		if (ft_isdigit(cmd[0]) != 0 || cmd[0] == '='
+			|| (ft_isalnum(cmd[i]) == 0 && cmd[i] != '_' && cmd[i] != ' '
 			&& cmd[i] != '=' && cmd[i] != 39 && cmd[i] != '"'))
-			return(perror_return_status("export: not a valid identifier\n", 1));
+		{
+			perror_return_status("export: not a valid identifier\n", 1);
+			return (0);
+		}
 		i++;
 	}
 	return (0);

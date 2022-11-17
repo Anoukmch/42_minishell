@@ -258,46 +258,53 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 	z = 0;
 	// DELETE QUOTES EXCEPT HERE_DOC
 	// MARKING VARIABLES THAT SHOULD GET EXPAND AS -2
-	while (child[k])
-	{
-		while (lex->lexer[i] && lex->lexer)
-		{
-			if (!ft_strcmp(lex->lexer[i], "<<"))
-			{
-				i++;
-				z = 0;
-				while (lex->lexer[i][z])
-				{
-					if (lex->lexer[i][z] == 39 || lex->lexer[i][z] == '"')
-					{
-						child[k]->heredoc_quotes = 1;
-						break ;
-					}
-					z++;
-				}
-			}
-			else if (!strcmp(lex->lexer[i], "<") || !strcmp(lex->lexer[i], ">") || !strcmp(lex->lexer[i], ">>") || !strcmp(lex->lexer[i], "<<"))
-				i++;
-			else
-			{
-				// HERE_DOC EOF $ IS NOT ALLOWED TO BE MARKED (should work now)
-				if (i == 0)
-				{
-					if (mark_quotes(lex->lexer[i], NULL) != 0)
-						return (1);
-				}
-				else if (mark_quotes(lex->lexer[i], lex->lexer[i - 1]) != 0)
-					return (1); //RETURN(1);
-				lex->lexer[i] = delete_quotes(lex->lexer[i]);
-				if (!lex->lexer[i])
-					return (1);
-			}
-			i++;
-		}
-		k++;
-	}
-	if (expand_variable(lex, env))
+	// while (child[k])
+	// {
+	// 	while (lex->lexer[i] && lex->lexer)
+	// 	{
+	// 		if (!ft_strcmp(lex->lexer[i], "<<"))
+	// 		{
+	// 			i++;
+	// 			z = 0;
+	// 			while (lex->lexer[i][z])
+	// 			{
+	// 				if (lex->lexer[i][z] == 39 || lex->lexer[i][z] == '"')
+	// 				{
+	// 					child[k]->heredoc_quotes = 1;
+	// 					break ;
+	// 				}
+	// 				z++;
+	// 			}
+	// 		}
+	// 		// else if (!strcmp(lex->lexer[i], "\'|\'") || !strcmp(lex->lexer[i], "\"|\"")
+	// 		// 	|| !strcmp(lex->lexer[i], "\'<\'") || !strcmp(lex->lexer[i], "\"<\"")
+	// 		// 	|| !strcmp(lex->lexer[i], "\'>\'") || !strcmp(lex->lexer[i], "\">\"")
+	// 		// 	|| !strcmp(lex->lexer[i], "\'<<\'") || !strcmp(lex->lexer[i], "\"<<\"")
+	// 		// 	|| !strcmp(lex->lexer[i], "\'>>\'") || !strcmp(lex->lexer[i], "\">>\""))
+	// 		// 	i++;
+	// 		else if (!strcmp(lex->lexer[i], "<") || !strcmp(lex->lexer[i], ">") || !strcmp(lex->lexer[i], ">>") || !strcmp(lex->lexer[i], "<<"))
+	// 			i++;
+	// 		else
+	// 		{
+	// 			// HERE_DOC EOF $ IS NOT ALLOWED TO BE MARKED (should work now)
+	// 			if (i == 0)
+	// 			{
+	// 				if (mark_quotes(lex->lexer[i], NULL) != 0)
+	// 					return (1);
+	// 			}
+	// 			else if (mark_quotes(lex->lexer[i], lex->lexer[i - 1]) != 0)
+	// 				return (1);
+	// 			lex->lexer[i] = delete_quotes(lex->lexer[i]); //deleting quotes
+	// 			if (!lex->lexer[i])
+	// 				return (1);
+	// 			i++;
+	// 		}
+	// 	}
+	// 	k++;
+	// }
+	if (expand_variable(lex, env)) // NEED TO CHECK PARSER CMDS & REDIRECTIONS SEPARATED
 		return (1);
+		// CHECK PARSE_COMMANDS, PARSE_REDIRECTIONS FOR VARIABLES
 	if (parse_commands(lex, child))
 		return (1);
 	if (parser_redirection(lex, child))

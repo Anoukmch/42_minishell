@@ -98,6 +98,8 @@ t_env	*initialize_env(char **envp);
 
 char	*delete_quotes(char *str);
 int		mark_quotes(char *str, char *before_str);
+int		mark_quotes_cmds_and_outdir(char *str);
+char	*delete_quotes_cmds_and_outdir(char *str);
 
 // SIGNALS
 void	handle_signals(void);
