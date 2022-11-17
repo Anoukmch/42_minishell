@@ -1,12 +1,10 @@
 
 #include "../../includes/minishell.h"
 
-char	*is_variable_in_env(char *var, t_env *env)
+char	*is_variable_in_env(char *var, t_env	*env)
 {
 	int	i;
-
 	i = 0;
-	printf("VAR IN ENV: %s\n", var);
 	while (env->envp_bis[i])
 	{
 		if (!ft_strncmp(var, env->envp_bis[i], ft_strlen(var)))
@@ -20,7 +18,6 @@ int	size_env_var(char *all_env_var, int *j)
 {
 	int	i;
 	int size;
-
 	i = 0;
 	size = 0;
 	while(all_env_var[i])
@@ -43,7 +40,6 @@ char	*fill_env_var(char *all_env_var)
 	int		j;
 	int		size;
 	char	*env_var;
-
 	i = 0;
 	j = 0;
 	size = size_env_var(all_env_var, &j);
@@ -76,7 +72,6 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 	int e;
 	char *all_env_var;
 	char	*var;
-
 	size = 0;
 	k = 0;
 	j = 0;
@@ -92,29 +87,21 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 			}
 		}
 		e = 0;
+		env->c2 = env->c1 + 1;
 		while (lex_string[env->c1] && lex_string[env->c1] != -2)
 			env->c1++;
 		if (!lex_string[env->c1])
 			return (0);
-		env->c2 = env->c1 + 1;
-		printf("env C2: %d\n", env->c2);
-		while (lex_string[env->c2] && (lex_string[env->c2] == '_'
-			|| ft_isalnum(lex_string[env->c2]))) //GET END OF VAR
+		while (lex_string[env->c2] && lex_string[env->c2] != -2)
 			env->c2++;
-		printf("env C2: %d\n", env->c2);
-		printf("env C1: %d\n", env->c1);
-		var = ft_substr(lex_string, env->c1 + 1, env->c2 - (env->c1 + 1)); //HERE
+		var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1));
 		if (!var)
 			return (0);
-		printf("VAR: %s\n", var);
 		env->c2 = env->c1 + 1;
-		while (lex_string[env->c2] && (lex_string[env->c2] == '_'
-			|| ft_isalnum(lex_string[env->c2])))
+		while (lex_string[env->c2] && lex_string[env->c2] != -2)
 			var[e++] = lex_string[env->c2++];
 		var[e] = '\0';
-		printf("WEIRD VAR: %s\n", var);
 		all_env_var = is_variable_in_env(var, env);
-		printf("VAR IN ENV?: %s\n", all_env_var);
 		if (all_env_var)
 			size = size + size_env_var(all_env_var, NULL);
 		free(var);
@@ -129,7 +116,6 @@ int	nbr_dollar_sign(char *lex_string)
 {
 	int	size;
 	int count;
-
 	count = 0;
 	size = ft_strlen(lex_string) - 1;
 	while (size >= 0)
@@ -153,7 +139,6 @@ char	*handle_var(char *lex_string, t_env *env)
 	int count;
 	int jsp;
 	int	i;
-
 	i = 0;
 	jsp = 0;
 	env->c1 = 0;
@@ -224,17 +209,16 @@ char	*handle_var(char *lex_string, t_env *env)
 
 int	expand_variable(t_lex *lex, t_env *env)
 {
-	int		i;
-	int		j;
-	int		size;
+	int	i;
+	int	j;
+	int	size;
 	char	*tmp;
-
 	size = 0;
 	i = 0;
 	j = 0;
 	while (lex->lexer[i])
 	{
-		// size = ft_strlen(lex->lexer[i]); //size protecten if size = 0
+		// size = ft_strlen(lex->lexer[i]);
 		// if (lex->lexer[i][size - 1] == -2)
 		// 	lex->lexer[i][size - 1] = '$';
 		if (lex->lexer[i][0] == -2 && lex->lexer[i][1] == '?' && !lex->lexer[i][2])

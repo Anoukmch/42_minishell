@@ -2,7 +2,7 @@
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
 
 NAME =  minishell
 
