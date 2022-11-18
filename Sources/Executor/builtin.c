@@ -176,7 +176,7 @@ int	command_exit(t_child *child, t_exec *exec)
 		}
 		exit(status);
 	}
-	else if (!child->parser_cmd[1]) /* I don't know if it's correct */
+	else if (!child->parser_cmd[1])
 		exit(g_exit_code % 256);
 	return (0);
 }
