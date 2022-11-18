@@ -213,7 +213,10 @@ int	processes(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 	if (exec->nbr_process == 1 && child->isbuiltin == true)
 	{
 		if (single_builtin(lex, child, exec, env))
+		{
+			g_exit_code = 1;
 			return (1);
+		}
 	}
 	else
 	{

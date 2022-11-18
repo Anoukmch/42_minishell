@@ -7,11 +7,17 @@ static int	invalid_identifier(char *cmd)
 
 	i = 1;
 	if (cmd[0] == '\0' || (!ft_isalpha(cmd[0]) && cmd[0] != '_'))
-		return(perror_return_status("unset: not a valid identifier\n", 1)); /* Check */
+	{
+		g_exit_code = 1;
+		return(perror_return_status("unset: not a valid identifier\n", 0));
+	}
 	while (cmd[i])
 	{
 		if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
+		{
+			g_exit_code = 1;
 			return (perror_return_status("unset: not a valid identifier\n", 0));
+		}
 		i++;
 	}
 	return (0);

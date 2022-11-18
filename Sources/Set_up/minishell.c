@@ -42,7 +42,7 @@ int	main(int ac, char **ag, char **envp)
 				{
 					if (!executor(lex, child, exec, env))
 						close_piping(exec);
-					waitpid(exec->last_pid, &tmp, 0);
+					//waitpid(exec->last_pid, &tmp, 0);
 					while (wait(&tmp) > 0)
 						continue ;
 					if (WIFEXITED(tmp))

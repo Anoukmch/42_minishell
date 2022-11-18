@@ -4,11 +4,16 @@
 char	*is_variable_in_env(char *var, t_env *env)
 {
 	int	i;
+
 	i = 0;
 	while (env->envp_bis[i])
 	{
 		if (!ft_strncmp(var, env->envp_bis[i], ft_strlen(var)))
-			return (env->envp_bis[i]);
+		{
+			if (env->envp_bis[i][ft_strlen(var)] == '='
+				|| env->envp_bis[i][ft_strlen(var)] == '\0')
+				return (env->envp_bis[i]);
+		}
 		i++;
 	}
 	return (NULL);

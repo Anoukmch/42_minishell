@@ -27,7 +27,7 @@ int	here_doc(char *limiter, int i, int nbr_elements)
         if (i == nbr_elements - 2 && line)
             ft_putstr_fd(line, file);
         free(line);
-        line = readline("Heredoc> ");
+        line = readline("> ");
         if (!line) //ctrl c & ctrl d give NULL back
         {
             dup2(set_stdin_back, STDIN_FILENO); //set stdin back --> minishell is not closed
