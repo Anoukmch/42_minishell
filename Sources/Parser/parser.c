@@ -1,7 +1,7 @@
 
 #include "../../includes/minishell.h"
 
-int	mark_variables(char *str)
+int	mark_variables(char *str, char *str_before)
 {
 	char	quote;
 	int		i;
@@ -18,7 +18,7 @@ int	mark_variables(char *str)
 			quote = '\0';
 		else if (quote == '\"' && str[i] == '\"')
 			quote = '\0';
-		else if ((quote == '\"' || quote == '\0') && str[i] == '$')
+		else if ((quote == '\"' || quote == '\0') && str[i] == '$' && ft_strcmp(str_before, "<<"))
 			str[i] = -2;
 		i++;
 	}
@@ -53,17 +53,43 @@ int	check_dollarsign(char *str)
 	return (0);
 }
 
-int	quotes_after_dollarsign(char *str)
+int	quotes_after_dollarsign(t_lex *lex, int no)
 {
 	int	i;
+	int	count;
+	char *new_lex;
 
 	i = 0;
-	while (str[i])
+	count = 0;
+	new_lex = NULL;
+	while (lex->lexer[no][i])
 	{
-		if (str[i] == -2 && (str[i + 1] == '\'' || str[i + 1] == '\"'))
-			str[i] = -3;
+		if (lex->lexer[no][i] == -2 && (lex->lexer[no][i + 1] == '\'' || lex->lexer[no][i + 1] == '\"'))
+		{
+			lex->lexer[no][i] = -3;
+			count++;
+		}
 		i++;
 	}
+	new_lex = ft_calloc((ft_strlen(lex->lexer[no]) + 1) - count, sizeof(char));
+	if (!new_lex)
+		return (1);
+	i = 0;
+	count = 0;
+	while (lex->lexer[no][i])
+	{
+		if (lex->lexer[no][i] == -3)
+			i++;
+		else
+		{
+			new_lex[count] = lex->lexer[no][i];
+			count++;
+			i++;
+		}
+	}
+	new_lex[count] = '\0';
+	free (lex->lexer[no]);
+	lex->lexer[no] = new_lex;
 	return (0);
 }
 
@@ -81,11 +107,19 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
     	return (1);
 	while (lex->lexer[i])
 	{
-		if (mark_variables(lex->lexer[i]))
-			return (1);
+		if (i > 0)
+		{
+			if (mark_variables(lex->lexer[i], lex->lexer[i - 1]))
+				return (1);
+		}
+		else
+		{
+			if (mark_variables(lex->lexer[i], NULL))
+				return (1);			
+		}
 		if (check_dollarsign(lex->lexer[i]))
 			return (1);
-		if (quotes_after_dollarsign(lex->lexer[i]))
+		if (quotes_after_dollarsign(lex, i))
 			return (1);
 		// EXPAND VARIABLES IF FOUND IN ENV
 		// IF NOT FOUND MARK WHOLE VAR AS -3
