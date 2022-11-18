@@ -222,11 +222,16 @@ int	expand_variable(t_lex *lex, t_env *env)
 int	rebuild_lex(t_lex *lex)
 {
 	int	i;
+	int	count;
 
 	i = 0;
+	count = 0;
 	while (lex->lexer[i])
 	{
-		if (lex->lexer[i][0])
-	
+		if (lex->lexer[i][0] == '\0')
+			count++;
+		i++;
 	}
+
+
 }
