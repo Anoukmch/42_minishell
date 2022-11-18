@@ -80,18 +80,12 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 	j = 0;
 	while (k < count)
 	{
-		if (k == 0)
-		{
-			while (lex_string[j])
-			{
-				if (lex_string[j] == -2)
-					break ;
-				j++;
-			}
-		}
 		e = 0;
 		while (lex_string[env->c1] && lex_string[env->c1] != -2)
+		{
+			size++;
 			env->c1++;
+		}
 		if (!lex_string[env->c1])
 			return (0);
 		env->c2 = env->c1 + 1;
@@ -112,7 +106,7 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 		size++;
 		env->c2++;
 	}
-	return (size + j);
+	return (size);
 }
 
 int	nbr_dollar_sign(char *lex_string)
@@ -157,14 +151,9 @@ char	*handle_var(char *lex_string, t_env *env)
 	env->c3 = 0;
 	while (k < count && sizearg != 0)
 	{
-		if (k == 0)
-		{
-			while (lex_string[d] != -2)
-				new_arg[env->c3++] = lex_string[d++];
-		}
 		e = 0;
 		while (lex_string[env->c1] && lex_string[env->c1] != -2)
-			env->c1++;
+			new_arg[env->c3++] = lex_string[env->c1++];
 		if (!lex_string[env->c1])
 			return (NULL);
 		env->c2 = env->c1 + 1;
