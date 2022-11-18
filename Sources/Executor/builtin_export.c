@@ -81,10 +81,7 @@ static int	invalid_identifier(char *cmd)
 	while (cmd[i] && cmd[i] != '=')
 	{
 		if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
-		{
-			perror_return_status("export: not a valid identifier\n", 1);
-			return (0);
-		}
+			return (perror_return_status("export: not a valid identifier\n", 0));
 		i++;
 	}
 	return (0);
@@ -135,12 +132,10 @@ char	**add_variable(t_env *env, char *variablename, char *content)
 int	export_variable(char *str, t_env *env)
 {
 	char	*variable;
-	int		len;
 	int		i;
 
 	i = 0;
 	variable = NULL;
-	len = doublepoint_size(env->envp_bis);
 	variable = str;
 	while (env->envp_bis[i])
 	{

@@ -2,13 +2,13 @@
 
 int	g_exit_code = 0;
 
-void	initialize_struct(t_child	***child, t_exec **exec, t_lex *lex)
+void	initialize_struct(t_child	***child, t_exec **exec, t_lex *lex, t_env *env)
 {
 	*child = initialize_child(lex);
 	*exec = initialize_exec(lex);
 	if (!(*child) || !(*exec))
 	{
-		free_struct(*child, *exec);
+		free_struct(*child, *exec, env);
 		perror("Check initalization structures");
 		exit (1);
 	}
@@ -37,7 +37,7 @@ int	main(int ac, char **ag, char **envp)
 			if (!check_syntax(lex))
 			{
 				add_history(lex->line);
-				initialize_struct(&child, &exec, lex);
+				initialize_struct(&child, &exec, lex, env);
 				if (!parser(lex, child, env))
 				{
 					if (!executor(child, exec, env))
@@ -48,7 +48,7 @@ int	main(int ac, char **ag, char **envp)
 					if (WIFEXITED(tmp))
 						g_exit_code = WEXITSTATUS(tmp);
 				}
-				free_struct(child, exec);
+				free_struct(child, exec, env);
 				free_lex(lex);
 			}
 		}

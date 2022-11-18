@@ -215,7 +215,7 @@ int	expand_variable(t_lex *lex, t_env *env)
 		}
 		i++;
 	}
-	rebuild_lex();
+	// rebuild_lex(lex);
 	return (0);
 }
 

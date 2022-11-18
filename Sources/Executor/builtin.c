@@ -153,9 +153,7 @@ int	command_exit(t_child *child, t_exec *exec)
 	long long int	buffer;
 	bool			istoobig;
 	int				status;
-	int				i;
 
-	i = 0;
 	status = 0;
 	if (exec->nbr_process == 1 && isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", STDERR_FILENO);

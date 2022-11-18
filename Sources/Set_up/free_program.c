@@ -12,7 +12,7 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	free_struct(t_child	**child, t_exec	*exec)
+void	free_struct (t_child **child, t_exec	*exec, t_env *env)
 {
 	int	i;
 
@@ -30,6 +30,8 @@ void	free_struct(t_child	**child, t_exec	*exec)
 		}
 		free(child);
 	}
+	free_array(env->envp_path);
+	free(env->envp_line);
 	if (exec)
 		free(exec);
 }

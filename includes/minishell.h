@@ -84,14 +84,14 @@ void	print_parser(t_child **child);
 // FREE
 void	free_lex(t_lex	*lex);
 void	close_piping(t_exec	*exec);
-void	free_struct(t_child	**child, t_exec	*exec);
+void	free_struct(t_child	**child, t_exec	*exec, t_env *env);
 void	free_array(char **array);
 void	free_env(t_env	*env);
 
 // INIT
 int		check_syntax(t_lex *lex);
 void	count_pipes(t_lex *lex);
-t_lex	*initialize_lex(void);
+t_lex	*initialize_lex();
 t_child	**initialize_child(t_lex *lex);
 t_exec	*initialize_exec(t_lex *lex);
 t_env	*initialize_env(char **envp);

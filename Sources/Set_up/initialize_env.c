@@ -12,12 +12,16 @@ int	doublepoint_size(char **str)
 
 static char	**init_disabled_env(t_env *env)
 {
+	char *dir;
+
+	dir = getcwd(NULL, 0);
 	env->envp_bis = ft_calloc(3 + 1, sizeof(char *));
 	if (!env->envp_bis)
 		return (NULL);
-	env->envp_bis[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
+	env->envp_bis[0] = ft_strjoin("PWD=", dir);
 	if (!env->envp_bis[0])
 		return (NULL);
+	free (dir);
 	env->envp_bis[1] = ft_strdup("SHLVL=1");
 	if (!env->envp_bis[1])
 		return (NULL);

@@ -6,14 +6,12 @@ static int	invalid_identifier(char *cmd)
 	int	i;
 
 	i = 1;
-	if (cmd[i] == '\0')
+	if (cmd[0] == '\0' || (!ft_isalpha(cmd[0]) && cmd[0] != '_'))
 		return(perror_return_status("unset: not a valid identifier\n", 1)); /* Check */
 	while (cmd[i])
 	{
-		if (ft_isdigit(cmd[0]) != 0 || cmd[0] == '='
-			|| (ft_isalnum(cmd[i]) == 0 && cmd[i] != '_'
-				&& cmd[i] != '=' && cmd[i] != 39 && cmd[i] != '"'))
-			return(perror_return_status("unset: not a valid identifier\n", 1)); /* Check */
+		if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
+			return (perror_return_status("unset: not a valid identifier\n", 0));
 		i++;
 	}
 	return (0);
