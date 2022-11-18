@@ -65,6 +65,7 @@ t_child	*init_single_child(t_lex *lex, t_child *child, int k)
 	child->fd_in = -1;
 	child->fd_out = -1;
 	child->id = k;
+	child->heredoc_quotes = 0;
 	return (child);
 }
 

@@ -4,9 +4,9 @@ int	is_redirection_input(t_lex *lex, t_child *child, int *i)
 {
 	child->parser_redirect_input[(*i)++]
 		= ft_strdup(lex->lexer[lex->counter++]);
-	// if (mark_quotes(lex->lexer[lex->counter], lex->lexer[lex->counter - 1]))
-	// 	return (1);
-	// lex->lexer[lex->counter] = delete_quotes(lex->lexer[lex->counter]);
+	if (mark_quotes_cmds_and_outdir(lex->lexer[lex->counter]))
+		return (1);
+	lex->lexer[lex->counter] = delete_quotes_indir(child, lex);
 	child->parser_redirect_input[(*i)++]
 		= ft_strdup(lex->lexer[lex->counter]);
 	if (!child->parser_redirect_input[*(i) - 1]

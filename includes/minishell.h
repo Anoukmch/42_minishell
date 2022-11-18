@@ -96,8 +96,9 @@ t_child	**initialize_child(t_lex *lex);
 t_exec	*initialize_exec(t_lex *lex);
 t_env	*initialize_env(char **envp);
 
-char	*delete_quotes(char *str);
-int		mark_quotes(char *str, char *before_str);
+// char	*delete_quotes(char *str);
+char	*delete_quotes_indir(t_child *child, t_lex *lex);
+// int		mark_quotes(char *str, char *before_str);
 int		mark_quotes_cmds_and_outdir(char *str);
 char	*delete_quotes_cmds_and_outdir(char *str);
 
