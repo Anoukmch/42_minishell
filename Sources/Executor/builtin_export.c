@@ -76,6 +76,7 @@ static int	invalid_identifier(char *cmd)
 	if ((!ft_isalpha(cmd[0]) && cmd[0] != '_'))
 	{
 		perror_return_status("export: not a valid identifier\n", 1);
+		// g_exit_code = 1;
 		return (0);
 	}
 	while (cmd[i] && cmd[i] != '=')
