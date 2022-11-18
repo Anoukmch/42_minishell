@@ -215,18 +215,18 @@ int	expand_variable(t_lex *lex, t_env *env)
 		}
 		i++;
 	}
-	rebuild_lex();
+	// rebuild_lex(lex);
 	return (0);
 }
 
-int	rebuild_lex(t_lex *lex)
-{
-	int	i;
+// int	rebuild_lex(t_lex *lex)
+// {
+// 	int	i;
 
-	i = 0;
-	while (lex->lexer[i])
-	{
-		if (lex->lexer[i][0])
+// 	i = 0;
+// 	while (lex->lexer[i])
+// 	{
+// 		if (lex->lexer[i][0])
 	
-	}
-}
+// 	}
+// }
