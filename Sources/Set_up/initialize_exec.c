@@ -3,9 +3,7 @@
 t_exec	*initialize_exec(t_lex *lex)
 {
 	t_exec	*exec;
-	int		i;
 
-	i = 0;
 	exec = ft_calloc(1, sizeof(t_exec));
 	if (exec == NULL)
 		return (NULL);
