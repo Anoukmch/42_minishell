@@ -74,6 +74,7 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 	char *all_env_var;
 	char	*var;
 
+	env->c1 = 0;
 	size = 0;
 	k = 0;
 	j = 0;
@@ -96,7 +97,7 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 		env->c2 = env->c1 + 1;
 		while (lex_string[env->c2] && (ft_isalnum(lex_string[env->c2]) || lex_string[env->c2] == '_'))
 			env->c2++;
-		var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1));
+		var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1 - 1));
 		if (!var || !var[0])
 			return (0);
 		all_env_var = is_variable_in_env(var, env);
@@ -105,6 +106,11 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 		free(var);
 		env->c1 = env->c2;
 		k++;
+	}
+	while (lex_string[env->c2] != '\0')
+	{
+		size++;
+		env->c2++;
 	}
 	return (size + j);
 }
@@ -148,6 +154,7 @@ char	*handle_var(char *lex_string, t_env *env)
 	if (!new_arg)
 		return (NULL);
 	env->c1 = 0;
+	env->c3 = 0;
 	while (k < count && sizearg != 0)
 	{
 		if (k == 0)
@@ -161,7 +168,7 @@ char	*handle_var(char *lex_string, t_env *env)
 		if (!lex_string[env->c1])
 			return (NULL);
 		env->c2 = env->c1 + 1;
-		while (lex_string[env->c2] && lex_string[env->c2] != -2)
+		while (lex_string[env->c2] && (ft_isalnum(lex_string[env->c2]) || lex_string[env->c2] == '_'))
 			env->c2++;
 		var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1 - 1));
 		if (!var || !var[0])
@@ -181,11 +188,49 @@ char	*handle_var(char *lex_string, t_env *env)
 		env->c1 = env->c2;
 		k++;
 	}
+	while (lex_string[env->c2] != '\0')
+		new_arg[env->c3++] = lex_string[env->c2++];
 	new_arg[env->c3] = '\0';
 	free(lex_string);
 	lex_string = ft_strdup(new_arg);
 	free(new_arg);
 	return (lex_string);
+}
+
+char	**rebuild_lex(t_lex *lex)
+{
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
+	j = 0;
+	count = 0;
+	while (lex->lexer[i])
+	{
+		if (!ft_strcmp(lex->lexer[i], "\0"))
+			count++;
+		i++;
+	}
+	lex->lexer_c = ft_calloc((i + 1 - count), sizeof(char *));
+	if (!lex->lexer_c)
+		return (NULL);
+	i = 0;
+	while (lex->lexer[i])
+	{
+		if (ft_strcmp(lex->lexer[i], "\0"))
+		{
+			lex->lexer_c[j] = ft_strdup(lex->lexer[i]);
+			if (!lex->lexer_c[j])
+				return (NULL);
+			j++;
+		}
+		i++;
+	}
+	lex->lexer_c[j] = NULL;
+	free_array(lex->lexer);
+	lex->lexer = lex->lexer_c; /* can I do that or do I need to remalloc ? */
+	return (lex->lexer);
 }
 
 int	expand_variable(t_lex *lex, t_env *env)
@@ -215,23 +260,7 @@ int	expand_variable(t_lex *lex, t_env *env)
 		}
 		i++;
 	}
-	// rebuild_lex(lex);
+	lex->lexer = rebuild_lex(lex);
 	return (0);
 }
 
-int	rebuild_lex(t_lex *lex)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (lex->lexer[i])
-	{
-		if (lex->lexer[i][0] == '\0')
-			count++;
-		i++;
-	}
-
-
-}

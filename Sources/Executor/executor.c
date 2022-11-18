@@ -95,7 +95,7 @@ int	open_heredoc(t_child **child, t_exec *exec)
 	return (0);
 }
 
-int	executor (t_child **child, t_exec *exec, t_env *env)
+int	executor (t_lex	*lex, t_child **child, t_exec *exec, t_env *env)
 {
 	int	i;
 
@@ -106,7 +106,7 @@ int	executor (t_child **child, t_exec *exec, t_env *env)
 	{
 		if (command_path(child[i], env))
 			return (1);
-		if (processes(child[i], exec, env))
+		if (processes(lex, child[i], exec, env))
 			return (1);
 		i++;
 	}

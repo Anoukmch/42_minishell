@@ -71,6 +71,7 @@ int	command_cd(t_child *child)
 	{
 		if (child->parser_cmd[1][0] != '\0' && chdir(child->parser_cmd[1]) != 0)
 			return (perror_return(NULL));
+
 	}
 	return (0);
 }
@@ -148,7 +149,7 @@ int	is_only_digits(char *str)
 	return (0);
 }
 
-int	command_exit(t_child *child, t_exec *exec)
+int	command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 {
 	long long int	buffer;
 	bool			istoobig;
@@ -172,6 +173,8 @@ int	command_exit(t_child *child, t_exec *exec)
 			else
 				return (perror_return("exit: too many arguments"));
 		}
+		if (!env || !lex)
+			printf("Test\n");
 		exit(status);
 	}
 	else if (!child->parser_cmd[1])

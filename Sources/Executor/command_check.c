@@ -57,11 +57,9 @@ static int	find_command_path(t_env *env, t_child *child)
 		free(child->command);
 		i++;
 	}
-	perror(NULL);
-	free(child->command);
+	child->command = NULL;
 	return (0);
 }
-
 
 // void	free_env_path_things(t_env	*env)
 // {

@@ -31,6 +31,7 @@ typedef struct s_lex
 	char	*line;
 	char	*line2;
 	char	**lexer;
+	char	**lexer_c;
 	int		counter;
 	int		no_processes;
 	int		iter;
@@ -82,9 +83,8 @@ void	print_lexer(t_lex *lex);
 void	print_parser(t_child **child);
 
 // FREE
-void	free_lex(t_lex	*lex);
 void	close_piping(t_exec	*exec);
-void	free_struct(t_child	**child, t_exec	*exec, t_env *env);
+void	free_struct (t_child **child, t_exec *exec, t_env *env, t_lex	*lex);
 void	free_array(char **array);
 void	free_env(t_env	*env);
 
@@ -126,8 +126,8 @@ t_child	**init_child(t_lex *lex, t_child **child);
 void	count_pipes(t_lex *lex);
 
 // EXECUTOR
-int		executor(t_child **child, t_exec *exec, t_env *env);
-int		processes(t_child *child, t_exec *exec, t_env *env);
+int	executor (t_lex	*lex, t_child **child, t_exec *exec, t_env *env);
+int	processes(t_lex	*lex, t_child *child, t_exec *exec, t_env *env);
 
 int		check_builtins_other(t_child *child);
 int		check_builtins_env(t_child *child);
@@ -140,7 +140,7 @@ int		command_path(t_child *child, t_env *env);
 int		command_echo(t_child *child);
 int		command_cd(t_child *child);
 int		command_pwd(void);
-int		command_exit(t_child *child, t_exec *exec);
+int		command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env);
 int		command_export(t_child *child, t_env *env);
 int		command_unset(t_child *child, t_env *env);
 
