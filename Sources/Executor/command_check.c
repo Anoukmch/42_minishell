@@ -9,7 +9,12 @@ static int	check_current_directorypath(t_child *child)
 
 	tmp = NULL;
 	dir = getcwd(NULL, 0);
-	tmp = ft_strjoin(dir, "/");
+	if (!ft_strcmp(dir, "/"))
+		tmp = ft_strdup(child->parser_cmd[0]);
+	else if (ft_strchr(child->parser_cmd[0], '/'))
+		tmp = ft_strdup(dir);
+	else
+		tmp = ft_strjoin(dir, "/");
 	if (!tmp)
 		return (1);
 	free (dir);
