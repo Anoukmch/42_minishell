@@ -34,7 +34,7 @@ int	main(int ac, char **ag, char **envp)
 		lex = initialize_lex();
 		if (lex)
 		{
-			if (!check_syntax(lex)) /* where is the parser and initialize ? */
+			if (!check_syntax(lex))
 			{
 				add_history(lex->line);
 				initialize_struct(&child, &exec, lex);
@@ -42,18 +42,16 @@ int	main(int ac, char **ag, char **envp)
 				{
 					if (!executor(child, exec, env))
 						close_piping(exec);
+					waitpid(exec->last_pid, &tmp, 0);
+					while (wait(&tmp) > 0)
+						continue ;
+					if (WIFEXITED(tmp))
+						g_exit_code = WEXITSTATUS(tmp);
 				}
-				//waitpid(exec->last_pid, &tmp, 0);
-				while (wait(&tmp) > 0)
-					continue ;
-				if (WIFEXITED(tmp))
-					g_exit_code = WEXITSTATUS(tmp); /* WEXITSTATUS(child_info) = $? */
 				free_struct(child, exec);
 				free_lex(lex);
 			}
 		}
-		else
-			exit(g_exit_code);
 	}
 	free_env(env);
 	return (0);

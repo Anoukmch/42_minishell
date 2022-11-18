@@ -68,5 +68,8 @@ t_env	*initialize_env(char **envp)
 		env->envp_bis = init_env(envp, env);
 	if (!env->envp_bis)
 		return (NULL);
+	env->c1 = 0;
+	env->c2 = 0;
+	env->c3 = 0;
 	return (env);
 }

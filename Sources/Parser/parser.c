@@ -67,6 +67,7 @@ int	quotes_after_dollarsign(char *str)
 	return (0);
 }
 
+
 // char	*variable_in_env(char *var, t_env *env)
 // {
 // 	int	i;
@@ -193,6 +194,8 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 	k = 0;
 	z = 0;
 	// MARK VARIABLES AS -2
+  	if (!lex->line[0])
+    	return (1);
 	while (lex->lexer[i])
 	{
 		if (mark_variables(lex->lexer[i]))
@@ -208,11 +211,10 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 		// printf("str after function: %s\n", lex->lexer[i]);
 		i++;
 	}
-	// print_lexer(lex);
 	if (expand_variable(lex, env)) // NEED TO CHECK PARSER CMDS & REDIRECTIONS SEPARATED
 		return (1);
-	if (env)
-		printf("test");
+	// if (env)
+	// 	printf("test");
 		// CHECK PARSE_COMMANDS, PARSE_REDIRECTIONS FOR VARIABLES
 	if (parse_commands(lex, child))
 		return (1);
