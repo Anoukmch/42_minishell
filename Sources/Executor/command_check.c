@@ -85,9 +85,16 @@ static int	check_path(t_child *child, t_env *env)
 		return (0);
 	}
 	if (get_path_from_env(env, child))
+	{
+		free_array(env->envp_path);
 		return (1);
+	}
 	if (find_command_path(env, child))
+	{
+		free_array(env->envp_path);
 		return (1);
+	}
+	free_array(env->envp_path);
 	if (child->command)
 		return (0);
 	return (0);

@@ -19,10 +19,9 @@ int	get_env_path(t_env *env)
 		env->envp_path[i] = ft_strjoin(tmp[i], "/");
 		if (!env->envp_path[i])
 			return (1);
-		free (tmp[i]);
 		i++;
 	}
-	free (tmp);
+	free_array(tmp);
 	return (0);
 }
 
@@ -32,10 +31,7 @@ int	get_path_from_env(t_env *env, t_child *child)
 
 	i = 0;
 	if (!env->envp_bis && !child->command && !ft_strchr(child->parser_cmd[0], '/'))
-	{
-		perror_return_status("command not found", 127);
-		return (0); //path of command not found environment disabled
-	}
+		return(perror_return_status("command not found", 0));
 	while (env->envp_bis[i])
 	{
 		if (!ft_strncmp(env->envp_bis[i], "PATH", 4))

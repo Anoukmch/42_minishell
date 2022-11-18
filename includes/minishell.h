@@ -84,7 +84,7 @@ void	print_parser(t_child **child);
 
 // FREE
 void	close_piping(t_exec	*exec);
-void	free_struct (t_child **child, t_exec *exec, t_env *env, t_lex	*lex);
+void	free_struct (t_child **child, t_exec *exec, t_lex	*lex);
 void	free_array(char **array);
 void	free_env(t_env	*env);
 

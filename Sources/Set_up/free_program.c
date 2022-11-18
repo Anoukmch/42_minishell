@@ -12,7 +12,7 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	free_struct (t_child **child, t_exec *exec, t_env *env, t_lex	*lex)
+void	free_struct (t_child **child, t_exec *exec, t_lex *lex)
 {
 	int	i;
 
@@ -24,17 +24,12 @@ void	free_struct (t_child **child, t_exec *exec, t_env *env, t_lex	*lex)
 			free_array(child[i]->parser_cmd);
 			free_array(child[i]->parser_redirect_input);
 			free_array(child[i]->parser_redirect_output);
-			if (child[i]->command)
-				free(child[i]->command);
+			free(child[i]->command);
 			free(child[i]);
 			i++;
 		}
 		free(child);
 	}
-	if (env->envp_path)
-		free_array(env->envp_path);
-	if (env->envp_line)
-		free(env->envp_line);
 	if (exec)
 		free(exec);
 	if (lex)
@@ -58,7 +53,5 @@ void	close_piping(t_exec	*exec)
 void	free_env(t_env	*env)
 {
 	free_array(env->envp_bis);
-	free_array(env->envp_path);
-	free(env->envp_line);
 	free(env);
 }

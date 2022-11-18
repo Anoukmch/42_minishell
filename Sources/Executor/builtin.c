@@ -173,11 +173,17 @@ int	command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 			else
 				return (perror_return("exit: too many arguments"));
 		}
-		if (!env || !lex)
-			printf("Test\n");
+		// free_struct(child, exec, lex);
+		// free_env(env);
 		exit(status);
 	}
 	else if (!child->parser_cmd[1])
+	{
+		if (!env || !lex)
+			printf("Test\n");
+		// free_struct(child, exec, lex);
+		// free_env(env);
 		exit(g_exit_code % 256);
+	}
 	return (0);
 }
