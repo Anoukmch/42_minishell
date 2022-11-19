@@ -9,8 +9,7 @@ void	initialize_struct(t_child	***child, t_exec **exec, t_lex *lex)
 	if (!(*child) || !(*exec))
 	{
 		free_struct(*child, *exec, lex);
-		perror("Check initalization structures");
-		exit (1);
+		perror_exit_status("Check initalization structures", 1);
 	}
 }
 
@@ -57,11 +56,11 @@ int	main(int ac, char **ag, char **envp)
 	t_env	*env;
 
 	if (ac != 1 || !ag[0])
-		return (perror_return("arg number incorrect"));
+		return (perror_return_status("arg number incorrect", 1));
 	signal(SIGQUIT, SIG_IGN);
 	env = initialize_env(envp);
 	if (!env)
-		return (perror_return("check init"));
+		return (perror_return_status("check init", 1));
 	while (1)
 		enter_shell(env);
 	free_env(env);

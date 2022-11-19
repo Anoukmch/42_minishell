@@ -35,7 +35,7 @@ int	mark_quotes_cmds_and_outdir(char *str)
 		i++;
 	}
 	if (quote == '\'' || quote == '\"')
-		return (perror_return("Unclosed pair of quotes"));
+		return (perror_return_status("Unclosed pair of quotes", 1));
 	return (0);
 }
 

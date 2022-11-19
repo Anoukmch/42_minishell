@@ -1,11 +1,8 @@
 
 #include "../../includes/minishell.h"
 
-int	open_outfile(t_child *child, int nbr_elements)
+int	open_outfile(t_child *child, int nbr_elements, int i)
 {
-	int	i;
-
-	i = 0;
 	while (child->parser_redirect_output[i])
 	{
 		if (!ft_strcmp(child->parser_redirect_output[i], ">"))
@@ -13,7 +10,7 @@ int	open_outfile(t_child *child, int nbr_elements)
 			child->fd_out = open(child->parser_redirect_output[i + 1],
 					O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (child->fd_out < 0)
-				return (perror_return("Error outfile"));
+				return (perror_return_status("Error outfile", 1));
 			if (i < nbr_elements - 2)
 				close(child->fd_out);
 		}
@@ -22,7 +19,7 @@ int	open_outfile(t_child *child, int nbr_elements)
 			child->fd_out = open(child->parser_redirect_output[i + 1],
 					O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (child->fd_out < 0)
-				return (perror_return("Error outfile"));
+				return (perror_return_status("Error outfile", 1));
 			if (i < nbr_elements - 2)
 				close(child->fd_out);
 		}
@@ -33,14 +30,16 @@ int	open_outfile(t_child *child, int nbr_elements)
 
 int	get_outfile(t_child *child)
 {
+	int	i;
 	int	nbr_elements;
 
+	i = 0;
 	nbr_elements = 0;
 	if (child->parser_redirect_output[0] == NULL)
 		return (0);
 	while (child->parser_redirect_output[nbr_elements])
 		nbr_elements++;
-	if (open_outfile(child, nbr_elements))
+	if (open_outfile(child, nbr_elements, i))
 		return (1);
 	return (0);
 }
@@ -63,7 +62,7 @@ int	get_infile(t_child *child)
 		{
 			tmp = open(child->parser_redirect_input[i + 1], O_RDONLY);
 			if (tmp < 0)
-				return (perror_return("Error infile"));
+				return (perror_return_status("Error infile", 1));
 			if (i < nbr_elements - 2)
 				close(tmp);
 			else
@@ -71,7 +70,7 @@ int	get_infile(t_child *child)
 		}
 		i += 2;
 	}
-    return (0);
+	return (0);
 }
 
 int	switch_put(t_child *child, t_exec *exec)
@@ -79,22 +78,23 @@ int	switch_put(t_child *child, t_exec *exec)
 	if (child->parser_redirect_input[0] != NULL)
 	{
 		if (dup2(child->fd_in, STDIN_FILENO) < 0)
-			perror_exit_child("Error file_in");
+			perror_exit_status("Error file_in", 1);
 	}
 	else if (child->parser_redirect_input[0] == NULL && child->id != 0)
 	{
 		if (dup2(exec->buffer[0], STDIN_FILENO) < 0)
-			perror_exit_child("Error piping");
-    }
+			perror_exit_status("Error piping", 1);
+	}
 	if (child->parser_redirect_output[0] != NULL)
 	{
 		if (dup2(child->fd_out, STDOUT_FILENO) < 0)
-			perror_exit_child("Error file_out");
+			perror_exit_status("Error file_out", 1);
 	}
-	else if (child->parser_redirect_output[0] == NULL && child->id != (exec->nbr_process - 1))
+	else if (child->parser_redirect_output[0] == NULL
+		&& child->id != (exec->nbr_process - 1))
 	{
 		if (dup2(exec->end[1], STDOUT_FILENO) < 0)
-			perror_exit_child("Error piping");
+			perror_exit_status("Error piping", 1);
 	}
 	return (0);
 }
@@ -155,15 +155,13 @@ int	single_builtin(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 	if (get_outfile(child))
 		return (1);
 	if (child->parser_redirect_input[0] != NULL)
-	{
 		dup2(child->fd_in, STDIN_FILENO);
+	if (child->parser_redirect_input[0] != NULL)
 		close(child->fd_in);
-	}
 	if (child->parser_redirect_output[0] != NULL)
-	{
 		dup2(child->fd_out, STDOUT_FILENO);
+	if (child->parser_redirect_output[0] != NULL)
 		close(child->fd_out);
-	}
 	if (exec->isheredoc == 1)
 		unlink("heredoc");
 	if (builtin_command(lex, child, exec, env))
@@ -173,13 +171,8 @@ int	single_builtin(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 	return (0);
 }
 
-int	child_exec(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
+int	child_exec_bis(t_lex *lex, t_child *child, t_exec *exec, t_env *env)
 {
-	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
-	{
-		if (pipe(exec->end) < 0)
-			return (1);
-	}
 	exec->last_pid = fork();
 	if (exec->last_pid < 0)
 		return (1);
@@ -197,10 +190,22 @@ int	child_exec(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 			if (builtin_command(lex, child, exec, env))
 				exit(1);
 			exit(0);
-        }
+		}
 		else
 			env_command(child, env);
 	}
+	return (0);
+}
+
+int	child_exec(t_lex *lex, t_child *child, t_exec *exec, t_env *env)
+{
+	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
+	{
+		if (pipe(exec->end) < 0)
+			return (1);
+	}
+	if (child_exec_bis(lex, child, exec, env))
+		return (1);
 	if (exec->nbr_process > 1)
 	{
 		if (child->id != 0)
