@@ -1,9 +1,9 @@
 
 #include "../../includes/minishell.h"
 
-int open_outfile(t_child *child, int nbr_elements)
+int	open_outfile(t_child *child, int nbr_elements)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (child->parser_redirect_output[i])
@@ -11,7 +11,7 @@ int open_outfile(t_child *child, int nbr_elements)
 		if (!ft_strcmp(child->parser_redirect_output[i], ">"))
 		{
 			child->fd_out = open(child->parser_redirect_output[i + 1],
-				O_CREAT | O_WRONLY | O_TRUNC, 0644);
+					O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (child->fd_out < 0)
 				return (perror_return("Error outfile"));
 			if (i < nbr_elements - 2)
@@ -19,7 +19,8 @@ int open_outfile(t_child *child, int nbr_elements)
 		}
 		else if (!ft_strcmp(child->parser_redirect_output[i], ">>"))
 		{
-			child->fd_out = open(child->parser_redirect_output[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+			child->fd_out = open(child->parser_redirect_output[i + 1],
+					O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (child->fd_out < 0)
 				return (perror_return("Error outfile"));
 			if (i < nbr_elements - 2)
@@ -163,6 +164,8 @@ int	single_builtin(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 		dup2(child->fd_out, STDOUT_FILENO);
 		close(child->fd_out);
 	}
+	if (exec->isheredoc == 1)
+		unlink("heredoc");
 	if (builtin_command(lex, child, exec, env))
 		return (1);
 	dup2(infd_tmp, STDIN_FILENO);
@@ -215,11 +218,11 @@ int	processes(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 	{
 		if (single_builtin(lex, child, exec, env))
 		{
-			//g_exit_code = 1;
+			g_exit_code = 1;
 			return (1);
 		}
-		//else
-			//g_exit_code = 0;
+		else
+			g_exit_code = 0;
 	}
 	else
 	{

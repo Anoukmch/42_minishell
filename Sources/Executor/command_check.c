@@ -4,8 +4,8 @@
 // *** CHECK CURRENT DIRECTORY AS PATH ***
 static int	check_current_directorypath(t_child *child)
 {
-	char *tmp;
-	char *dir;
+	char	*tmp;
+	char	*dir;
 
 	tmp = NULL;
 	dir = getcwd(NULL, 0);
@@ -86,7 +86,7 @@ static int	check_path(t_child *child, t_env *env)
 		if (check_existing_path(env, child))
 			return (1);
 		if (!child->command)
-			return(perror_return_status("no absolute path", 0));
+			return (perror_return_status("no absolute path", 0));
 		return (0);
 	}
 	if (get_path_from_env(env, child))

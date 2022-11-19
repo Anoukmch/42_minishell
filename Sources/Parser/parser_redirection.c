@@ -21,7 +21,8 @@ int	is_redirection_output(t_lex *lex, t_child *child, int *j)
 		= ft_strdup(lex->lexer[lex->counter++]);
 	if (mark_quotes_cmds_and_outdir(lex->lexer[lex->counter]))
 		return (1);
-	lex->lexer[lex->counter] = delete_quotes_cmds_and_outdir(lex->lexer[lex->counter]);
+	lex->lexer[lex->counter] = delete_quotes_cmds_and_outdir
+		(lex->lexer[lex->counter]);
 	child->parser_redirect_output[(*j)++]
 		= ft_strdup(lex->lexer[lex->counter]);
 	if (!child->parser_redirect_output[(*j) - 1]

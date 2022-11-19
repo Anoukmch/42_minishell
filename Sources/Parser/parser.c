@@ -18,7 +18,8 @@ int	mark_variables(char *str, char *str_before)
 			quote = '\0';
 		else if (quote == '\"' && str[i] == '\"')
 			quote = '\0';
-		else if ((quote == '\"' || quote == '\0') && str[i] == '$' && ft_strcmp(str_before, "<<"))
+		else if ((quote == '\"' || quote == '\0')
+			&& str[i] == '$' && ft_strcmp(str_before, "<<"))
 			str[i] = -2;
 		i++;
 	}
@@ -29,9 +30,9 @@ int	mark_variables(char *str, char *str_before)
 
 int	check_dollarsign(char *str)
 {
-	char tmp[4];
-	char *replace;
-	int	i;
+	char	tmp[4];
+	char	*replace;
+	int		i;
 
 	tmp[0] = '\"';
 	tmp[1] = -2;
@@ -46,7 +47,8 @@ int	check_dollarsign(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == -2 && (str[i + 1] == -2 || !str[i + 1] || str[i + 1] == ' '))
+		if (str[i] == -2 && (str[i + 1] == -2
+			|| !str[i + 1] || str[i + 1] == ' '))
 			str[i] = '$';
 		i++;
 	}
@@ -55,10 +57,10 @@ int	check_dollarsign(char *str)
 
 int	quotes_after_dollarsign(t_lex *lex, int no)
 {
-	int	i;
-	int	count;
-	char *new_lex;
-	char quote;
+	int		i;
+	int		count;
+	char	*new_lex;
+	char	quote;
 
 	i = 0;
 	count = 0;
@@ -66,7 +68,8 @@ int	quotes_after_dollarsign(t_lex *lex, int no)
 	quote = 's';
 	while (lex->lexer[no][i])
 	{
-		if (quote == '\"'  && lex->lexer[no][i] == -2 && lex->lexer[no][i + 1] == '\"')
+		if (quote == '\"' && lex->lexer[no][i] == -2
+			&& lex->lexer[no][i + 1] == '\"')
 			lex->lexer[no][i] = '$';
 		skipquotes(&quote, lex->lexer[no][i]);
 		if (quote == '\0' && lex->lexer[no][i] == -2
@@ -108,9 +111,8 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 	i = 0;
 	k = 0;
 	z = 0;
-	// MARK VARIABLES AS -2
-  	if (!lex->line[0])
-    	return (1);
+	if (!lex->line[0])
+		return (1);
 	while (lex->lexer[i])
 	{
 		if (i > 0)
@@ -127,14 +129,10 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 			return (1);
 		if (quotes_after_dollarsign(lex, i))
 			return (1);
-		// EXPAND VARIABLES IF FOUND IN ENV
-		// IF NOT FOUND MARK WHOLE VAR AS -3
 		i++;
 	}
-	// print_lexer(lex);
-	if (expand_variable(lex, env)) // NEED TO CHECK PARSER CMDS & REDIRECTIONS SEPARATED
+	if (expand_variable(lex, env))
 		return (1);
-		// CHECK PARSE_COMMANDS, PARSE_REDIRECTIONS FOR VARIABLES
 	if (parser_redirection(lex, child))
 		return (1);
 	if (parse_commands(lex, child))

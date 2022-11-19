@@ -14,52 +14,56 @@ void	initialize_struct(t_child	***child, t_exec **exec, t_lex *lex)
 	}
 }
 
-int	main(int ac, char **ag, char **envp)
+void	wait_child(t_exec *exec)
+{
+	int	tmp;
+
+	tmp = 0;
+	waitpid(exec->last_pid, &tmp, 0);
+	while (wait(NULL) > 0)
+		continue ;
+	if (WIFSIGNALED(tmp))
+		g_exit_code = 128 + WTERMSIG(tmp);
+	else if (WIFEXITED(tmp))
+		g_exit_code = WEXITSTATUS(tmp);
+}
+
+void	enter_shell(t_env *env)
 {
 	t_lex	*lex;
 	t_child	**child;
 	t_exec	*exec;
+
+	handle_signals();
+	lex = initialize_lex();
+	if (lex)
+	{
+		if (!check_syntax(lex))
+		{
+			add_history(lex->line);
+			initialize_struct(&child, &exec, lex);
+			if (!parser(lex, child, env))
+			{
+				executor(lex, child, exec, env);
+				wait_child(exec);
+			}
+			free_struct(child, exec, lex);
+		}
+	}
+}
+
+int	main(int ac, char **ag, char **envp)
+{
 	t_env	*env;
-	int		tmp;
 
 	if (ac != 1 || !ag[0])
-		return (perror_return("Wrong number of argument"));
+		return (perror_return("arg number incorrect"));
 	signal(SIGQUIT, SIG_IGN);
 	env = initialize_env(envp);
 	if (!env)
-		return (perror_return("Check initalization structures"));
+		return (perror_return("check init"));
 	while (1)
-	{
-		handle_signals();
-		lex = initialize_lex();
-		if (lex)
-		{
-			if (!check_syntax(lex))
-			{
-				add_history(lex->line);
-				initialize_struct(&child, &exec, lex);
-				if (!parser(lex, child, env))
-				{
-					if (!executor(lex, child, exec, env))
-						close_piping(exec);
-					waitpid(exec->last_pid, &tmp, 0);
-					while (wait(NULL) > 0)
-						continue ;
-					if (WIFSIGNALED(tmp))
-						g_exit_code = 128 + WTERMSIG(tmp);
-					else if (WIFEXITED(tmp))
-						g_exit_code = WEXITSTATUS(tmp);
-				}
-				free_struct(child, exec, lex);
-			}
-		}
-	}
+		enter_shell(env);
 	free_env(env);
 	return (0);
 }
-
-// waitpid(exec->last_pid, &errno, 0);
-// 				while (wait(NULL) > 0)
-// 					continue ;
-// if (WIFEXITED(errno))
-// 	printf("%d\n", WEXITSTATUS(errno)); /* WEXITSTATUS(child_info) = $? */

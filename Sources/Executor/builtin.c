@@ -1,14 +1,12 @@
 
 #include "../../includes/minishell.h"
 
-bool	ft_atoilong(long long int *buffer, const char *str)
+bool	ft_atoilong(long long int *buffer, char *s)
 {
-	char				*s;
 	unsigned long long	res;
 	int					sign;
 	int					c;
 
-	s = (char *)str;
 	c = 0;
 	sign = 1;
 	res = 0;
@@ -48,7 +46,7 @@ int	command_echo(t_child *child)
 	while (child->parser_cmd[i])
 	{
 		if (!ft_strcmp(child->parser_cmd[1], "~"))
-			ft_printf("%s", getenv("HOME")); /* Can I used getenv if ENV is disabled ? */
+			ft_printf("%s", getenv("HOME"));
 		else
 			ft_printf("%s", child->parser_cmd[i]);
 		if (child->parser_cmd[i + 1] != NULL)
@@ -75,15 +73,6 @@ int	command_cd(t_child *child)
 	}
 	return (0);
 }
-// 	if (o != -1 && i != -1)
-	// {
-	// 	env->envp_bis[o] = ft_strjoin("OLDPWD=", s));
-	// }
-	// else if (o != -1 && i != -1)
-	// {
-	// 	// CALL EXPORT FUNCTION
-	// 	EXPORT OLDPWD --> ft_strjoin with s
-	// }
 
 int	get_position_of_variable(t_env *env, char *variable)
 {
@@ -109,14 +98,6 @@ int	command_pwd(void)
 	ft_printf("%s\n", s);
 	return (0);
 }
-
-
-/* unset with no options */
-
-// void	command_unset()
-// {
-
-// }
 
 int	command_env(t_env *env)
 {
@@ -161,15 +142,15 @@ int	command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 	if (child->parser_cmd[1])
 	{
 		if (is_only_digits(child->parser_cmd[1]) || child->parser_cmd[1][0] == '\0')
-			perror_exit_status("exit: numeric argument required", 255); /* Exit code must be 255, check it */
+			perror_exit_status("exit: numeric argument required", 255);
 		istoobig = ft_atoilong(&buffer, child->parser_cmd[1]);
 		if (istoobig == true)
-			perror_exit_status("exit: numeric argument required", 255); /* Exit code must be 255, check it */
+			perror_exit_status("exit: numeric argument required", 255);
 		status = buffer % 256;
 		if (child->no_cmd_opt > 2)
 		{
 			if (exec->nbr_process > 1)
-				perror_exit_child("exit: too many arguments"); /* Exit code must be 1, check it */
+				perror_exit_child("exit: too many arguments");
 			else
 				return (perror_return("exit: too many arguments"));
 		}

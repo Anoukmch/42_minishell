@@ -9,7 +9,7 @@ static int	invalid_identifier(char *cmd)
 	if (cmd[0] == '\0' || (!ft_isalpha(cmd[0]) && cmd[0] != '_'))
 	{
 		g_exit_code = 1;
-		return(perror_return_status("unset: not a valid identifier\n", 0));
+		return (perror_return_status("unset: not a valid identifier\n", 0));
 	}
 	while (cmd[i])
 	{
@@ -73,7 +73,6 @@ int	command_unset(t_child *child, t_env *env)
 		{
 			if (get_position_in_env(env, child->parser_cmd[i]))
 				unset_variable(env, child->parser_cmd[i]);
-
 		}
 		i++;
 	}

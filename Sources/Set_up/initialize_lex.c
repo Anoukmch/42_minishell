@@ -89,5 +89,6 @@ t_lex	*initialize_lex(void)
 	lex->lexer = ft_split(lex->line2, -1);
 	if (!lex->lexer || !lex->lexer[0])
 		return (NULL);
+	lex->lexer_c = NULL;
 	return (lex);
 }

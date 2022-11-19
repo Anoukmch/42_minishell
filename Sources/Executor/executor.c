@@ -1,7 +1,7 @@
 
 #include "../../includes/minishell.h"
 
-int	here_doc(t_child *child, char *limiter, int i, int nbr_elements, t_env *env)
+int	here_doc(t_child *child, int i, int nbr_elements, t_env *env)
 {
 	int		file;
 	char	*line;
@@ -9,22 +9,20 @@ int	here_doc(t_child *child, char *limiter, int i, int nbr_elements, t_env *env)
 	int		set_stdin_back;
 
 	line = NULL;
-	// what happens if we don't have permissions for heredoc or
-	// heredoc exists?
 	file = open("heredoc", O_CREAT | O_WRONLY
 			| O_TRUNC, 0644);
 	if (file < 0)
 		return (1);
-	temp = ft_strjoin(limiter, "\n");
+	temp = ft_strjoin(child->parser_redirect_input[i + 1], "\n");
 	set_stdin_back = dup(STDIN_FILENO);
 	while (ft_strcmp(line, temp))
 	{
-		handle_signals_heredoc(); //closing stdin --> closing readline
+		handle_signals_heredoc();
 		if (i == nbr_elements - 2 && line)
 			ft_putstr_fd(line, file);
 		free(line);
 		line = readline("> ");
-		if (!line) //ctrl c & ctrl d give NULL back
+		if (!line)
 		{
 			dup2(set_stdin_back, STDIN_FILENO);
 			close(set_stdin_back);
@@ -32,13 +30,13 @@ int	here_doc(t_child *child, char *limiter, int i, int nbr_elements, t_env *env)
 			close(file);
 			if (i < nbr_elements - 2)
 				unlink("heredoc");
-			if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
-				return (1); /* exit code 0 ? */
+			if (isatty(STDERR_FILENO))
+				return (1);
 			return (1);
 		}
 		else
 		{
-			if (child->heredoc_quotes == 0 && ft_strcmp(line, limiter))
+			if (child->heredoc_quotes == 0 && ft_strcmp(line, child->parser_redirect_input[i + 1]))
 			{
 				if (ft_strchr(line, '$') != NULL)
 				{
@@ -53,8 +51,6 @@ int	here_doc(t_child *child, char *limiter, int i, int nbr_elements, t_env *env)
 	free(line);
 	free(temp);
 	close(file);
-	if (i < nbr_elements - 2)
-		unlink("heredoc");
 	return (0);
 }
 
@@ -71,9 +67,11 @@ int	get_heredoc(t_child *child, t_exec *exec, t_env *env)
 	{
 		if (!ft_strcmp(child->parser_redirect_input[i], "<<"))
 		{
-			if (here_doc(child, child->parser_redirect_input[i + 1], i, nbr_elements, env))
+			if (here_doc(child, i, nbr_elements, env))
 				return (1);
-			if (i == nbr_elements - 2)
+			if (i < nbr_elements - 2)
+				unlink("heredoc");
+			else if (i == nbr_elements - 2)
 			{
 				child->fd_in = open("heredoc", O_RDONLY);
 				if (child->fd_in < 0)
@@ -118,5 +116,6 @@ int	executor(t_lex	*lex, t_child **child, t_exec *exec, t_env *env)
 			return (1);
 		i++;
 	}
+	close_piping(exec);
 	return (0);
 }

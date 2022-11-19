@@ -76,6 +76,8 @@ typedef struct s_env
 	int		c1;
 	int		c2;
 	int		c3;
+	char	*new_arg;
+
 }	t_env;
 
 // CHECKERS

@@ -1,14 +1,6 @@
 
 #include "../../includes/minishell.h"
 
-/*
-	export environment variables
-	create new ones & replace old ones
-	check them with env
-	use unset to remove some of them
-	check the result with env
-*/
-
 char	*add_quotes(char *adding)
 {
 	int		i;
@@ -57,7 +49,7 @@ int	no_options(t_env *env)
 		if (ft_strchr(env->envp_bis[i], '=') != NULL)
 			export[i] = add_quotes(env->envp_bis[i]);
 		else
-			export[i] = ft_strdup(env->envp_bis[i]); /* Check that */
+			export[i] = ft_strdup(env->envp_bis[i]);
 		if (!export[i])
 			return (1);
 		ft_printf("declare -x ");
@@ -138,7 +130,6 @@ char	**add_variable(t_env *env, char *variablename, char *content)
 	return (new);
 }
 
-// UDPATE VARIABLE
 int	export_variable(char *str, t_env *env)
 {
 	char	*variable;
@@ -166,7 +157,6 @@ int	export_variable(char *str, t_env *env)
 	return (0);
 }
 
-// UPDATE VARIABLE
 int	env_variable(char *str, t_env *env)
 {
 	char	*variablename;
@@ -207,8 +197,6 @@ int	env_variable(char *str, t_env *env)
 	return (0);
 }
 
-//cmd[0] = "export";
-// IMPORTANT: Last string = NULL
 int	command_export(t_child *child, t_env *env)
 {
 	int	i;

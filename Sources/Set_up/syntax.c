@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 int	check_syntax(t_lex *lex)
