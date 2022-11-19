@@ -181,11 +181,15 @@ char	*handle_var(char *lex_string, t_env *env)
 				free(env_var);
 			}
 		}
+		else
+		{
+			env_var = ft_itoa(g_exit_code);
+		}
 		free(var);
 		env->c1 = env->c2;
 		k++;
 	}
-	while (lex_string[env->c2] != '\0')
+	while (lex_string[env->c2] != '\0' && sizearg != 0)
 		new_arg[env->c3++] = lex_string[env->c2++];
 	new_arg[env->c3] = '\0';
 	free(lex_string);
