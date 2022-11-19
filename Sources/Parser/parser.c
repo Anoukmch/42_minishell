@@ -115,7 +115,7 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 		else
 		{
 			if (mark_variables(lex->lexer[i], NULL))
-				return (1);			
+				return (1);
 		}
 		if (check_dollarsign(lex->lexer[i]))
 			return (1);
@@ -125,6 +125,7 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 		// IF NOT FOUND MARK WHOLE VAR AS -3
 		i++;
 	}
+	print_lexer(lex);
 	if (expand_variable(lex, env)) // NEED TO CHECK PARSER CMDS & REDIRECTIONS SEPARATED
 		return (1);
 		// CHECK PARSE_COMMANDS, PARSE_REDIRECTIONS FOR VARIABLES

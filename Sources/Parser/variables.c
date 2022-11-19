@@ -167,16 +167,19 @@ char	*handle_var(char *lex_string, t_env *env)
 		var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1 - 1));
 		if (!var || !var[0])
 			return (NULL);
-		all_env_var = is_variable_in_env(var, env);
-		if (all_env_var)
+		if (var[0] != '?')
 		{
-			env_var = fill_env_var(all_env_var);
-			if (!env_var)
-				return (NULL);
-			i = 0;
-			while (env_var[i])
-				new_arg[env->c3++] = env_var[i++];
-			free(env_var);
+			all_env_var = is_variable_in_env(var, env);
+			if (all_env_var)
+			{
+				env_var = fill_env_var(all_env_var);
+				if (!env_var)
+					return (NULL);
+				i = 0;
+				while (env_var[i])
+					new_arg[env->c3++] = env_var[i++];
+				free(env_var);
+			}
 		}
 		free(var);
 		env->c1 = env->c2;
@@ -230,21 +233,29 @@ char	**rebuild_lex(t_lex *lex)
 int	expand_variable(t_lex *lex, t_env *env)
 {
 	int		i;
-	char	*tmp;
+	int		j;
+	char	tmp1[2];
+	char	*tmp2;
 
 	i = 0;
+	j = 0;
+	tmp1[0] = -2;
+	tmp1[1] = '?';
 	while (lex->lexer[i])
 	{
-		if (lex->lexer[i][0] == -2 && lex->lexer[i][1] == '?' && !lex->lexer[i][2])
+		if (ft_strnstr(lex->lexer[i], tmp1, ft_strlen(lex->lexer[i])))
 		{
-			tmp = ft_itoa(g_exit_code);
-			if (!tmp)
+			tmp2 = ft_itoa(g_exit_code);
+			if (!tmp2)
 				return (1);
 			free(lex->lexer[i]);
-			lex->lexer[i] = ft_strdup(tmp);
+			lex->lexer[i] = ft_strdup(tmp2);
 			if (!lex->lexer[i])
+			{
+				free(tmp2);
 				return (1);
-			free(tmp);
+			}
+			free(tmp2);
 		}
 		else if (ft_strchr(lex->lexer[i], -2) != NULL)
 		{
