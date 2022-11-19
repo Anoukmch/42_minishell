@@ -46,7 +46,7 @@ int	check_dollarsign(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == -2 && (str[i + 1] == -2 || !str[i + 1]))
+		if (str[i] == -2 && (str[i + 1] == -2 || !str[i + 1] || str[i + 1] == ' '))
 			str[i] = '$';
 		i++;
 	}
@@ -58,13 +58,16 @@ int	quotes_after_dollarsign(t_lex *lex, int no)
 	int	i;
 	int	count;
 	char *new_lex;
+	char quote;
 
 	i = 0;
 	count = 0;
 	new_lex = NULL;
+	quote = -1;
 	while (lex->lexer[no][i])
 	{
-		if (lex->lexer[no][i] == -2 && (lex->lexer[no][i + 1] == '\'' || lex->lexer[no][i + 1] == '\"'))
+		skipquotes(&quote, lex->lexer[no][i]);
+		if (quote == '\0' && lex->lexer[no][i] == -2 && (lex->lexer[no][i + 1] == '\'' || lex->lexer[no][i + 1] == '\"'))
 		{
 			lex->lexer[no][i] = -3;
 			count++;
@@ -128,9 +131,11 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 	if (expand_variable(lex, env)) // NEED TO CHECK PARSER CMDS & REDIRECTIONS SEPARATED
 		return (1);
 		// CHECK PARSE_COMMANDS, PARSE_REDIRECTIONS FOR VARIABLES
-	if (parse_commands(lex, child))
-		return (1);
 	if (parser_redirection(lex, child))
 		return (1);
+	if (parse_commands(lex, child))
+		return (1);
+	// print_lexer(lex);
+	// print_parser(child);
 	return (0);
 }

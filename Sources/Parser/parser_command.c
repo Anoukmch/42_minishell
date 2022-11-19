@@ -20,8 +20,10 @@ int	commands(t_lex *lex, t_child *child)
 		}
 		else
 		{
+			// printf("TEST\n");
 			if (mark_quotes_cmds_and_outdir(lex->lexer[lex->iter]))
 				return (1);
+			// printf("TEST1\n");
 			lex->lexer[lex->iter] = delete_quotes_cmds_and_outdir(lex->lexer[lex->iter]);
 			child->parser_cmd[j] = ft_strdup(lex->lexer[lex->iter]);
 			if (!child->parser_cmd[j])

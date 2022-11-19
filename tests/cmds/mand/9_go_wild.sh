@@ -46,12 +46,12 @@ rm -f tmp_out
 
 /usr/bin/env -i bash -c "env" | wc -l
 
-export test=" arg1 arg2 "
-echo 'echo $1' > tmp_test_sh
-bash tmp_test_sh $test
-echo 'echo $2' > tmp_test_sh
-bash tmp_test_sh $test
-rm -f tmp_test_sh
+# export test=" arg1 arg2 "
+# echo 'echo $1' > tmp_test_sh
+# bash tmp_test_sh $test
+# echo 'echo $2' > tmp_test_sh
+# bash tmp_test_sh $test
+# rm -f tmp_test_sh
 
 export pipe_var=1 | echo $pipe_var
 echo $pipe_var

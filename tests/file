@@ -78,3 +78,66 @@ test1 >> file 2
 1 >> file 2
 1 >> file 2
 1 >> file 2
+1 >> file 2
+1 >> file 2
+1 >> file 2
+
+*** LEXER ***
+echo
+1
+'>>'
+file
+2
+(null)
+TEST
+TEST1
+TEST
+TEST1
+TEST
+TEST1
+TEST
+TEST1
+TEST
+TEST1
+
+*** PARSER ***
+parser cmd for child 0 : echo
+parser cmd for child 0 : 1
+parser cmd for child 0 : >>
+parser cmd for child 0 : file
+parser cmd for child 0 : 2
+No redirection input
+No redirection output
+
+1 >> file 2
+
+*** LEXER ***
+echo
+1
+'>>'
+file
+2
+(null)
+
+*** PARSER ***
+parser cmd for child 0 : echo
+parser cmd for child 0 : 1
+parser cmd for child 0 : >>
+parser cmd for child 0 : file
+parser cmd for child 0 : 2
+No redirection input
+No redirection output
+
+1 >> file 2
+
+*** PARSER ***
+parser cmd for child 0 : echo
+parser cmd for child 0 : 1
+parser cmd for child 0 : >>
+parser cmd for child 0 : file
+parser cmd for child 0 : 2
+No redirection input
+No redirection output
+
+1 >> file 2
+1 >> file 2
