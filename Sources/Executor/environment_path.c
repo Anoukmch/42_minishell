@@ -2,9 +2,9 @@
 
 int	get_env_path(t_env *env)
 {
-	int	i;
-	char **tmp;
-	int	size;
+	int		i;
+	char	**tmp;
+	int		size;
 
 	i = 0;
 	tmp = ft_split(env->envp_line, ':');
@@ -30,16 +30,18 @@ int	get_path_from_env(t_env *env, t_child *child)
 	int	i;
 
 	i = 0;
-	if (!env->envp_bis && !child->command && !ft_strchr(child->parser_cmd[0], '/'))
-		return(perror_return_status("command not found", 0));
+	if (!env->envp_bis && !child->command
+		&& !ft_strchr(child->parser_cmd[0], '/'))
+		return (perror_return_status("command not found", 0));
 	while (env->envp_bis[i])
 	{
 		if (!ft_strncmp(env->envp_bis[i], "PATH", 4))
 		{
-			env->envp_line = ft_strjoin(env->envp_bis[i], "/"); //PATH FROM OWN ENVIRONMENT
+			env->envp_line
+				= ft_strjoin(env->envp_bis[i], "/"); //PATH FROM OWN ENVIRONMENT
 			if (!env->envp_line)
-				return(perror_return_status("command not found", 0)); //path of command not found environment disabled
-				 //path of command not found -> path unset
+				return (perror_return_status("command not found", 0)); //path of command not found environment disabled
+				//path of command not found -> path unset
 			break ;
 		}
 		i++;

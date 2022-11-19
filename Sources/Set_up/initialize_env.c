@@ -12,7 +12,7 @@ int	doublepoint_size(char **str)
 
 static char	**init_disabled_env(t_env *env)
 {
-	char *dir;
+	char	*dir;
 
 	dir = getcwd(NULL, 0);
 	env->envp_bis = ft_calloc(3 + 1, sizeof(char *));
