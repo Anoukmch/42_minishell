@@ -124,9 +124,21 @@ int		parser(t_lex *lex, t_child	**child, t_env	*env);
 int		parse_commands(t_lex *lex, t_child **child);
 int		parser_redirection(t_lex *lex, t_child **child);
 int		check_redirection_table(char **array);
-// PARSER INIT
-t_child	**init_child(t_lex *lex, t_child **child);
-void	count_pipes(t_lex *lex);
+
+// VAR
+char	*is_variable_in_env(char *var, t_env *env);
+int		size_env_var(char *all_env_var, int *j);
+char	*fill_env_var(char *all_env_var);
+int		set_up_new_arg(t_env *env, int sizearg);
+char	**rebuild_lex(t_lex *lex);
+char	*handle_var(char *lex_string, t_env *env);
+int		nbr_dollar_sign(char *lex_string);
+int		nbr_dollar_sign_hd(char *lex_string);
+int		size_new_arg(char *lex_string, int count, t_env *env);
+int		count_new_arg_env_var(char *var, t_env *env, int *size);
+int		fill_new_arg_env_var(char *var, t_env *env);
+int		size_new_arg_hd(char *lex_string, int count, t_env *env);
+char	*handle_var_hd(char *lex_string, t_env *env);
 
 // EXECUTOR
 int	executor (t_lex	*lex, t_child **child, t_exec *exec, t_env *env);

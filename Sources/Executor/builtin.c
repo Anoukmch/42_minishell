@@ -127,7 +127,7 @@ int	is_only_digits(char *str)
 	return (0);
 }
 
-void	define_exit_code(t_child *child, t_exec *exec)
+int	define_exit_code(t_child *child, t_exec *exec)
 {
 	long long int	buffer;
 	bool	istoobig;
@@ -151,6 +151,7 @@ void	define_exit_code(t_child *child, t_exec *exec)
 	// free_struct(child, exec, lex);
 	// free_env(env);
 	exit(status);
+	return (0);
 }
 
 int	command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
@@ -161,6 +162,8 @@ int	command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 		define_exit_code(child, exec);
 	else if (!child->parser_cmd[1])
 	{
+		if (!lex || !env)
+			printf("Test");
 		// free_struct(child, exec, lex);
 		// free_env(env);
 		exit(g_exit_code % 256);

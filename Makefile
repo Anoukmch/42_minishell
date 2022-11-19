@@ -22,8 +22,14 @@ M_SRC = Set_up/minishell.c \
 		Parser/parser.c \
 		Parser/parser_command.c \
 		Parser/parser_redirection.c \
-		Parser/variables.c \
-		Parser/variable_heredoc.c \
+		Parser/Var_handler/Count_size_var.c \
+		Parser/Var_handler/Expand_variable.c \
+		Parser/Var_handler/Fill_var.c \
+		Parser/Var_handler/Rebuild_lex.c \
+		Parser/Var_handler/Var_handler_utils.c \
+		Parser/Var_handler_heredoc/Count_size_var_hd.c \
+		Parser/Var_handler_heredoc/Fill_var_hd.c \
+		Parser/Var_handler_heredoc/Var_handler_utils_hd.c \
 		Executor/environment_path.c \
 		Executor/command_check.c \
 		Executor/builtin_check.c \

@@ -41,7 +41,7 @@ int	here_doc(t_child *child, int i, int nbr_elements, t_env *env)
 			{
 				if (ft_strchr(line, '$') != NULL)
 				{
-					line = handle_var_bis(line, env);
+					line = handle_var_hd(line, env);
 					if (!line)
 						return (1);
 				}
