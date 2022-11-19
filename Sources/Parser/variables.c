@@ -78,6 +78,7 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 	int e;
 	char *all_env_var;
 	char	*var;
+	char	*tmp;
 
 	env->c1 = 0;
 	size = 0;
@@ -94,14 +95,32 @@ int	size_new_arg(char *lex_string, int count, t_env *env)
 		if (!lex_string[env->c1])
 			return (0);
 		env->c2 = env->c1 + 1;
-		while (lex_string[env->c2] && (ft_isalnum(lex_string[env->c2]) || lex_string[env->c2] == '_'))
+		if (lex_string[env->c2] == '?')
+		{
+			var = ft_substr(lex_string, env->c1 + 1, 1);
 			env->c2++;
-		var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1 - 1));
+		}
+		else
+		{
+			while (lex_string[env->c2] && (ft_isalnum(lex_string[env->c2]) || lex_string[env->c2] == '_'))
+				env->c2++;
+			var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1 - 1));
+		}
 		if (!var || !var[0])
 			return (0);
-		all_env_var = is_variable_in_env(var, env);
-		if (all_env_var)
-			size = size + size_env_var(all_env_var, NULL);
+		if (var[0] != '?')
+		{
+			all_env_var = is_variable_in_env(var, env);
+			if (all_env_var)
+				size = size + size_env_var(all_env_var, NULL);
+		}
+		else
+		{
+			tmp = ft_itoa(g_exit_code);
+			if (!tmp)
+				return (0);
+			size = size + ft_strlen(tmp);
+		}
 		free(var);
 		env->c1 = env->c2;
 		k++;
@@ -162,9 +181,18 @@ char	*handle_var(char *lex_string, t_env *env)
 		if (!lex_string[env->c1])
 			return (NULL);
 		env->c2 = env->c1 + 1;
-		while (lex_string[env->c2] && (ft_isalnum(lex_string[env->c2]) || lex_string[env->c2] == '_'))
+
+		if (lex_string[env->c2] == '?')
+		{
+			var = ft_substr(lex_string, env->c1 + 1, 1);
 			env->c2++;
-		var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1 - 1));
+		}
+		else
+		{
+			while (lex_string[env->c2] && (ft_isalnum(lex_string[env->c2]) || lex_string[env->c2] == '_'))
+				env->c2++;
+			var = ft_substr(lex_string, env->c1 + 1, (env->c2 - env->c1 - 1));
+		}
 		if (!var || !var[0])
 			return (NULL);
 		if (var[0] != '?')
@@ -184,6 +212,12 @@ char	*handle_var(char *lex_string, t_env *env)
 		else
 		{
 			env_var = ft_itoa(g_exit_code);
+			if (!env_var)
+				return (NULL);
+			i = 0;
+			while (env_var[i])
+				new_arg[env->c3++] = env_var[i++];
+			free(env_var);
 		}
 		free(var);
 		env->c1 = env->c2;
@@ -238,30 +272,12 @@ int	expand_variable(t_lex *lex, t_env *env)
 {
 	int		i;
 	int		j;
-	char	tmp1[2];
-	char	*tmp2;
 
 	i = 0;
 	j = 0;
-	tmp1[0] = -2;
-	tmp1[1] = '?';
 	while (lex->lexer[i])
 	{
-		if (ft_strnstr(lex->lexer[i], tmp1, ft_strlen(lex->lexer[i])))
-		{
-			tmp2 = ft_itoa(g_exit_code);
-			if (!tmp2)
-				return (1);
-			free(lex->lexer[i]);
-			lex->lexer[i] = ft_strdup(tmp2);
-			if (!lex->lexer[i])
-			{
-				free(tmp2);
-				return (1);
-			}
-			free(tmp2);
-		}
-		else if (ft_strchr(lex->lexer[i], -2) != NULL)
+		if (ft_strchr(lex->lexer[i], -2) != NULL)
 		{
 			lex->lexer[i] = handle_var(lex->lexer[i], env);
 			if (!lex->lexer[i])
