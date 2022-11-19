@@ -61,5 +61,5 @@ int	main(int ac, char **ag, char **envp)
 // waitpid(exec->last_pid, &errno, 0);
 // 				while (wait(NULL) > 0)
 // 					continue ;
-// 				if (WIFEXITED(errno))
-// 					printf("%d\n", WEXITSTATUS(errno)); /* WEXITSTATUS(child_info) = $? */
+// if (WIFEXITED(errno))
+// 	printf("%d\n", WEXITSTATUS(errno)); /* WEXITSTATUS(child_info) = $? */

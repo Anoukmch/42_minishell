@@ -12,7 +12,7 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	free_struct (t_child **child, t_exec *exec, t_lex *lex)
+void	free_struct(t_child **child, t_exec *exec, t_lex *lex)
 {
 	int	i;
 

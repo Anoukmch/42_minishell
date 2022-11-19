@@ -127,7 +127,8 @@ char	*delete_quotes_indir(t_child *child, t_lex *lex)
 			count++;
 		i++;
 	}
-	final = malloc((ft_strlen(lex->lexer[lex->counter]) - count) * sizeof(char));
+	final = malloc((ft_strlen(lex->lexer[lex->counter]) - count)
+			* sizeof(char));
 	if (final == NULL)
 		return (NULL);
 	i = 0;
@@ -141,7 +142,8 @@ char	*delete_quotes_indir(t_child *child, t_lex *lex)
 		}
 		else
 		{
-			if (lex->counter != 0 && !ft_strcmp(lex->lexer[lex->counter - 1], "<<")
+			if (lex->counter != 0
+				&& !ft_strcmp(lex->lexer[lex->counter - 1], "<<")
 				&& ft_strchr(lex->lexer[lex->counter], -1))
 				child->heredoc_quotes = 1;
 		}
