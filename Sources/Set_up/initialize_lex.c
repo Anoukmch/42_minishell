@@ -2,7 +2,6 @@
 
 static char	*minishell_gnl_free_line(char *line);
 
-// ***** FOR MINISHELL TESTER *****
 static char	*str_append_chr(char *str, char append)
 {
 	char	*new_str;
@@ -59,11 +58,6 @@ static char	*minishell_gnl_free_line(char *line)
 	return (NULL);
 }
 
-// OUR CODE
-
-//  The Ctrl-d (^D) character will send an end of file signal
-//	CTRL-D referrs to STDERR??
-
 t_lex	*initialize_lex(void)
 {
 	t_lex	*lex;
@@ -71,9 +65,8 @@ t_lex	*initialize_lex(void)
 	lex = ft_calloc(1, sizeof(t_lex));
 	if (!lex)
 		return (NULL);
-	if (isatty(STDIN_FILENO)) // ***** FOR MINISHELL TESTER *****
+	if (isatty(STDIN_FILENO))
 		lex->line = readline("input: ");
-	// lex->line = readline("input: "); // comment out for MINISHELL TESTER
 	else
 		lex->line = minishell_get_next_line(STDIN_FILENO);
 	if (lex->line == NULL)

@@ -120,7 +120,7 @@ void	env_command(t_child *child, t_env *env)
 	if (child->command == NULL)
 		perror_exit_status("command not found", 127);
 	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)
-		perror_exit_status("execve command failed", 126);
+		perror_exit_status("Execve command failed", 126);
 }
 
 int	builtin_command(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
