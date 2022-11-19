@@ -63,11 +63,14 @@ int	quotes_after_dollarsign(t_lex *lex, int no)
 	i = 0;
 	count = 0;
 	new_lex = NULL;
-	quote = -1;
+	quote = 's';
 	while (lex->lexer[no][i])
 	{
+		if (quote == '\"'  && lex->lexer[no][i] == -2 && lex->lexer[no][i + 1] == '\"')
+			lex->lexer[no][i] = '$';
 		skipquotes(&quote, lex->lexer[no][i]);
-		if (quote == '\0' && lex->lexer[no][i] == -2 && (lex->lexer[no][i + 1] == '\'' || lex->lexer[no][i + 1] == '\"'))
+		if (quote == '\0' && lex->lexer[no][i] == -2
+			&& (lex->lexer[no][i + 1] == '\'' || lex->lexer[no][i + 1] == '\"'))
 		{
 			lex->lexer[no][i] = -3;
 			count++;
@@ -128,7 +131,7 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 		// IF NOT FOUND MARK WHOLE VAR AS -3
 		i++;
 	}
-	print_lexer(lex);
+	// print_lexer(lex);
 	if (expand_variable(lex, env)) // NEED TO CHECK PARSER CMDS & REDIRECTIONS SEPARATED
 		return (1);
 		// CHECK PARSE_COMMANDS, PARSE_REDIRECTIONS FOR VARIABLES
