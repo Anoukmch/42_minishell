@@ -48,10 +48,39 @@ int	check_dollarsign(char *str)
 	while (str[i])
 	{
 		if (str[i] == -2 && (str[i + 1] == -2
-			|| !str[i + 1] || str[i + 1] == ' '))
+				|| !str[i + 1] || str[i + 1] == ' '))
 			str[i] = '$';
 		i++;
 	}
+	return (0);
+}
+
+int	delete_marked_dollarsign(t_lex *lex, int no, int *count)
+{
+	char	*new_lex;
+	int		i;
+
+	i = 0;
+	new_lex = NULL;
+	new_lex = ft_calloc((ft_strlen(lex->lexer[no]) + 1)
+			- (*count), sizeof(char));
+	if (!new_lex)
+		return (1);
+	*count = 0;
+	while (lex->lexer[no][i])
+	{
+		if (lex->lexer[no][i] == -3)
+			i++;
+		else
+		{
+			new_lex[*count] = lex->lexer[no][i];
+			(*count)++;
+			i++;
+		}
+	}
+	new_lex[*count] = '\0';
+	free (lex->lexer[no]);
+	lex->lexer[no] = new_lex;
 	return (0);
 }
 
@@ -59,12 +88,10 @@ int	quotes_after_dollarsign(t_lex *lex, int no)
 {
 	int		i;
 	int		count;
-	char	*new_lex;
 	char	quote;
 
 	i = 0;
 	count = 0;
-	new_lex = NULL;
 	quote = 's';
 	while (lex->lexer[no][i])
 	{
@@ -80,51 +107,24 @@ int	quotes_after_dollarsign(t_lex *lex, int no)
 		}
 		i++;
 	}
-	new_lex = ft_calloc((ft_strlen(lex->lexer[no]) + 1) - count, sizeof(char));
-	if (!new_lex)
+	if (delete_marked_dollarsign(lex, no, &count))
 		return (1);
-	i = 0;
-	count = 0;
-	while (lex->lexer[no][i])
-	{
-		if (lex->lexer[no][i] == -3)
-			i++;
-		else
-		{
-			new_lex[count] = lex->lexer[no][i];
-			count++;
-			i++;
-		}
-	}
-	new_lex[count] = '\0';
-	free (lex->lexer[no]);
-	lex->lexer[no] = new_lex;
 	return (0);
 }
 
 int	parser(t_lex *lex, t_child	**child, t_env	*env)
 {
 	int	i;
-	int	k;
-	int	z;
 
 	i = 0;
-	k = 0;
-	z = 0;
 	if (!lex->line[0])
 		return (1);
 	while (lex->lexer[i])
 	{
-		if (i > 0)
-		{
-			if (mark_variables(lex->lexer[i], lex->lexer[i - 1]))
-				return (1);
-		}
-		else
-		{
-			if (mark_variables(lex->lexer[i], NULL))
-				return (1);
-		}
+		if (i > 0 && mark_variables(lex->lexer[i], lex->lexer[i - 1]))
+			return (1);
+		else if (mark_variables(lex->lexer[i], NULL))
+			return (1);
 		if (check_dollarsign(lex->lexer[i]))
 			return (1);
 		if (quotes_after_dollarsign(lex, i))
