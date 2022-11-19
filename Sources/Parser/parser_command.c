@@ -1,10 +1,7 @@
 #include "../../includes/minishell.h"
 
-int	commands(t_lex *lex, t_child *child)
+int	commands(t_lex *lex, t_child *child, int j)
 {
-	int	j;
-
-	j = 0;
 	while (lex->lexer[lex->iter]
 		&& ft_strcmp(lex->lexer[lex->iter], "|"))
 	{
@@ -33,12 +30,14 @@ int	commands(t_lex *lex, t_child *child)
 int	parse_commands(t_lex *lex, t_child **child)
 {
 	int	k;
+	int	j;
 
 	k = 0;
+	j = 0;
 	lex->iter = 0;
 	while (k < lex->no_processes)
 	{
-		if (commands(lex, child[k]))
+		if (commands(lex, child[k], j))
 			return (1);
 		lex->iter++;
 		k++;

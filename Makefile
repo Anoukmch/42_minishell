@@ -33,6 +33,7 @@ M_SRC = Set_up/minishell.c \
 		Executor/environment_path.c \
 		Executor/command_check.c \
 		Executor/builtin_check.c \
+		Executor/builtin_export_no_args.c \
 		Executor/executor.c \
 		Executor/processes.c \
 		Executor/builtin.c \

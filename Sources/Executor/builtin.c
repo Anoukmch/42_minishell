@@ -154,7 +154,7 @@ int	define_exit_code(t_child *child, t_exec *exec)
 	return (0);
 }
 
-int	command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
+int	command_exit(t_child *child, t_exec *exec)
 {
 	if (exec->nbr_process == 1 && isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", STDERR_FILENO);

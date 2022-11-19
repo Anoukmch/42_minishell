@@ -124,7 +124,7 @@ void	env_command(t_child *child, t_env *env)
 		perror_exit_status("Execve command failed", 126);
 }
 
-int	builtin_command(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
+int	builtin_command(t_child *child, t_exec *exec, t_env *env)
 {
 	if (!ft_strcmp(child->command, "pwd"))
 		return (command_pwd());
@@ -133,7 +133,7 @@ int	builtin_command(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 	else if (!ft_strcmp(child->command, "cd"))
 		return (command_cd(child));
 	else if (!ft_strcmp(child->command, "exit"))
-		return (command_exit(lex, child, exec, env));
+		return (command_exit(child, exec));
 	else if (!ft_strcmp(child->command, "export"))
 		return (command_export(child, env));
 	else if (!ft_strcmp(child->command, "unset"))
@@ -143,7 +143,7 @@ int	builtin_command(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 	return (1);
 }
 
-int	single_builtin(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
+int	single_builtin(t_child *child, t_exec *exec, t_env *env)
 {
 	int	infd_tmp;
 	int	outfd_tmp;
@@ -164,14 +164,14 @@ int	single_builtin(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 		close(child->fd_out);
 	if (exec->isheredoc == 1)
 		unlink("heredoc");
-	if (builtin_command(lex, child, exec, env))
+	if (builtin_command(child, exec, env))
 		return (1);
 	dup2(infd_tmp, STDIN_FILENO);
 	dup2(outfd_tmp, STDOUT_FILENO);
 	return (0);
 }
 
-int	child_exec_bis(t_lex *lex, t_child *child, t_exec *exec, t_env *env)
+int	child_exec_bis(t_child *child, t_exec *exec, t_env *env)
 {
 	exec->last_pid = fork();
 	if (exec->last_pid < 0)
@@ -187,7 +187,7 @@ int	child_exec_bis(t_lex *lex, t_child *child, t_exec *exec, t_env *env)
 		close_pipe(exec, child);
 		if (child->isbuiltin == true)
 		{
-			if (builtin_command(lex, child, exec, env))
+			if (builtin_command(child, exec, env))
 				exit(1);
 			exit(0);
 		}
@@ -197,14 +197,14 @@ int	child_exec_bis(t_lex *lex, t_child *child, t_exec *exec, t_env *env)
 	return (0);
 }
 
-int	child_exec(t_lex *lex, t_child *child, t_exec *exec, t_env *env)
+int	child_exec(t_child *child, t_exec *exec, t_env *env)
 {
 	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
 	{
 		if (pipe(exec->end) < 0)
 			return (1);
 	}
-	if (child_exec_bis(lex, child, exec, env))
+	if (child_exec_bis(child, exec, env))
 		return (1);
 	if (exec->nbr_process > 1)
 	{
@@ -217,11 +217,11 @@ int	child_exec(t_lex *lex, t_child *child, t_exec *exec, t_env *env)
 	return (0);
 }
 
-int	processes(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
+int	processes(t_child *child, t_exec *exec, t_env *env)
 {
 	if (exec->nbr_process == 1 && child->isbuiltin == true)
 	{
-		if (single_builtin(lex, child, exec, env))
+		if (single_builtin(child, exec, env))
 		{
 			g_exit_code = 1;
 			return (1);
@@ -231,7 +231,7 @@ int	processes(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 	}
 	else
 	{
-		if (child_exec(lex, child, exec, env))
+		if (child_exec(child, exec, env))
 			return (1);
 	}
 	return (0);
