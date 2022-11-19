@@ -51,8 +51,6 @@ int	main(int ac, char **ag, char **envp)
 				free_struct(child, exec, lex);
 			}
 		}
-		else
-			exit(g_exit_code);
 	}
 	free_env(env);
 	return (0);

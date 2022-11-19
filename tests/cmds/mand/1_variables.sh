@@ -76,10 +76,10 @@ cd ..
 rm -rf "tmp_test folder"
 
 ### SCMD IN VARIABLE ###
-export tmp_test="/bin/echo 1" && $tmp_test
-unset tmp_test
-export tmp_test="/bin/echo" && $tmp_test 1
-unset tmp_test
+# export tmp_test="/bin/echo 1" && $tmp_test
+# unset tmp_test
+# export tmp_test="/bin/echo" && $tmp_test 1
+# unset tmp_test
 
 ### VARIABLE SPLITTING ###
 export X="  A  B  "
@@ -124,7 +124,7 @@ export X="  A  B  "
 export X="  A  B  "
 /bin/echo "1"$X?
 
-export X="  A  B  " #WORKS
+export X="  A  B  "
 /bin/echo "1"$X2?
 
 # export test=" * "

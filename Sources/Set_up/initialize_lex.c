@@ -79,11 +79,8 @@ t_lex	*initialize_lex(void)
 	if (lex->line == NULL)
 	{
 		if (isatty(STDERR_FILENO))
-		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
-			exit (0);
-		}
-		return (NULL);
+		exit (g_exit_code);
 	}
 	else if (!lex->line[0])
 		return (NULL);
@@ -94,7 +91,7 @@ t_lex	*initialize_lex(void)
 	lex->line2 = ft_calloc((ft_strlen(lex->line)
 				+ lex->counter + 1), sizeof(char));
 	if (!lex->line2)
-		return (NULL);
+		exit (g_exit_code);
 	create_line2(lex);
 	lex->lexer = ft_split(lex->line2, -1);
 	if (!lex->lexer || !lex->lexer[0])
