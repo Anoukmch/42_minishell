@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 static int	invalid_identifier(char *cmd)

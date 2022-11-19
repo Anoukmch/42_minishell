@@ -20,10 +20,6 @@
 
 # include "../includes/libs/libs.h"
 
-// RETURN 0 --> all fine
-// RETURN 1 --> error message, stay in shell
-// RETURN 2 --> error message (?), exit shell
-
 extern int	g_exit_code;
 
 typedef struct s_lex
@@ -37,10 +33,6 @@ typedef struct s_lex
 	int		iter;
 }	t_lex;
 
-/* parser_redirect[0] = infile <
-	parser_redirect[1]=> LIMITER for here_doc <<
-	parser_redirect[2] = outfile >
-	parser_redirec[3] = outfile in append mode >> */
 typedef struct s_child
 {
 	char	**parser_cmd;
@@ -63,8 +55,9 @@ typedef struct s_exec
 	int		nbr_process;
 	int		end[2];
 	int		buffer[1];
-	int		isheredoc; //are we using it? store if heredoc has quotes?
+	int		isheredoc;
 	pid_t	last_pid;
+	bool	hasfreed;
 
 }	t_exec;
 
@@ -84,27 +77,18 @@ typedef struct s_env
 void	print_lexer(t_lex *lex);
 void	print_parser(t_child **child);
 
-// FREE
-void	close_piping(t_exec	*exec);
-void	free_struct (t_child **child, t_exec *exec, t_lex	*lex);
-void	free_array(char **array);
-void	free_env(t_env	*env);
-
-// INIT
+// SET_UP/INIT
 int		check_syntax(t_lex *lex);
 void	count_pipes(t_lex *lex);
-t_lex	*initialize_lex();
+t_lex	*initialize_lex(void);
 t_child	**initialize_child(t_lex *lex);
 t_exec	*initialize_exec(t_lex *lex);
 t_env	*initialize_env(char **envp);
-
-// char	*delete_quotes(char *str);
 char	*delete_quotes_indir(t_child *child, t_lex *lex);
-// int		mark_quotes(char *str, char *before_str);
 int		mark_quotes_cmds_and_outdir(char *str);
 char	*delete_quotes_cmds_and_outdir(char *str);
 
-// SIGNALS
+// SET_UP/SIGNALS
 void	handle_signals(void);
 void	handle_signals_heredoc(void);
 void	signal_for_heredoc(int signum);
@@ -117,7 +101,6 @@ int		lexer_count_spaces(t_lex *lex);
 
 char	**create_lexer_string(t_lex *lex);
 char	**split_lexer(char const *s, char c);
-void	errorexit(char *message);
 
 // PARSER
 int		parser(t_lex *lex, t_child	**child, t_env	*env);
@@ -125,7 +108,12 @@ int		parse_commands(t_lex *lex, t_child **child);
 int		parser_redirection(t_lex *lex, t_child **child);
 int		check_redirection_table(char **array);
 
-// VAR
+// PARSER/QUOTE_HANDLER
+int		mark_variables(char *str, char *str_before);
+int		check_dollarsign(char *str);
+int		quotes_after_dollarsign(t_lex *lex, int no);
+
+// PARSER/VAR_HANDLER
 char	*is_variable_in_env(char *var, t_env *env);
 int		size_env_var(char *all_env_var, int *j);
 char	*fill_env_var(char *all_env_var);
@@ -139,15 +127,28 @@ int		count_new_arg_env_var(char *var, t_env *env, int *size);
 int		fill_new_arg_env_var(char *var, t_env *env);
 int		size_new_arg_hd(char *lex_string, int count, t_env *env);
 char	*handle_var_hd(char *lex_string, t_env *env);
+int		var_handler(t_lex *lex, t_env *env);
 
 // EXECUTOR
-int		executor (t_child **child, t_exec *exec, t_env *env);
-int     processes(t_child *child, t_exec *exec, t_env *env);
+int		executor(t_child **child, t_exec *exec, t_env *env, t_lex *lex);
 
 int		check_builtins_other(t_child *child);
 int		check_builtins_env(t_child *child);
 int		get_env_path(t_env *env);
 int		get_path_from_env(t_env *env, t_child *child);
+
+int		get_heredoc(t_child **child, t_exec *exec, t_env *env);
+
+// EXECUTOR/PROCESS
+int		processes(t_child *child, t_exec *exec, t_env *env, t_lex *lex);
+int		single_builtin(t_child *child, t_exec *exec, t_env *env, t_lex *lex);
+int		child_exec(t_child *child, t_exec *exec, t_env *env, t_lex *lex);
+int		get_infile(t_child *child);
+int		get_outfile(t_child *child);
+int		switch_put(t_child *child, t_exec *exec);
+void	close_pipe(t_exec *exec, t_child *child);
+int		builtin_command(t_child *child, t_exec *exec, t_env *env, t_lex	*lex);
+void	env_command(t_child *child, t_env *env);
 
 // BUILTIN
 int		command_env(t_env *env);
@@ -155,25 +156,23 @@ int		command_path(t_child *child, t_env *env);
 int		command_echo(t_child *child);
 int		command_cd(t_child *child);
 int		command_pwd(void);
-int		command_exit(t_child *child, t_exec *exec);
+int		command_exit(t_child *child, t_exec *exec, t_env *env, t_lex *lex);
 int		command_export(t_child *child, t_env *env);
 int		command_unset(t_child *child, t_env *env);
 char	*add_quotes(char *adding);
 int		no_options(t_env *env);
+int		is_only_digits(char *str);
+bool	ft_atoilong(long long int *buffer, char *s);
 
 // ENV
 int		doublepoint_size(char **str);
 char	**get_position_in_env(t_env *env, char *variable);
 
-// ERROR
-int		perror_return(char *str);
-void	perror_exit_child(char *str);
+// UTILS
 void	perror_exit_status(char *str, int status);
 int		perror_return_status(char *str, int status);
-
-void	errorexit(char *message);
-
-char	*handle_var(char *lex_string, t_env *env);
-int		expand_variable(t_lex *lex, t_env *env);
-char	*handle_var_bis(char *lex_string, t_env *env);
+void	close_piping(t_exec	*exec);
+void	free_struct(t_child **child, t_exec *exec, t_lex *lex);
+void	free_array(char **array);
+void	free_env(t_env *env);
 #endif

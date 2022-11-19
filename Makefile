@@ -6,40 +6,55 @@ CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-
 
 NAME =  minishell
 
-M_SRC = Set_up/minishell.c \
-		Set_up/initialize_child.c \
-		Set_up/initialize_exec.c \
-		Set_up/initialize_lex.c \
-		Set_up/initialize_env.c \
-		Set_up/signals.c \
+M_SRC = Set_up/Minishell.c \
+		Set_up/Init/Init_child.c \
+		Set_up/Init/Init_exec.c \
+		Set_up/Init/Init_lex.c \
+		Set_up/Init/Init_env.c \
+		Set_up/Signals.c \
 		Set_up/quotes.c \
 		Set_up/checker.c \
 		Set_up/syntax.c \
-		Set_up/free_program.c \
-		Lexer/lex_helpers.c \
-		Lexer/count_spaces.c \
-		Lexer/create_lexline2.c \
-		Parser/parser.c \
-		Parser/parser_command.c \
-		Parser/parser_redirection.c \
+		Lexer/Lex_utils.c \
+		Lexer/Count_spaces.c \
+		Lexer/Create_lexline2.c \
+		Parser/Parser.c \
+		Parser/Parser_command.c \
+		Parser/Parser_redirection.c \
 		Parser/Var_handler/Count_size_var.c \
-		Parser/Var_handler/Expand_variable.c \
+		Parser/Var_handler/Var_handler.c \
 		Parser/Var_handler/Fill_var.c \
 		Parser/Var_handler/Rebuild_lex.c \
 		Parser/Var_handler/Var_handler_utils.c \
 		Parser/Var_handler_heredoc/Count_size_var_hd.c \
 		Parser/Var_handler_heredoc/Fill_var_hd.c \
 		Parser/Var_handler_heredoc/Var_handler_utils_hd.c \
+		Parser/Quote_handler/Quote_handler.c \
 		Executor/environment_path.c \
-		Executor/command_check.c \
 		Executor/builtin_check.c \
 		Executor/builtin_export_no_args.c \
-		Executor/executor.c \
-		Executor/processes.c \
-		Executor/builtin.c \
+		Executor/Executor.c \
+		Executor/Process/Process.c \
+		Executor/Process/Child_exec.c \
+		Executor/Process/Do_command.c \
+		Executor/Process/Get_infile.c \
+		Executor/Process/Get_outfile.c \
+		Executor/Process/Process_utils.c \
+		Executor/Process/Single_builtin.c \
+		Executor/Builtin/Builtin_cd.c \
+		Executor/Builtin/Builtin_echo.c \
+		Executor/Builtin/Builtin_env.c \
+		Executor/Builtin/Builtin_exit.c \
+		Executor/Builtin/Builtin_export.c \
+		Executor/Builtin/Builtin_pwd.c \
+		Executor/Builtin/Builtin_unset.c \
+		Executor/Builtin/Builtin_utils.c \
+		Executor/Get_heredoc.c \
+		Executor/Get_command.c \
 		Executor/builtin_export.c \
 		Executor/builtin_unset.c \
-		Executor/exitstatus.c
+		Utils/Exit_return_status.c \
+		Utils/Free_program.c \
 
 M_SRCS = $(addprefix ./Sources/, $(M_SRC))
 
