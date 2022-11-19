@@ -9,6 +9,7 @@ static void	control_c(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_exit_code = 1;
 	}
 }
 
@@ -20,6 +21,7 @@ void	control_c_heredoc(int signum)
 
 		// auf alten STDIN setzen
 		ft_putstr_fd("\n", STDERR_FILENO);
+		g_exit_code = 1;
 	}
 }
 

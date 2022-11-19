@@ -1,7 +1,7 @@
 
 #include "../../includes/minishell.h"
 
-int	here_doc(char *limiter, int i, int nbr_elements)
+int	here_doc(t_child *child, char *limiter, int i, int nbr_elements, t_env *env)
 {
 	int		file;
 	char	*line;
@@ -15,13 +15,9 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 			| O_TRUNC, 0644);
 	if (file < 0)
 		return (1);
-	// if (child[k]-->heredoc_quotes == 0)
-	//  expand variables in heredoc
-	// if (child[k]-->heredoc_quotes == 1)
-	//  DO NOT expand variables in heredoc
 	temp = ft_strjoin(limiter, "\n");
 	set_stdin_back = dup(STDIN_FILENO);
-	while (ft_strncmp(line, temp, (ft_strlen(limiter) + 1)))
+	while (ft_strcmp(line, temp))
 	{
 		handle_signals_heredoc(); //closing stdin --> closing readline
 		if (i == nbr_elements - 2 && line)
@@ -30,7 +26,6 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 		line = readline("> ");
 		if (!line) //ctrl c & ctrl d give NULL back
 		{
-			//set stdin back --> minishell is not closed
 			dup2(set_stdin_back, STDIN_FILENO);
 			close(set_stdin_back);
 			free(line);
@@ -40,6 +35,18 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 			if (isatty(STDERR_FILENO)) //CTRL-D referrs to STDERR??
 				return (1); /* exit code 0 ? */
 			return (1);
+		}
+		else
+		{
+			if (child->heredoc_quotes == 0 && ft_strcmp(line, limiter))
+			{
+				if (ft_strchr(line, '$') != NULL)
+				{
+					line = handle_var_bis(line, env);
+					if (!line)
+						return (1);
+				}
+			}
 		}
 		line = ft_strjoin(line, "\n");
 	}
@@ -51,7 +58,7 @@ int	here_doc(char *limiter, int i, int nbr_elements)
 	return (0);
 }
 
-int	get_heredoc(t_child *child, t_exec *exec)
+int	get_heredoc(t_child *child, t_exec *exec, t_env *env)
 {
 	int	i;
 	int	nbr_elements;
@@ -64,7 +71,7 @@ int	get_heredoc(t_child *child, t_exec *exec)
 	{
 		if (!ft_strcmp(child->parser_redirect_input[i], "<<"))
 		{
-			if (here_doc(child->parser_redirect_input[i + 1], i, nbr_elements))
+			if (here_doc(child, child->parser_redirect_input[i + 1], i, nbr_elements, env))
 				return (1);
 			if (i == nbr_elements - 2)
 			{
@@ -79,7 +86,7 @@ int	get_heredoc(t_child *child, t_exec *exec)
 	return (0);
 }
 
-int	open_heredoc(t_child **child, t_exec *exec)
+int	open_heredoc(t_child **child, t_exec *exec, t_env *env)
 {
 	int	i;
 
@@ -88,7 +95,7 @@ int	open_heredoc(t_child **child, t_exec *exec)
 	{
 		if (child[i]->parser_redirect_input[0] != NULL)
 		{
-			if (get_heredoc(child[i], exec))
+			if (get_heredoc(child[i], exec, env))
 				return (1);
 		}
 		i++;
@@ -101,7 +108,7 @@ int	executor(t_lex	*lex, t_child **child, t_exec *exec, t_env *env)
 	int	i;
 
 	i = 0;
-	if (open_heredoc(child, exec))
+	if (open_heredoc(child, exec, env))
 		return (1);
 	while (child[i])
 	{

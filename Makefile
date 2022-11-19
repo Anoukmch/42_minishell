@@ -23,6 +23,7 @@ M_SRC = Set_up/minishell.c \
 		Parser/parser_command.c \
 		Parser/parser_redirection.c \
 		Parser/variables.c \
+		Parser/variable_heredoc.c \
 		Executor/environment_path.c \
 		Executor/command_check.c \
 		Executor/builtin_check.c \
