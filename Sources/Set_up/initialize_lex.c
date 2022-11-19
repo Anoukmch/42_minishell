@@ -58,13 +58,8 @@ static char	*minishell_gnl_free_line(char *line)
 	return (NULL);
 }
 
-t_lex	*initialize_lex(void)
+int	read_input(t_lex *lex)
 {
-	t_lex	*lex;
-
-	lex = ft_calloc(1, sizeof(t_lex));
-	if (!lex)
-		return (NULL);
 	if (isatty(STDIN_FILENO))
 		lex->line = readline("input: ");
 	else
@@ -76,6 +71,18 @@ t_lex	*initialize_lex(void)
 		exit (g_exit_code);
 	}
 	else if (!lex->line[0])
+		return (1);
+	return (0);
+}
+
+t_lex	*initialize_lex(void)
+{
+	t_lex	*lex;
+
+	lex = ft_calloc(1, sizeof(t_lex));
+	if (!lex)
+		return (NULL);
+	if (read_input(lex))
 		return (NULL);
 	lex->line = convert_tabs_to_spaces(lex->line);
 	lex->counter = lexer_count_spaces(lex);

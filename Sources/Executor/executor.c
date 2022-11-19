@@ -36,7 +36,8 @@ int	here_doc(t_child *child, int i, int nbr_elements, t_env *env)
 		}
 		else
 		{
-			if (child->heredoc_quotes == 0 && ft_strcmp(line, child->parser_redirect_input[i + 1]))
+			if (child->heredoc_quotes == 0
+				&& ft_strcmp(line, child->parser_redirect_input[i + 1]))
 			{
 				if (ft_strchr(line, '$') != NULL)
 				{
@@ -51,6 +52,8 @@ int	here_doc(t_child *child, int i, int nbr_elements, t_env *env)
 	free(line);
 	free(temp);
 	close(file);
+	if (i < nbr_elements - 2)
+		unlink("heredoc");
 	return (0);
 }
 
@@ -69,13 +72,11 @@ int	get_heredoc(t_child *child, t_exec *exec, t_env *env)
 		{
 			if (here_doc(child, i, nbr_elements, env))
 				return (1);
-			if (i < nbr_elements - 2)
-				unlink("heredoc");
 			else if (i == nbr_elements - 2)
 			{
 				child->fd_in = open("heredoc", O_RDONLY);
 				if (child->fd_in < 0)
-					return (perror_return("Error heredoc : "));
+					return (perror_return_status("Error heredoc : ", 1));
 				exec->isheredoc = 1;
 			}
 		}

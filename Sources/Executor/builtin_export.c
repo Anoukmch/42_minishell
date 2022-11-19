@@ -25,8 +25,7 @@ char	*add_quotes(char *adding)
 		j++;
 		i++;
 	}
-	tmp[j] = '\"';
-	j++;
+	tmp[j++] = '\"';
 	tmp[j] = '\0';
 	return (tmp);
 }
@@ -68,7 +67,7 @@ static int	invalid_identifier(char *cmd)
 	if ((!ft_isalpha(cmd[0]) && cmd[0] != '_'))
 	{
 		g_exit_code = 1;
-		return(perror_return_status("export: not a valid identifier\n", 0));
+		return (perror_return_status("export: not a valid identifier\n", 0));
 	}
 	while (cmd[i] && cmd[i] != '=')
 	{
@@ -85,7 +84,7 @@ static int	invalid_identifier(char *cmd)
 char	**add_variable(t_env *env, char *variablename, char *content)
 {
 	char	**new;
-	char 	*tmp;
+	char	*tmp;
 	int		size;
 	int		i;
 
@@ -141,7 +140,7 @@ int	export_variable(char *str, t_env *env)
 	while (env->envp_bis[i])
 	{
 		if (ft_strncmp(env->envp_bis[i],
-			variable, ft_strlen(variable) + 1) == 0)
+				variable, ft_strlen(variable) + 1) == 0)
 		{
 			free (env->envp_bis[i]);
 			env->envp_bis[i] = ft_strdup(variable);

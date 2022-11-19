@@ -20,10 +20,7 @@ bool	ft_atoilong(long long int *buffer, char *s)
 	else if (s[c] == '+')
 		c++;
 	while (s[c] >= '0' && s[c] <= '9')
-	{
-		res = (res * 10) + (s[c] - '0');
-		c++;
-	}
+		res = (res * 10) + (s[c++] - '0');
 	if ((res == ((unsigned long long)LLONG_MAX + 1) && sign == 1)
 		|| res > ((unsigned long long)LLONG_MAX + 1))
 		return (true);
@@ -38,7 +35,8 @@ int	command_echo(t_child *child)
 
 	i = 1;
 	newline = true;
-	while (child->parser_cmd[i] != NULL && !ft_strcmp(child->parser_cmd[i], "-n"))
+	while (child->parser_cmd[i] != NULL
+		&& !ft_strcmp(child->parser_cmd[i], "-n"))
 	{
 		newline = false;
 		i++;
@@ -63,13 +61,12 @@ int	command_cd(t_child *child)
 	if (child->parser_cmd[1] == NULL || !ft_strcmp(child->parser_cmd[1], "~"))
 	{
 		if (chdir(getenv("HOME")) != 0)
-			return (perror_return(NULL));
+			return (perror_return_status(NULL, 1));
 	}
 	else
 	{
 		if (child->parser_cmd[1][0] != '\0' && chdir(child->parser_cmd[1]) != 0)
-			return (perror_return(NULL));
-
+			return (perror_return_status(NULL, 1));
 	}
 	return (0);
 }
@@ -130,38 +127,40 @@ int	is_only_digits(char *str)
 	return (0);
 }
 
-int	command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
+void	define_exit_code(t_child *child, t_exec *exec)
 {
 	long long int	buffer;
-	bool			istoobig;
-	int				status;
+	bool	istoobig;
+	int		status;
 
 	status = 0;
+	if (is_only_digits(child->parser_cmd[1])
+		|| child->parser_cmd[1][0] == '\0')
+		perror_exit_status("exit: numeric argument required", 255);
+	istoobig = ft_atoilong(&buffer, child->parser_cmd[1]);
+	if (istoobig == true)
+		perror_exit_status("exit: numeric argument required", 255);
+	status = buffer % 256;
+	if (child->no_cmd_opt > 2)
+	{
+		if (exec->nbr_process > 1)
+			perror_exit_status("exit: too many arguments", 1);
+		else
+			return (perror_return_status("exit: too many arguments", 1));
+	}
+	// free_struct(child, exec, lex);
+	// free_env(env);
+	exit(status);
+}
+
+int	command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
+{
 	if (exec->nbr_process == 1 && isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (child->parser_cmd[1])
-	{
-		if (is_only_digits(child->parser_cmd[1]) || child->parser_cmd[1][0] == '\0')
-			perror_exit_status("exit: numeric argument required", 255);
-		istoobig = ft_atoilong(&buffer, child->parser_cmd[1]);
-		if (istoobig == true)
-			perror_exit_status("exit: numeric argument required", 255);
-		status = buffer % 256;
-		if (child->no_cmd_opt > 2)
-		{
-			if (exec->nbr_process > 1)
-				perror_exit_child("exit: too many arguments");
-			else
-				return (perror_return("exit: too many arguments"));
-		}
-		// free_struct(child, exec, lex);
-		// free_env(env);
-		exit(status);
-	}
+		define_exit_code(child, exec);
 	else if (!child->parser_cmd[1])
 	{
-		if (!env || !lex)
-			printf("Test\n");
 		// free_struct(child, exec, lex);
 		// free_env(env);
 		exit(g_exit_code % 256);
