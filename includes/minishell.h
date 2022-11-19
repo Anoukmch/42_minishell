@@ -159,4 +159,5 @@ void	errorexit(char *message);
 
 char	*handle_var(char *lex_string, t_env *env);
 int		expand_variable(t_lex *lex, t_env *env);
+char	*handle_var_bis(char *lex_string, t_env *env);
 #endif

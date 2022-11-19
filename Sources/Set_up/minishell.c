@@ -42,17 +42,17 @@ int	main(int ac, char **ag, char **envp)
 				{
 					if (!executor(lex, child, exec, env))
 						close_piping(exec);
-					//waitpid(exec->last_pid, &tmp, 0);
-					while (wait(&tmp) > 0)
+					waitpid(exec->last_pid, &tmp, 0);
+					while (wait(NULL) > 0)
 						continue ;
-					if (WIFEXITED(tmp))
+					if (WIFSIGNALED(tmp))
+						g_exit_code = 128 + WTERMSIG(tmp);
+					else if (WIFEXITED(tmp))
 						g_exit_code = WEXITSTATUS(tmp);
 				}
 				free_struct(child, exec, lex);
 			}
 		}
-		else
-			exit(g_exit_code);
 	}
 	free_env(env);
 	return (0);

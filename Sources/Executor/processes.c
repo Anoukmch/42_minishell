@@ -118,9 +118,9 @@ void	close_pipe(t_exec *exec, t_child *child)
 void	env_command(t_child *child, t_env *env)
 {
 	if (child->command == NULL)
-		perror_exit_status(NULL, 127);
+		perror_exit_status("command not found", 127);
 	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)
-		perror_exit_child("execve command failed");
+		perror_exit_status("execve command failed", 126);
 }
 
 int	builtin_command(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
@@ -182,6 +182,7 @@ int	child_exec(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 		return (1);
 	else if (exec->last_pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		if (get_outfile(child))
 			exit(1);
 		if (get_infile(child))
@@ -214,9 +215,11 @@ int	processes(t_lex	*lex, t_child *child, t_exec *exec, t_env *env)
 	{
 		if (single_builtin(lex, child, exec, env))
 		{
-			g_exit_code = 1;
+			//g_exit_code = 1;
 			return (1);
 		}
+		//else
+			//g_exit_code = 0;
 	}
 	else
 	{
