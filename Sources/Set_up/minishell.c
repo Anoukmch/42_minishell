@@ -43,7 +43,7 @@ void	enter_shell(t_env *env)
 			initialize_struct(&child, &exec, lex);
 			if (!parser(lex, child, env))
 			{
-				executor(lex, child, exec, env);
+				executor(child, exec, env);
 				wait_child(exec);
 			}
 			free_struct(child, exec, lex);

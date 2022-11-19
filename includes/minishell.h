@@ -129,8 +129,8 @@ t_child	**init_child(t_lex *lex, t_child **child);
 void	count_pipes(t_lex *lex);
 
 // EXECUTOR
-int	executor (t_lex	*lex, t_child **child, t_exec *exec, t_env *env);
-int	processes(t_lex	*lex, t_child *child, t_exec *exec, t_env *env);
+int		executor (t_child **child, t_exec *exec, t_env *env);
+int     processes(t_child *child, t_exec *exec, t_env *env);
 
 int		check_builtins_other(t_child *child);
 int		check_builtins_env(t_child *child);
@@ -143,9 +143,11 @@ int		command_path(t_child *child, t_env *env);
 int		command_echo(t_child *child);
 int		command_cd(t_child *child);
 int		command_pwd(void);
-int		command_exit(t_lex	*lex, t_child *child, t_exec *exec, t_env *env);
+int		command_exit(t_child *child, t_exec *exec);
 int		command_export(t_child *child, t_env *env);
 int		command_unset(t_child *child, t_env *env);
+char	*add_quotes(char *adding);
+int		no_options(t_env *env);
 
 // ENV
 int		doublepoint_size(char **str);
