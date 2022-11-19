@@ -4,7 +4,8 @@ static void	control_c(int signum)
 {
 	if (signum == SIGINT)
 	{
-		printf("\n");
+		// printf("\n");
+		ft_putstr_fd("\n", STDERR_FILENO);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -16,7 +17,8 @@ void	control_c_heredoc(int signum)
 {
 	if (signum == SIGINT)
 	{
-		close(STDIN_FILENO); //Handlen, nicht shell schliessen
+		close(STDIN_FILENO);
+
 		// auf alten STDIN setzen
 		ft_putstr_fd("\n", STDERR_FILENO);
 		g_exit_code = 1;

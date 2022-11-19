@@ -93,10 +93,12 @@ static int	invalid_identifier(char *cmd)
 char	**add_variable(t_env *env, char *variablename, char *content)
 {
 	char	**new;
+	char 	*tmp;
 	int		size;
 	int		i;
 
 	new = NULL;
+	tmp = NULL;
 	size = doublepoint_size(env->envp_bis);
 	new = ft_calloc(size + 2, sizeof(char *));
 	if (new == NULL)
@@ -117,17 +119,22 @@ char	**add_variable(t_env *env, char *variablename, char *content)
 	}
 	else
 	{
-		new[size] = ft_strjoin(variablename, "=");
-		if (!new[size])
+		tmp = ft_strjoin(variablename, "=");
+		if (!tmp)
 			return (NULL);
-		free(new[size]);
-		new[size] = ft_strjoin(new[size], content);
+		new[size] = ft_strjoin(tmp, content);
+		free (tmp);
 		if (!new[size])
 			return (NULL);
 	}
 	size++;
 	new[size] = NULL;
 	free_array(env->envp_bis);
+	if (content != NULL)
+	{
+		free (content);
+		free (variablename);
+	}
 	return (new);
 }
 

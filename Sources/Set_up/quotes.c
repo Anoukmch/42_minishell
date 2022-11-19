@@ -59,7 +59,7 @@ char	*delete_quotes_cmds_and_outdir(char *str)
 			count++;
 		i++;
 	}
-	final = malloc((ft_strlen(str) - count) * sizeof(char));
+	final = malloc(((ft_strlen(str) - count) + 1) * sizeof(char));
 	if (final == NULL)
 		return (NULL);
 	i = 0;
@@ -93,7 +93,7 @@ char	*delete_quotes(char *str)
 			count++;
 		i++;
 	}
-	final = malloc((ft_strlen(str) - count) * sizeof(char));
+	final = malloc(((ft_strlen(str) - count) + 1) * sizeof(char));
 	if (final == NULL)
 		return (NULL);
 	i = 0;

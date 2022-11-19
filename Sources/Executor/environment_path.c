@@ -8,6 +8,7 @@ int	get_env_path(t_env *env)
 
 	i = 0;
 	tmp = ft_split(env->envp_line, ':');
+	free (env->envp_line);
 	if (!tmp)
 		return (1);
 	size = doublepoint_size (tmp);
@@ -38,7 +39,7 @@ int	get_path_from_env(t_env *env, t_child *child)
 		if (!ft_strncmp(env->envp_bis[i], "PATH", 4))
 		{
 			env->envp_line
-				= ft_strjoin(env->envp_bis[i], "/"); //PATH FROM OWN ENVIRONMENT
+				= ft_strdup(env->envp_bis[i] + 5); //PATH FROM OWN ENVIRONMENT
 			if (!env->envp_line)
 				return (perror_return_status("command not found", 0)); //path of command not found environment disabled
 				//path of command not found -> path unset
