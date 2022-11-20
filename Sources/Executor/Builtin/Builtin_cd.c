@@ -21,16 +21,21 @@ int	update_pwd(t_env *env)
 
 	oldpwd = get_position_of_variable(env, "OLDPWD");
 	pwd = get_position_of_variable(env, "PWD");
-	// REPLACE OLD PWD WITH PWD
-	// PWD = GETCWD
-		if (oldpwd >= 0 && pwd >= 0)
+	if (pwd >= 0)
+	{
+		if (oldpwd >= 0)
 		{
 			free(env->envp_bis[oldpwd]);
-			env->envp_bis[oldpwd] = ft_strjoin("OLDPWD", ft_strchr(env->envp_bis[pwd], '='));
-			free(env->envp_bis[pwd]);
-			env->envp_bis[pwd] = ft_strjoin("PWD=", getcwd(NULL, 0));
+			env->envp_bis[oldpwd]
+				= ft_strjoin("OLDPWD", ft_strchr(env->envp_bis[pwd], '='));
+			if (!env->envp_bis[oldpwd])
+				return (1);
 		}
-		// printf("CHDIR HOME: %s\n", getcwd(NULL, 0));
+		free(env->envp_bis[pwd]);
+		env->envp_bis[pwd] = ft_strjoin("PWD=", getcwd(NULL, 0));
+		if (!env->envp_bis[pwd])
+			return (1);
+	}
 	return (0);
 }
 
