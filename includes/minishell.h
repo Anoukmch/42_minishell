@@ -70,6 +70,7 @@ typedef struct s_env
 	int		c2;
 	int		c3;
 	char	*new_arg;
+	int		env_i;
 
 }	t_env;
 

@@ -1,30 +1,29 @@
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 int	replace_variable(t_env *env, char *variable, char *content)
 {
-	int		i;
 	char	*tmp;
 
-	i = 0;
 	tmp = ft_strjoin(variable, "=");
 	if (!tmp)
 		return (1);
-	while (env->envp_bis[i])
+	while (env->envp_bis[env->env_i])
 	{
-		if (!ft_strncmp(env->envp_bis[i], variable, ft_strlen(variable) + 1)
-			|| !ft_strncmp(env->envp_bis[i], tmp, ft_strlen(tmp)))
+		if (!ft_strncmp(env->envp_bis[env->env_i],
+				variable, ft_strlen(variable) + 1)
+			|| !ft_strncmp(env->envp_bis[env->env_i], tmp, ft_strlen(tmp)))
 		{
-			free (env->envp_bis[i]);
+			free (env->envp_bis[env->env_i]);
 			if (content)
-				env->envp_bis[i] = ft_strjoin(tmp, content);
+				env->envp_bis[env->env_i] = ft_strjoin(tmp, content);
 			else
-				env->envp_bis[i] = ft_strdup(variable);
+				env->envp_bis[env->env_i] = ft_strdup(variable);
 			free (tmp);
-			if (!env->envp_bis[i])
+			if (!env->envp_bis[env->env_i])
 				return (1);
 			return (2);
 		}
-		i++;
+		env->env_i++;
 	}
 	free (tmp);
 	return (0);
@@ -39,11 +38,7 @@ int	add_new_variable(char **new, int *size, char *variablename, char *content)
 	if (!tmp)
 		return (1);
 	if (content)
-	{
 		new[(*size)++] = ft_strjoin(tmp, content);
-		free (content);
-		free (variablename);
-	}
 	else
 		new[(*size)++] = ft_strdup(variablename);
 	free (tmp);

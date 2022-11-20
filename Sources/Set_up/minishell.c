@@ -37,18 +37,15 @@ void	enter_shell(t_env *env)
 	lex = initialize_lex();
 	if (lex)
 	{
-		if (!check_syntax(lex))
+		add_history(lex->line);
+		initialize_struct(&child, &exec, lex);
+		if (!parser(lex, child, env))
 		{
-			add_history(lex->line);
-			initialize_struct(&child, &exec, lex);
-			if (!parser(lex, child, env))
-			{
-				executor(child, exec, env, lex);
-				wait_child(exec);
-			}
-			if (exec->hasfreed == false)
-				free_struct(child, exec, lex);
+			executor(child, exec, env, lex);
+			wait_child(exec);
 		}
+		if (exec->hasfreed == false)
+			free_struct(child, exec, lex);
 	}
 }
 

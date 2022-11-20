@@ -88,8 +88,8 @@ t_lex	*initialize_lex(void)
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;
 	lex->no_processes = 0;
-	lex->line2 = ft_calloc((ft_strlen(lex->line)
-				+ lex->counter + 1), sizeof(char));
+	lex->line2 = ft_calloc((ft_strlen(lex->line) + 1)
+			+ lex->counter, sizeof(char));
 	if (!lex->line2)
 		exit (g_exit_code);
 	create_line2(lex);
@@ -97,5 +97,7 @@ t_lex	*initialize_lex(void)
 	if (!lex->lexer || !lex->lexer[0])
 		return (NULL);
 	lex->lexer_c = NULL;
+	if (check_syntax(lex))
+		return (NULL);
 	return (lex);
 }

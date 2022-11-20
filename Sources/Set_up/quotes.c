@@ -63,7 +63,7 @@ char	*delete_quotes_cmds_and_outdir(char *str)
 
 	final = NULL;
 	count = count_deletingquotes(str);
-	final = malloc(((ft_strlen(str) - count) + 1) * sizeof(char));
+	final = malloc(((ft_strlen(str) + 1) - count) * sizeof(char));
 	if (final == NULL)
 		return (NULL);
 	i = 0;
@@ -90,7 +90,7 @@ char	*delete_quotes_indir(t_child *child, t_lex *lex)
 
 	final = NULL;
 	count = count_deletingquotes(lex->lexer[lex->counter]);
-	final = malloc((ft_strlen(lex->lexer[lex->counter]) - count)
+	final = malloc((ft_strlen(lex->lexer[lex->counter]) + 1) - count
 			* sizeof(char));
 	if (final == NULL)
 		return (NULL);

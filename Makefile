@@ -2,7 +2,7 @@
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
 
 NAME =  minishell
 
@@ -32,7 +32,6 @@ M_SRC = set_up/minishell.c \
 		parser/quote_handler/quote_handler.c \
 		executor/environment_path.c \
 		executor/builtin_check.c \
-		executor/builtin_export_utils.c \
 		executor/executor.c \
 		executor/process/process.c \
 		executor/process/child_exec.c \
@@ -46,13 +45,12 @@ M_SRC = set_up/minishell.c \
 		executor/builtin/builtin_env.c \
 		executor/builtin/builtin_exit.c \
 		executor/builtin/builtin_export.c \
+		executor/builtin/builtin_export_utils.c \
 		executor/builtin/builtin_pwd.c \
 		executor/builtin/builtin_unset.c \
 		executor/builtin/builtin_utils.c \
 		executor/get_heredoc.c \
 		executor/get_command.c \
-		executor/builtin_export.c \
-		executor/builtin_unset.c \
 		utils/exit_return_status.c \
 		utils/free_program.c \
 

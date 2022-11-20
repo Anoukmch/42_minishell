@@ -72,5 +72,6 @@ t_env	*initialize_env(char **envp)
 	env->c2 = 0;
 	env->c3 = 0;
 	env->new_arg = NULL;
+	env->env_i = 0;
 	return (env);
 }
