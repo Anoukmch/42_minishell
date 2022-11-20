@@ -155,7 +155,7 @@ void	env_command(t_child *child, t_env *env);
 int		command_env(t_env *env);
 int		command_path(t_child *child, t_env *env);
 int		command_echo(t_child *child);
-int		command_cd(t_child *child);
+int		command_cd(t_child *child, t_env *env);
 int		command_pwd(void);
 int		command_exit(t_child *child, t_exec *exec, t_env *env, t_lex *lex);
 int		command_export(t_child *child, t_env *env);

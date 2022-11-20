@@ -31,6 +31,7 @@ char	*minishell_get_next_line(int fd)
 	char	buffer;
 	int		check;
 
+	line = NULL;
 	line = ft_strdup("");
 	if (line == NULL)
 		return (NULL);

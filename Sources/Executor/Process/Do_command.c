@@ -15,7 +15,7 @@ int	builtin_command(t_child *child, t_exec *exec, t_env *env, t_lex	*lex)
 	else if (!ft_strcmp(child->command, "echo"))
 		return (command_echo(child));
 	else if (!ft_strcmp(child->command, "cd"))
-		return (command_cd(child));
+		return (command_cd(child, env));
 	else if (!ft_strcmp(child->command, "exit"))
 		return (command_exit(child, exec, env, lex));
 	else if (!ft_strcmp(child->command, "export"))
