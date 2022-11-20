@@ -25,10 +25,8 @@ static int	invalid_identifier(char *cmd)
 int	export_variable(char *str, t_env *env)
 {
 	char	*variablename;
-	int		i;
 	int		replace;
 
-	i = 0;
 	variablename = NULL;
 	variablename = str;
 	replace = replace_variable(env, variablename, NULL);

@@ -1,5 +1,16 @@
 #include "../../includes/minishell.h"
 
+void free_lexer(t_lex *lex)
+{
+	if (lex)
+	{
+		free(lex->line);
+		free(lex->line2);
+		free_array(lex->lexer);
+		free(lex);
+	}
+}
+
 int	parser(t_lex *lex, t_child	**child, t_env	*env)
 {
 	int	i;
@@ -25,6 +36,6 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 		return (1);
 	if (parse_commands(lex, child))
 		return (1);
-	// print_parser(child);
+	// FREE LEXER HERE !!!
 	return (0);
 }

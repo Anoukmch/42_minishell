@@ -20,6 +20,7 @@ M_SRC = set_up/minishell.c \
 		lexer/create_lexline2.c \
 		parser/parser.c \
 		parser/parser_command.c \
+		parser/split_parser_command.c \
 		parser/parser_redirection.c \
 		parser/var_handler/count_size_var.c \
 		parser/var_handler/var_handler.c \

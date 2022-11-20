@@ -32,6 +32,7 @@ void	free_struct(t_child **child, t_exec *exec, t_lex *lex)
 	}
 	if (exec)
 		free(exec);
+	//  FREE LEXER CAN BE COMMENTED OUT (ALREADY FREED)
 	if (lex)
 	{
 		free(lex->line);

@@ -44,6 +44,7 @@ void	enter_shell(t_env *env)
 			executor(child, exec, env, lex);
 			wait_child(exec);
 		}
+		// FREE LEXER HERE IF PARSER DOESN'T EXIT
 		if (exec->hasfreed == false)
 			free_struct(child, exec, lex);
 	}

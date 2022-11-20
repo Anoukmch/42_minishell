@@ -108,6 +108,7 @@ int		parser(t_lex *lex, t_child	**child, t_env	*env);
 int		parse_commands(t_lex *lex, t_child **child);
 int		parser_redirection(t_lex *lex, t_child **child);
 int		check_redirection_table(char **array);
+int		check_first_command(t_lex *lex, t_child *child, int *j);
 
 // PARSER/QUOTE_HANDLER
 int		mark_variables(char *str, char *str_before);

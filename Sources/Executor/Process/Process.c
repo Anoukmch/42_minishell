@@ -16,6 +16,12 @@ int	processes(t_child *child, t_exec *exec, t_env *env, t_lex *lex)
 	{
 		if (child_exec(child, exec, env, lex))
 			return (1);
+		handle_signals();
+		// if(isatty(STDERR_FILENO))
+		// {
+		// 	printf("HERE");
+		// 	exit(0);
+		// }
 	}
 	return (0);
 }
