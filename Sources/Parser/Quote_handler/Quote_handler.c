@@ -49,6 +49,9 @@ int	check_dollarsign(char *str)
 		if (str[i] == -2 && (str[i + 1] == -2
 				|| !str[i + 1] || str[i + 1] == ' '))
 			str[i] = '$';
+		if (str[i] == -2 && !ft_isalnum(str[i + 1]) && str[i + 1] != '_' && str[i + 1] != '?'
+			&& str[i + 1] != '\"' && str[i + 1] != '\'')
+			str[i] = '$';
 		i++;
 	}
 	return (0);

@@ -25,5 +25,6 @@ int	parser(t_lex *lex, t_child	**child, t_env	*env)
 		return (1);
 	if (parse_commands(lex, child))
 		return (1);
+	// print_parser(child);
 	return (0);
 }

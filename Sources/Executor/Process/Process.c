@@ -9,8 +9,8 @@ int	processes(t_child *child, t_exec *exec, t_env *env, t_lex *lex)
 			g_exit_code = 1;
 			return (1);
 		}
-		else
-			g_exit_code = 0;
+		// else
+		// 	g_exit_code = 0;
 	}
 	else
 	{

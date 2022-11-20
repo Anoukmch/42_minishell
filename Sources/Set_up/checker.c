@@ -25,7 +25,7 @@ void	print_parser(t_child **child)
 	while (child[k])
 	{
 		i = 0;
-		while (i < child[k]->no_cmd_opt)
+		while (child[k]->parser_cmd[i])
 			printf("parser cmd for child %d : %s\n",
 				k, child[k]->parser_cmd[i++]);
 		i = 0;
