@@ -6,57 +6,57 @@ CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-
 
 NAME =  minishell
 
-M_SRC = Set_up/Minishell.c \
-		Set_up/Init/Init_child.c \
-		Set_up/Init/Init_exec.c \
-		Set_up/Init/Init_lex.c \
-		Set_up/Init/Init_env.c \
-		Set_up/Signals.c \
-		Set_up/quotes.c \
-		Set_up/checker.c \
-		Set_up/syntax.c \
-		Lexer/Lex_utils.c \
-		Lexer/Count_spaces.c \
-		Lexer/Create_lexline2.c \
-		Parser/Parser.c \
-		Parser/Parser_command.c \
-		Parser/Parser_redirection.c \
-		Parser/Var_handler/Count_size_var.c \
-		Parser/Var_handler/Var_handler.c \
-		Parser/Var_handler/Fill_var.c \
-		Parser/Var_handler/Rebuild_lex.c \
-		Parser/Var_handler/Var_handler_utils.c \
-		Parser/Var_handler_heredoc/Count_size_var_hd.c \
-		Parser/Var_handler_heredoc/Fill_var_hd.c \
-		Parser/Var_handler_heredoc/Var_handler_utils_hd.c \
-		Parser/Quote_handler/Quote_handler.c \
-		Executor/environment_path.c \
-		Executor/builtin_check.c \
-		Executor/builtin_export_no_args.c \
-		Executor/Executor.c \
-		Executor/Process/Process.c \
-		Executor/Process/Child_exec.c \
-		Executor/Process/Do_command.c \
-		Executor/Process/Get_infile.c \
-		Executor/Process/Get_outfile.c \
-		Executor/Process/Process_utils.c \
-		Executor/Process/Single_builtin.c \
-		Executor/Builtin/Builtin_cd.c \
-		Executor/Builtin/Builtin_echo.c \
-		Executor/Builtin/Builtin_env.c \
-		Executor/Builtin/Builtin_exit.c \
-		Executor/Builtin/Builtin_export.c \
-		Executor/Builtin/Builtin_pwd.c \
-		Executor/Builtin/Builtin_unset.c \
-		Executor/Builtin/Builtin_utils.c \
-		Executor/Get_heredoc.c \
-		Executor/Get_command.c \
-		Executor/builtin_export.c \
-		Executor/builtin_unset.c \
-		Utils/Exit_return_status.c \
-		Utils/Free_program.c \
+M_SRC = set_up/minishell.c \
+		set_up/init/init_child.c \
+		set_up/init/init_exec.c \
+		set_up/init/init_lex.c \
+		set_up/init/init_env.c \
+		set_up/signals.c \
+		set_up/quotes.c \
+		set_up/checker.c \
+		set_up/syntax.c \
+		lexer/lex_utils.c \
+		lexer/count_spaces.c \
+		lexer/create_lexline2.c \
+		parser/parser.c \
+		parser/parser_command.c \
+		parser/parser_redirection.c \
+		parser/var_handler/count_size_var.c \
+		parser/var_handler/var_handler.c \
+		parser/var_handler/fill_var.c \
+		parser/var_handler/rebuild_lex.c \
+		parser/var_handler/var_handler_utils.c \
+		parser/var_handler_heredoc/count_size_var_hd.c \
+		parser/var_handler_heredoc/fill_var_hd.c \
+		parser/var_handler_heredoc/var_handler_utils_hd.c \
+		parser/quote_handler/quote_handler.c \
+		executor/environment_path.c \
+		executor/builtin_check.c \
+		executor/builtin_export_utils.c \
+		executor/executor.c \
+		executor/process/process.c \
+		executor/process/child_exec.c \
+		executor/process/do_command.c \
+		executor/process/get_infile.c \
+		executor/process/get_outfile.c \
+		executor/process/process_utils.c \
+		executor/process/single_builtin.c \
+		executor/builtin/builtin_cd.c \
+		executor/builtin/builtin_echo.c \
+		executor/builtin/builtin_env.c \
+		executor/builtin/builtin_exit.c \
+		executor/builtin/builtin_export.c \
+		executor/builtin/builtin_pwd.c \
+		executor/builtin/builtin_unset.c \
+		executor/builtin/builtin_utils.c \
+		executor/get_heredoc.c \
+		executor/get_command.c \
+		executor/builtin_export.c \
+		executor/builtin_unset.c \
+		utils/exit_return_status.c \
+		utils/free_program.c \
 
-M_SRCS = $(addprefix ./Sources/, $(M_SRC))
+M_SRCS = $(addprefix ./sources/, $(M_SRC))
 
 M_OBJS = $(M_SRCS:.c=.o)
 

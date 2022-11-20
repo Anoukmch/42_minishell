@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 // CHECKING LEXER
@@ -23,7 +22,6 @@ void	print_parser(t_child **child)
 
 	k = 0;
 	i = 0;
-	printf("\n*** PARSER ***\n");
 	while (child[k])
 	{
 		i = 0;
@@ -44,5 +42,4 @@ void	print_parser(t_child **child)
 				k, child[k]->parser_redirect_output[i++]);
 		k++;
 	}
-	printf("\n");
 }

@@ -163,6 +163,10 @@ char	*add_quotes(char *adding);
 int		no_options(t_env *env);
 int		is_only_digits(char *str);
 bool	ft_atoilong(long long int *buffer, char *s);
+// EXPORT
+int		replace_variable(t_env *env, char *variable, char *content);
+int		add_new_variable(char **new, int *size, char *variablename, char *content);
+char	**create_new_env(t_env *env, char *variablename, char *content);
 
 // ENV
 int		doublepoint_size(char **str);

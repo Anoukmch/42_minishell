@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 int	get_position_of_variable(t_env *env, char *variable)

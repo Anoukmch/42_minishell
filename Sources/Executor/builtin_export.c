@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 static int	invalid_identifier(char *cmd)
@@ -23,104 +22,6 @@ static int	invalid_identifier(char *cmd)
 	return (0);
 }
 
-int	replace_variable(t_env *env, char *variable, char *content)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	tmp = ft_strjoin(variable, "=");
-	if (!tmp)
-		return (1);
-	while (env->envp_bis[i])
-	{
-		if (!ft_strncmp(env->envp_bis[i], variable, ft_strlen(variable)))
-		{
-			free (env->envp_bis[i]);
-			if (content)
-				env->envp_bis[i] = ft_strjoin(tmp, content);
-			else
-				env->envp_bis[i] = ft_strdup(variable);
-			free (tmp);
-			if (!env->envp_bis[i])
-				return (1);
-			return (2);
-		}
-		i++;
-	}
-	free (tmp);
-	return (0);
-}
-
-char	**add_variable_export(t_env *env, char *variablename)
-{
-	char	**new;
-	char	*tmp;
-	int		size;
-	int		i;
-
-	new = NULL;
-	tmp = NULL;
-	size = doublepoint_size(env->envp_bis);
-	new = ft_calloc(size + 2, sizeof(char *));
-	if (!new)
-		return (NULL);
-	i = 0;
-	while (env->envp_bis[i])
-	{
-		new[i] = ft_strdup(env->envp_bis[i]);
-		if (!new[i])
-			return (NULL);
-		i++;
-	}
-	new[size++] = ft_strdup(variablename);
-	if (!new[size - 1])
-		return (NULL);
-	new[size] = NULL;
-	free_array(env->envp_bis);
-	return (new);
-}
-
-void freeing_variables_env(char *variablename, char *content, t_env *env)
-{
-	free_array(env->envp_bis);
-	free (content);
-	free (variablename);
-}
-
-char	**add_variable_env(t_env *env, char *variablename, char *content)
-{
-	char	**new;
-	char	*tmp;
-	int		size;
-	int		i;
-
-	new = NULL;
-	tmp = NULL;
-	size = doublepoint_size(env->envp_bis);
-	new = ft_calloc(size + 2, sizeof(char *));
-	if (new == NULL)
-		return (NULL);
-	i = 0;
-	while (env->envp_bis[i])
-	{
-		new[i] = ft_strdup(env->envp_bis[i]);
-		if (!new[i])
-			return (NULL);
-		i++;
-	}
-	tmp = ft_strjoin(variablename, "=");
-	if (!tmp)
-		return (NULL);
-	new[size++] = ft_strjoin(tmp, content);
-	free (tmp);
-	if (!new[size - 1])
-		return (NULL);
-	new[size] = NULL;
-	freeing_variables_env(variablename, content, env);
-	return (new);
-}
-
 int	export_variable(char *str, t_env *env)
 {
 	char	*variable;
@@ -135,7 +36,7 @@ int	export_variable(char *str, t_env *env)
 		return (1);
 	if (!replace)
 	{
-		env->envp_bis = add_variable_export(env, variable);
+		env->envp_bis = create_new_env(env, variable, NULL);
 		if (!env->envp_bis)
 			return (1);
 	}
@@ -163,7 +64,7 @@ int	env_variable(char *str, t_env *env)
 		return (1);
 	if (!replace)
 	{
-		env->envp_bis = add_variable_env(env, variablename, content);
+		env->envp_bis = create_new_env(env, variablename, content);
 		if (!env->envp_bis)
 			return (1);
 	}
