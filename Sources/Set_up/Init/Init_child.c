@@ -70,6 +70,9 @@ t_child	*init_single_child(t_lex *lex, t_child *child, int k)
 	child->heredoc_line = NULL;
 	child->set_stdin_back = 0;
 	child->file = -1;
+	child->file_buff = ft_itoa(child->id);
+	if (!child->file_buff)
+		return (NULL);
 	return (child);
 }
 
