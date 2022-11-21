@@ -55,8 +55,6 @@ int	count_new_arg(char *lex_string, t_env *env, int size)
 	var = count_var(lex_string, env, &size);
 	if (!var)
 		return (-1);
-	if (!var[0])
-		return (0);
 	if (count_new_arg_env_var(var, env, &size))
 		return (-1);
 	free(var);

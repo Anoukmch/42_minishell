@@ -30,7 +30,7 @@ int	check_syntax(t_lex *lex)
 				&& !ft_strcmp(lex->lexer[i + 1], "|")))
 		{
 			g_exit_code = 2;
-			return (perror_return_status("syntax error", 2));
+			return (perror_return_status(NULL, "syntax error", 2));
 		}
 		else if (!ft_strcmp(lex->lexer[i], "|"))
 			j = 0;
@@ -39,7 +39,7 @@ int	check_syntax(t_lex *lex)
 			|| double_redirection(lex, i))
 		{
 			g_exit_code = 2;
-			return (perror_return_status("syntax error", 2));
+			return (perror_return_status(NULL, "syntax error", 2));
 		}
 		i++;
 	}

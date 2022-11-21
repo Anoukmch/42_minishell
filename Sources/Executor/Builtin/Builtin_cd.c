@@ -21,21 +21,16 @@ int	update_pwd(t_env *env)
 
 	oldpwd = get_position_of_variable(env, "OLDPWD");
 	pwd = get_position_of_variable(env, "PWD");
-	if (pwd >= 0)
-	{
-		if (oldpwd >= 0)
+	// REPLACE OLD PWD WITH PWD
+	// PWD = GETCWD
+		if (oldpwd >= 0 && pwd >= 0)
 		{
 			free(env->envp_bis[oldpwd]);
-			env->envp_bis[oldpwd]
-				= ft_strjoin("OLDPWD", ft_strchr(env->envp_bis[pwd], '='));
-			if (!env->envp_bis[oldpwd])
-				return (1);
+			env->envp_bis[oldpwd] = ft_strjoin("OLDPWD", ft_strchr(env->envp_bis[pwd], '='));
+			free(env->envp_bis[pwd]);
+			env->envp_bis[pwd] = ft_strjoin("PWD=", getcwd(NULL, 0));
 		}
-		free(env->envp_bis[pwd]);
-		env->envp_bis[pwd] = ft_strjoin("PWD=", getcwd(NULL, 0));
-		if (!env->envp_bis[pwd])
-			return (1);
-	}
+		// printf("CHDIR HOME: %s\n", getcwd(NULL, 0));
 	return (0);
 }
 
@@ -44,12 +39,14 @@ int	command_cd(t_child *child, t_env *env)
 	if (child->parser_cmd[1] == NULL || !ft_strcmp(child->parser_cmd[1], "~"))
 	{
 		if (chdir(getenv("HOME")) != 0)
-			return (perror_return_status(NULL, 1));
+			return (perror_return_status(NULL, "cd: No such file or directory",
+					1));
 	}
 	else
 	{
 		if (child->parser_cmd[1][0] != '\0' && chdir(child->parser_cmd[1]) != 0)
-			return (perror_return_status(NULL, 1));
+			return (perror_return_status(child->parser_cmd[1], "cd: No such file or directory",
+					1));
 	}
 	if (update_pwd(env))
 		return (1);

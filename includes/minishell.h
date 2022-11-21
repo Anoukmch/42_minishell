@@ -47,6 +47,8 @@ typedef struct s_child
 	int		heredoc_quotes;
 	char	*command;
 	bool	isbuiltin;
+	char	*heredoc_line;
+	int		set_stdin_back;
 
 }	t_child;
 
@@ -57,7 +59,7 @@ typedef struct s_exec
 	int		buffer[1];
 	int		isheredoc;
 	pid_t	last_pid;
-	bool	hasfreed;
+	bool	need_exit;
 
 }	t_exec;
 
@@ -108,7 +110,6 @@ int		parser(t_lex *lex, t_child	**child, t_env	*env);
 int		parse_commands(t_lex *lex, t_child **child);
 int		parser_redirection(t_lex *lex, t_child **child);
 int		check_redirection_table(char **array);
-int		check_first_command(t_lex *lex, t_child *child, int *j);
 
 // PARSER/QUOTE_HANDLER
 int		mark_variables(char *str, char *str_before);
@@ -132,25 +133,30 @@ char	*handle_var_hd(char *lex_string, t_env *env);
 int		var_handler(t_lex *lex, t_env *env);
 
 // EXECUTOR
-int		executor(t_child **child, t_exec *exec, t_env *env, t_lex *lex);
+int		executor(t_child **child, t_exec *exec, t_env *env);
 
 int		check_builtins_other(t_child *child);
 int		check_builtins_env(t_child *child);
 int		get_env_path(t_env *env);
 int		get_path_from_env(t_env *env, t_child *child);
 
-int		get_heredoc(t_child **child, t_exec *exec, t_env *env);
-
 // EXECUTOR/PROCESS
-int		processes(t_child *child, t_exec *exec, t_env *env, t_lex *lex);
-int		single_builtin(t_child *child, t_exec *exec, t_env *env, t_lex *lex);
-int		child_exec(t_child *child, t_exec *exec, t_env *env, t_lex *lex);
+int		processes(t_child *child, t_exec *exec, t_env *env);
+int		single_builtin(t_child *child, t_exec *exec, t_env *env);
+int		child_exec(t_child *child, t_exec *exec, t_env *env);
 int		get_infile(t_child *child);
 int		get_outfile(t_child *child);
 int		switch_put(t_child *child, t_exec *exec);
 void	close_pipe(t_exec *exec, t_child *child);
-int		builtin_command(t_child *child, t_exec *exec, t_env *env, t_lex	*lex);
+int		builtin_command(t_child *child, t_exec *exec, t_env *env);
 void	env_command(t_child *child, t_env *env);
+
+// EXECUTOR/HEREDOC
+int		get_heredoc(t_child **child, t_exec *exec, t_env *env);
+int		line_null_hd(t_child *child, char *temp, int file);
+int		close_free(t_child *child, char *temp, int file, int status);
+int		check_var(t_child *child, t_env *env, int i);
+int		heredoc_set_up(t_child *child, int i, char **temp);
 
 // BUILTIN
 int		command_env(t_env *env);
@@ -158,16 +164,18 @@ int		command_path(t_child *child, t_env *env);
 int		command_echo(t_child *child);
 int		command_cd(t_child *child, t_env *env);
 int		command_pwd(void);
-int		command_exit(t_child *child, t_exec *exec, t_env *env, t_lex *lex);
+int		command_exit(t_child *child, t_exec *exec, t_env *env);
 int		command_export(t_child *child, t_env *env);
 int		command_unset(t_child *child, t_env *env);
 char	*add_quotes(char *adding);
 int		no_options(t_env *env);
 int		is_only_digits(char *str);
 bool	ft_atoilong(long long int *buffer, char *s);
+
 // EXPORT
 int		replace_variable(t_env *env, char *variable, char *content);
-int		add_new_variable(char **new, int *size, char *variablename, char *content);
+int		add_new_variable(char **new, int *size,
+			char *variablename, char *content);
 char	**create_new_env(t_env *env, char *variablename, char *content);
 
 // ENV
@@ -175,10 +183,13 @@ int		doublepoint_size(char **str);
 char	**get_position_in_env(t_env *env, char *variable);
 
 // UTILS
-void	perror_exit_status(char *str, int status);
-int		perror_return_status(char *str, int status);
+void	perror_exit_status(char *arg, char *str, int status);
+int		perror_return_status(char *arg, char *str, int status);
+int		perror_return_msg(char *str, int status);
 void	close_piping(t_exec	*exec);
 void	free_struct(t_child **child, t_exec *exec, t_lex *lex);
+void	free_child(t_child *child, t_exec *exec, t_lex *lex);
 void	free_array(char **array);
 void	free_env(t_env *env);
+char	*ft_strapp(char *s1, char *s2);
 #endif

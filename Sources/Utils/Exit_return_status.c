@@ -1,13 +1,37 @@
 #include "../../includes/minishell.h"
 
-void	perror_exit_status(char *str, int status)
+int	perror_return_msg(char *str, int status)
 {
 	perror(str);
+	return (status);
+}
+
+void	perror_exit_status(char *arg, char *str, int status)
+{
+	if (arg)
+	{
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	if (str)
+	{
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("\n", 2);
+	}
 	exit(status);
 }
 
-int	perror_return_status(char *str, int status)
+int	perror_return_status(char *arg, char *str, int status)
 {
-	perror(str);
+	if (arg)
+	{
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	if (str)
+	{
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("\n", 2);
+	}
 	return (status);
 }

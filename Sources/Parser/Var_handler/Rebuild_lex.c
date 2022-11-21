@@ -38,9 +38,11 @@ void	fill_new_lex(t_lex *lex)
 char	**rebuild_lex(t_lex *lex)
 {
 	int	i;
+	int	j;
 	int	count;
 
 	i = 0;
+	j = 0;
 	count = size_new_lex(lex, &i);
 	lex->lexer_c = ft_calloc((i + 1 - count), sizeof(char *));
 	if (!lex->lexer_c)

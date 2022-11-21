@@ -59,10 +59,12 @@ int	size_env_var(char *all_env_var, int *j)
 
 char	*fill_env_var(char *all_env_var)
 {
+	int		i;
 	int		j;
 	int		size;
 	char	*env_var;
 
+	i = 0;
 	j = 0;
 	size = size_env_var(all_env_var, &j);
 	env_var = ft_substr(all_env_var, j, size);

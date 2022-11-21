@@ -1,6 +1,6 @@
 #include "../../../includes/minishell.h"
 
-int	single_builtin(t_child *child, t_exec *exec, t_env *env, t_lex *lex)
+int	single_builtin(t_child *child, t_exec *exec, t_env *env)
 {
 	int	infd_tmp;
 	int	outfd_tmp;
@@ -21,7 +21,7 @@ int	single_builtin(t_child *child, t_exec *exec, t_env *env, t_lex *lex)
 		close(child->fd_out);
 	if (exec->isheredoc == 1)
 		unlink("heredoc");
-	if (builtin_command(child, exec, env, lex))
+	if (builtin_command(child, exec, env))
 		return (1);
 	dup2(infd_tmp, STDIN_FILENO);
 	dup2(outfd_tmp, STDOUT_FILENO);

@@ -12,6 +12,6 @@ t_exec	*initialize_exec(t_lex *lex)
 	exec->end[1] = 0;
 	exec->buffer[0] = 0;
 	exec->isheredoc = 0;
-	exec->hasfreed = false;
+	exec->need_exit = false;
 	return (exec);
 }

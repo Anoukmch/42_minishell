@@ -12,6 +12,30 @@ void	free_array(char **array)
 	free(array);
 }
 
+void	free_child(t_child *child, t_exec *exec, t_lex *lex)
+{
+	int	i;
+
+	i = 0;
+	if (child)
+	{
+		free_array(child->parser_cmd);
+		free_array(child->parser_redirect_input);
+		free_array(child->parser_redirect_output);
+		free(child->command);
+		free(child);
+	}
+	if (exec)
+		free(exec);
+	if (lex)
+	{
+		free(lex->line);
+		free(lex->line2);
+		free_array(lex->lexer);
+		free(lex);
+	}
+}
+
 void	free_struct(t_child **child, t_exec *exec, t_lex *lex)
 {
 	int	i;
@@ -32,7 +56,6 @@ void	free_struct(t_child **child, t_exec *exec, t_lex *lex)
 	}
 	if (exec)
 		free(exec);
-	//  FREE LEXER CAN BE COMMENTED OUT (ALREADY FREED)
 	if (lex)
 	{
 		free(lex->line);

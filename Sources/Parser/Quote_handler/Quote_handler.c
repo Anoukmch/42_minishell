@@ -23,7 +23,7 @@ int	mark_variables(char *str, char *str_before)
 		i++;
 	}
 	if (quote == '\'' || quote == '\"')
-		return (perror_return_status("Unclosed pair of quotes", 1));
+		return (perror_return_status(NULL, "Unclosed pair of quotes", 1));
 	return (0);
 }
 
@@ -46,10 +46,8 @@ int	check_dollarsign(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if ((str[i] == -2 && (str[i + 1] == -2))
-			|| (str[i] == -2 && !ft_isalnum(str[i + 1])
-				&& str[i + 1] != '_' && str[i + 1] != '?'
-				&& str[i + 1] != '\"' && str[i + 1] != '\''))
+		if (str[i] == -2 && (str[i + 1] == -2
+				|| !str[i + 1] || str[i + 1] == ' '))
 			str[i] = '$';
 		i++;
 	}

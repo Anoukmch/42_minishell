@@ -8,14 +8,16 @@ static int	invalid_identifier(char *cmd)
 	if ((!ft_isalpha(cmd[0]) && cmd[0] != '_'))
 	{
 		g_exit_code = 1;
-		return (perror_return_status("export: not a valid identifier\n", 0));
+		return (perror_return_status(NULL, "export: not a valid identifier",
+				0));
 	}
 	while (cmd[i] && cmd[i] != '=')
 	{
 		if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
 		{
 			g_exit_code = 1;
-			return (perror_return_status("export: not a valid identifier\n", 0));
+			return (perror_return_status(NULL, "export: not a valid identifier",
+					0));
 		}
 		i++;
 	}
@@ -25,8 +27,10 @@ static int	invalid_identifier(char *cmd)
 int	export_variable(char *str, t_env *env)
 {
 	char	*variablename;
+	int		i;
 	int		replace;
 
+	i = 0;
 	variablename = NULL;
 	variablename = str;
 	replace = replace_variable(env, variablename, NULL);

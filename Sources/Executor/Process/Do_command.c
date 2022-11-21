@@ -2,13 +2,15 @@
 
 void	env_command(t_child *child, t_env *env)
 {
-	if (child->command == NULL)
-		perror_exit_status("command not found", 127);
+	if (child->command == NULL && child->parser_cmd[0])
+		perror_exit_status(child->parser_cmd[0], "command not found", 127);
+	else if (!child->parser_cmd[0])
+		perror_exit_status(NULL, NULL, 0);
 	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)
-		perror_exit_status("Execve command failed", 126);
+		perror_exit_status(child->command, "Execve command failed", 126);
 }
 
-int	builtin_command(t_child *child, t_exec *exec, t_env *env, t_lex	*lex)
+int	builtin_command(t_child *child, t_exec *exec, t_env *env)
 {
 	if (!ft_strcmp(child->command, "pwd"))
 		return (command_pwd());
@@ -17,7 +19,7 @@ int	builtin_command(t_child *child, t_exec *exec, t_env *env, t_lex	*lex)
 	else if (!ft_strcmp(child->command, "cd"))
 		return (command_cd(child, env));
 	else if (!ft_strcmp(child->command, "exit"))
-		return (command_exit(child, exec, env, lex));
+		return (command_exit(child, exec, env));
 	else if (!ft_strcmp(child->command, "export"))
 		return (command_export(child, env));
 	else if (!ft_strcmp(child->command, "unset"))

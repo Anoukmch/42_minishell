@@ -3,8 +3,10 @@
 int	var_handler(t_lex *lex, t_env *env)
 {
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	while (lex->lexer[i])
 	{
 		if (ft_strchr(lex->lexer[i], -2) != NULL)

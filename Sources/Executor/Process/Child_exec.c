@@ -1,6 +1,6 @@
 #include "../../../includes/minishell.h"
 
-int	child_exec_bis(t_child *child, t_exec *exec, t_env *env, t_lex *lex)
+int	child_exec_bis(t_child *child, t_exec *exec, t_env *env)
 {
 	exec->last_pid = fork();
 	if (exec->last_pid < 0)
@@ -16,7 +16,7 @@ int	child_exec_bis(t_child *child, t_exec *exec, t_env *env, t_lex *lex)
 		close_pipe(exec, child);
 		if (child->isbuiltin == true)
 		{
-			if (builtin_command(child, exec, env, lex))
+			if (builtin_command(child, exec, env))
 				exit(1);
 			exit(0);
 		}
@@ -26,14 +26,14 @@ int	child_exec_bis(t_child *child, t_exec *exec, t_env *env, t_lex *lex)
 	return (0);
 }
 
-int	child_exec(t_child *child, t_exec *exec, t_env *env, t_lex *lex)
+int	child_exec(t_child *child, t_exec *exec, t_env *env)
 {
 	if (exec->nbr_process > 1 && child->id != (exec->nbr_process - 1))
 	{
 		if (pipe(exec->end) < 0)
 			return (1);
 	}
-	if (child_exec_bis(child, exec, env, lex))
+	if (child_exec_bis(child, exec, env))
 		return (1);
 	if (exec->nbr_process > 1)
 	{

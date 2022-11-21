@@ -35,7 +35,7 @@ int	get_path_from_env(t_env *env, t_child *child)
 	env->envp_line = NULL;
 	if (!env->envp_bis && !child->command
 		&& !ft_strchr(child->parser_cmd[0], '/'))
-		return (perror_return_status("command not found", 0));
+		return (perror_return_status(NULL, "command not found", 0));
 	while (env->envp_bis[i])
 	{
 		if (!ft_strncmp(env->envp_bis[i], "PATH", 4))
@@ -43,7 +43,7 @@ int	get_path_from_env(t_env *env, t_child *child)
 			env->envp_line
 				= ft_strdup(env->envp_bis[i] + 5);
 			if (!env->envp_line)
-				return (perror_return_status("command not found", 1));
+				return (perror_return_status(NULL, "command not found", 1));
 			break ;
 		}
 		i++;

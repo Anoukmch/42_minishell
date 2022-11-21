@@ -66,7 +66,7 @@ int	fill_new_arg(char *lex_string, t_env *env)
 	char	*var;
 
 	var = get_var(lex_string, env);
-	if (!var || !var[0])
+	if (!var)
 		return (1);
 	if (fill_new_arg_env_var(var, env))
 		return (1);

@@ -8,14 +8,15 @@ static int	invalid_identifier(char *cmd)
 	if (cmd[0] == '\0' || (!ft_isalpha(cmd[0]) && cmd[0] != '_'))
 	{
 		g_exit_code = 1;
-		return (perror_return_status("unset: not a valid identifier\n", 0));
+		return (perror_return_status(NULL, "unset: not a valid identifier", 0));
 	}
 	while (cmd[i])
 	{
 		if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
 		{
 			g_exit_code = 1;
-			return (perror_return_status("unset: not a valid identifier\n", 0));
+			return (perror_return_status(NULL, "unset: not a valid identifier",
+					0));
 		}
 		i++;
 	}
