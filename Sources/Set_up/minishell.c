@@ -13,12 +13,12 @@ void	initialize_struct(t_child	***child, t_exec **exec, t_lex *lex)
 	}
 }
 
-void	wait_child(t_exec *exec, t_lex *lex, t_child **child)
+void	wait_child(t_exec *exec, t_child **child)
 {
 	int	tmp;
 
 	tmp = 0;
-	if (lex->no_processes == 1 && child[0]->isbuiltin == true)
+	if (exec->nbr_process == 1 && child[0]->isbuiltin == true)
 		return ;
 	waitpid(exec->last_pid, &tmp, 0);
 	while (wait(NULL) > 0)
@@ -43,9 +43,9 @@ void	enter_shell(t_env *env)
 		initialize_struct(&child, &exec, lex);
 		if (!parser(lex, child, env))
 		{
-			// free_struct(NULL, NULL, lex);
+			free_struct(NULL, NULL, lex);
 			executor(child, exec, env);
-			wait_child(exec, lex, child);
+			wait_child(exec, child);
 		}
 		free_struct(child, exec, NULL);
 	}

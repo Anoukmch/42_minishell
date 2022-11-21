@@ -13,7 +13,8 @@ int	child_exec_bis(t_child *child, t_exec *exec, t_env *env)
 		if (get_infile(child))
 			exit(1);
 		switch_put(child, exec);
-		close_pipe(exec, child);
+		if (close_pipe(exec, child))
+			return (1);
 		if (child->isbuiltin == true)
 		{
 			if (builtin_command(child, exec, env))

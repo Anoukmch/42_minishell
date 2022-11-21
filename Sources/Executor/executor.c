@@ -13,9 +13,10 @@ int	executor(t_child **child, t_exec *exec, t_env *env)
 			return (1);
 		if (processes(child[i], exec, env))
 			return (1);
+		if (close_pipe(exec, child[i]))
+			return (1);
 		i++;
 	}
-	close_piping(exec);
 	if (exec->need_exit == true)
 	{
 		free_struct(child, exec, NULL);

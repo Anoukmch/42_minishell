@@ -2,7 +2,7 @@
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
 
 NAME =  minishell
 
@@ -13,8 +13,7 @@ M_SRC = Set_up/Minishell.c \
 		Set_up/Init/Init_env.c \
 		Set_up/Signals.c \
 		Set_up/Quotes.c \
-		Set_up/Checker.c \
-		Set_up/Syntax.c \
+		Lexer/Syntax.c \
 		Lexer/Lex_utils.c \
 		Lexer/Count_spaces.c \
 		Lexer/Create_lexline2.c \
