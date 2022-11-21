@@ -4,6 +4,7 @@ void	handle_signals_child(void)
 {
 	struct termios		te;
 
+	ft_memset(&te, 0, sizeof(te));
 	tcgetattr(0, &te);
 	te.c_lflag |= ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &te);

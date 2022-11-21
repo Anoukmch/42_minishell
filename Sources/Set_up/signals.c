@@ -27,6 +27,7 @@ void	handle_signals_heredoc(void)
 	struct sigaction	sa;
 	struct termios		te;
 
+	ft_memset(&te, 0, sizeof(te));
 	tcgetattr(0, &te);
 	te.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &te);
@@ -40,6 +41,7 @@ void	handle_signals(void)
 	struct sigaction	sa;
 	struct termios		te;
 
+	ft_memset(&te, 0, sizeof(te));
 	tcgetattr(0, &te);
 	te.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &te);
@@ -47,12 +49,3 @@ void	handle_signals(void)
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 }
-
-// void	handle_signals_child(void)
-// {
-// 	struct termios		te;
-
-// 	tcgetattr(0, &te);
-// 	te.c_lflag |= ECHOCTL;
-// 	tcsetattr(STDIN_FILENO, TCSANOW, &te);
-// }
