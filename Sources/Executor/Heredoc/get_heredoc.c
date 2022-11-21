@@ -23,7 +23,10 @@ int	heredoc_set_up(t_child *child, int i, char **temp)
 	file = open("heredoc", O_CREAT | O_WRONLY
 			| O_TRUNC, 0644);
 	if (file < 0)
+	{
+		perror("Heredoc");
 		return (-1);
+	}
 	*temp = ft_strjoin(child->parser_redirect_input[i + 1], "\n");
 	if (!*temp)
 	{
@@ -49,6 +52,7 @@ int	here_doc(t_child *child, int i, int nbr_elements, t_env *env)
 			ft_putstr_fd(child->heredoc_line, file);
 		free(child->heredoc_line);
 		child->heredoc_line = readline("> ");
+		signal(SIGINT, SIG_IGN);
 		if (!child->heredoc_line)
 			return (line_null_hd(child, temp, file));
 		else

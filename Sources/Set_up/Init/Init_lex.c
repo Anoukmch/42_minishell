@@ -62,7 +62,10 @@ static char	*minishell_gnl_free_line(char *line)
 int	read_input(t_lex *lex, t_env *env)
 {
 	if (isatty(STDIN_FILENO))
+	{
 		lex->line = readline("input: ");
+		signal(SIGINT, SIG_IGN);
+	}
 	else
 		lex->line = minishell_get_next_line(STDIN_FILENO);
 	if (lex->line == NULL)

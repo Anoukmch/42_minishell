@@ -14,9 +14,6 @@ void	free_array(char **array)
 
 void	free_child(t_child *child, t_exec *exec, t_lex *lex)
 {
-	int	i;
-
-	i = 0;
 	if (child)
 	{
 		free_array(child->parser_cmd);

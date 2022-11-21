@@ -1,5 +1,14 @@
 #include "../../../includes/minishell.h"
 
+void	handle_signals_child(void)
+{
+	struct termios		te;
+
+	tcgetattr(0, &te);
+	te.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &te);
+}
+
 int	child_exec_bis(t_child *child, t_exec *exec, t_env *env)
 {
 	exec->last_pid = fork();
@@ -7,6 +16,8 @@ int	child_exec_bis(t_child *child, t_exec *exec, t_env *env)
 		return (1);
 	else if (exec->last_pid == 0)
 	{
+		handle_signals_child();
+		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		if (get_outfile(child))
 			exit(1);
