@@ -21,9 +21,3 @@ int	processes(t_child *child, t_exec *exec, t_env *env)
 	}
 	return (0);
 }
-
-		// if(isatty(STDERR_FILENO))
-		// {
-		// 	printf("HERE");
-		// 	exit(0);
-		// }

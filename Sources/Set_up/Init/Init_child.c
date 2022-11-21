@@ -45,6 +45,19 @@ static void	init_cmds(t_lex *lex, t_child *child)
 	lex->iter++;
 }
 
+static void	init_int(t_child *child, int k)
+{
+	child->command = NULL;
+	child->fd_in = -1;
+	child->fd_out = -1;
+	child->id = k;
+	child->heredoc_quotes = 0;
+	child->isbuiltin = false;
+	child->heredoc_line = NULL;
+	child->set_stdin_back = 0;
+	child->file = -1;
+}
+
 t_child	*init_single_child(t_lex *lex, t_child *child, int k)
 {
 	child = ft_calloc(1, sizeof(t_child));
@@ -61,15 +74,7 @@ t_child	*init_single_child(t_lex *lex, t_child *child, int k)
 		|| child->parser_redirect_input == NULL
 		|| child->parser_cmd == NULL)
 		return (NULL);
-	child->command = NULL;
-	child->fd_in = -1;
-	child->fd_out = -1;
-	child->id = k;
-	child->heredoc_quotes = 0;
-	child->isbuiltin = false;
-	child->heredoc_line = NULL;
-	child->set_stdin_back = 0;
-	child->file = -1;
+	init_int(child, k);
 	child->file_buff = ft_itoa(child->id);
 	if (!child->file_buff)
 		return (NULL);

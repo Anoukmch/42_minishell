@@ -13,8 +13,7 @@ int	executor(t_child **child, t_exec *exec, t_env *env)
 			return (1);
 		if (processes(child[i], exec, env))
 			return (1);
-		if (close_pipe(exec, child[i]))
-			return (1);
+		close_piping(child[i]);
 		i++;
 	}
 	if (exec->need_exit == true)
