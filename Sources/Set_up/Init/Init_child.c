@@ -69,6 +69,7 @@ t_child	*init_single_child(t_lex *lex, t_child *child, int k)
 	child->isbuiltin = false;
 	child->heredoc_line = NULL;
 	child->set_stdin_back = 0;
+	child->file = -1;
 	return (child);
 }
 

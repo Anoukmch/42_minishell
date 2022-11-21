@@ -37,8 +37,13 @@ int	switch_put(t_child *child, t_exec *exec)
 	return (0);
 }
 
-void	close_pipe(t_exec *exec, t_child *child)
+int	close_pipe(t_exec *exec, t_child *child)
 {
+	char	*file_buff;
+
+	file_buff = ft_itoa(child->id);
+	if (!file_buff)
+		return (1);
 	if (exec->nbr_process > 1)
 	{
 		close(exec->end[0]);
@@ -51,5 +56,6 @@ void	close_pipe(t_exec *exec, t_child *child)
 	if (child->parser_redirect_output[0])
 		close(child->fd_out);
 	if (exec->isheredoc == 1)
-		unlink("heredoc");
+		unlink(file_buff);
+	return (0);
 }

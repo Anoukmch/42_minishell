@@ -62,15 +62,6 @@ void	free_struct(t_child **child, t_exec *exec, t_lex *lex)
 	}
 }
 
-void	close_piping(t_exec	*exec)
-{
-	if (exec->nbr_process > 1)
-	{
-		close(exec->end[0]);
-		close(exec->end[1]);
-	}
-}
-
 void	free_env(t_env	*env)
 {
 	free_array(env->envp_bis);

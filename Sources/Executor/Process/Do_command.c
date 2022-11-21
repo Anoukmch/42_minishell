@@ -13,7 +13,7 @@ void	env_command(t_child *child, t_env *env)
 	else if (!child->parser_cmd[0])
 		perror_exit_status(NULL, NULL, 0);
 	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)
-		perror_exit_status(child->command, "Execve command failed", 126);
+		perror_exit_status(child->parser_cmd[0], "Execve command failed", 126);
 }
 
 int	builtin_command(t_child *child, t_exec *exec, t_env *env)
