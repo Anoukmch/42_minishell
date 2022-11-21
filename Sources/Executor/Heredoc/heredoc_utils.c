@@ -4,18 +4,20 @@ int	line_null_hd(t_child *child, char *temp)
 {
 	dup2(child->set_stdin_back, STDIN_FILENO);
 	close(child->set_stdin_back);
-	unlink("heredoc");
-	g_exit_code = 1;
+	unlink(child->file_buff);
 	close(child->file);
 	free(temp);
 	free(child->heredoc_line);
 	return (1);
 }
 
-int	close_free(t_child *child, char *temp, int file, int status)
+int	clean_heredoc(t_child *child, char *temp, int i, int nbr_elements)
 {
-	close(file);
+	close(child->set_stdin_back);
+	close(child->file);
 	free(temp);
 	free(child->heredoc_line);
-	return (status);
+	if (i < nbr_elements - 2)
+		unlink(child->file_buff);
+	return (0);
 }

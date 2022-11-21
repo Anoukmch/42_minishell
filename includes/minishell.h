@@ -50,6 +50,7 @@ typedef struct s_child
 	char	*heredoc_line;
 	int		set_stdin_back;
 	int		file;
+	char	*file_buff;
 
 }	t_child;
 
@@ -153,9 +154,9 @@ void	env_command(t_child *child, t_env *env);
 // EXECUTOR/HEREDOC
 int		get_heredoc(t_child **child, t_exec *exec, t_env *env);
 int		line_null_hd(t_child *child, char *temp);
-int		close_free(t_child *child, char *temp, int file, int status);
+int		clean_heredoc(t_child *child, char *temp, int i, int nbr_elements);
 int		check_var(t_child *child, t_env *env, int i);
-int		heredoc_set_up(t_child *child, int i, char **temp, char	**file_buff);
+int		heredoc_set_up(t_child *child, int i, char **temp);
 
 // BUILTIN
 int		command_env(t_env *env);
