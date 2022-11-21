@@ -35,6 +35,7 @@ void	enter_shell(t_env *env)
 	t_child	**child;
 	t_exec	*exec;
 
+	exec = NULL;
 	handle_signals();
 	lex = initialize_lex(env);
 	if (lex)
@@ -43,7 +44,10 @@ void	enter_shell(t_env *env)
 		initialize_struct(&child, &exec, lex);
 		if (!parser(lex, child, env))
 		{
+<<<<<<< HEAD
 			free_struct(NULL, NULL, lex);
+=======
+>>>>>>> 10075517ee491efccdc0d9088d1a438bd3358671
 			executor(child, exec, env);
 			wait_child(exec, child);
 		}

@@ -5,8 +5,8 @@ static void	control_c(int signum)
 	if (signum == SIGINT)
 	{
 		ft_putstr_fd("\n", STDERR_FILENO);
-		rl_on_new_line();
 		rl_replace_line("", 0);
+		rl_on_new_line();
 		rl_redisplay();
 		g_exit_code = 1;
 	}
@@ -47,3 +47,12 @@ void	handle_signals(void)
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 }
+
+// void	handle_signals_child(void)
+// {
+// 	struct termios		te;
+
+// 	tcgetattr(0, &te);
+// 	te.c_lflag |= ECHOCTL;
+// 	tcsetattr(STDIN_FILENO, TCSANOW, &te);
+// }

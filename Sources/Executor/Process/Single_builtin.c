@@ -24,6 +24,8 @@ int	single_builtin(t_child *child, t_exec *exec, t_env *env)
 	if (builtin_command(child, exec, env))
 		return (1);
 	dup2(infd_tmp, STDIN_FILENO);
+	close (infd_tmp);
 	dup2(outfd_tmp, STDOUT_FILENO);
+	close (outfd_tmp);
 	return (0);
 }

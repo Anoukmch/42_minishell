@@ -1,6 +1,6 @@
 
 
-CC = gcc
+CC = cc
 
 CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
 

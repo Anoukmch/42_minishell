@@ -18,7 +18,6 @@ int	processes(t_child *child, t_exec *exec, t_env *env)
 	{
 		if (child_exec(child, exec, env))
 			return (1);
-		handle_signals();
 	}
 	return (0);
 }
