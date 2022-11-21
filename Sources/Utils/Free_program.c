@@ -48,8 +48,7 @@ void	free_struct(t_child **child, t_exec *exec, t_lex *lex)
 			free_array(child[i]->parser_redirect_output);
 			free(child[i]->command);
 			free(child[i]->file_buff);
-			free(child[i]);
-			i++;
+			free(child[i++]);
 		}
 		free(child);
 	}
