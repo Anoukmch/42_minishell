@@ -1,6 +1,14 @@
 #include "../../includes/minishell.h"
 
-int	double_redirection(t_lex *lex, int i)
+int	return_status_syntaxerror(char *arg, int status)
+{
+	ft_putstr_fd("syntax error near unexpected token '", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("'\n", 2);
+	return (status);
+}
+
+int	redirections(t_lex *lex, int i)
 {
 	if ((!ft_strcmp(lex->lexer[i], ">")
 			|| !ft_strcmp(lex->lexer[i], "<")
@@ -10,11 +18,19 @@ int	double_redirection(t_lex *lex, int i)
 			|| !ft_strcmp(lex->lexer[i + 1], "<")
 			|| !ft_strcmp(lex->lexer[i + 1], ">>")
 			|| !ft_strcmp(lex->lexer[i + 1], "<<")))
-	{
-		g_exit_code = 2;
 		return (1);
-	}
+	if (!ft_strncmp(lex->lexer[i], ">>>", 3)
+		|| !ft_strncmp(lex->lexer[i], "<<<", 3))
+		return (1);
 	return (0);
+}
+
+void	set_exitcode(char *str)
+{
+	if (!ft_strcmp(str, "."))
+		g_exit_code = 127;
+	else
+		g_exit_code = 2;
 }
 
 int	check_syntax(t_lex *lex)
@@ -30,16 +46,15 @@ int	check_syntax(t_lex *lex)
 				&& !ft_strcmp(lex->lexer[i + 1], "|")))
 		{
 			g_exit_code = 2;
-			return (perror_return_status(NULL, "syntax error", 2));
+			return (return_status_syntaxerror(lex->lexer[i], 2));
 		}
 		else if (!ft_strcmp(lex->lexer[i], "|"))
 			j = 0;
 		else if (((i == 0 || j == 1) && (!ft_strcmp(lex->lexer[i], "|")
-					|| !ft_strcmp(lex->lexer[i], ".")))
-			|| double_redirection(lex, i))
+					|| !ft_strcmp(lex->lexer[i], "."))) || redirections(lex, i))
 		{
-			g_exit_code = 2;
-			return (perror_return_status(NULL, "syntax error", 2));
+			set_exitcode(lex->lexer[i]);
+			return (return_status_syntaxerror(lex->lexer[i], 2));
 		}
 		i++;
 	}

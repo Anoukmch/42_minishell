@@ -83,7 +83,7 @@ void	print_parser(t_child **child);
 // SET_UP/INIT
 int		check_syntax(t_lex *lex);
 void	count_pipes(t_lex *lex);
-t_lex	*initialize_lex(void);
+t_lex	*initialize_lex(t_env *env);
 t_child	**initialize_child(t_lex *lex);
 t_exec	*initialize_exec(t_lex *lex);
 t_env	*initialize_env(char **envp);
@@ -186,6 +186,8 @@ char	**get_position_in_env(t_env *env, char *variable);
 void	perror_exit_status(char *arg, char *str, int status);
 int		perror_return_status(char *arg, char *str, int status);
 int		perror_return_msg(char *str, int status);
+int		perror_return_export_unset(char *arg, char *ex_or_unset, int status);
+
 void	close_piping(t_exec	*exec);
 void	free_struct(t_child **child, t_exec *exec, t_lex *lex);
 void	free_child(t_child *child, t_exec *exec, t_lex *lex);

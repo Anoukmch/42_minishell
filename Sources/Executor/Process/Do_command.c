@@ -3,7 +3,13 @@
 void	env_command(t_child *child, t_env *env)
 {
 	if (child->command == NULL && child->parser_cmd[0])
-		perror_exit_status(child->parser_cmd[0], "command not found", 127);
+	{
+		if (!ft_strchr(child->parser_cmd[0], '/'))
+			perror_exit_status(child->parser_cmd[0], "command not found", 127);
+		else
+			perror_exit_status(child->parser_cmd[0],
+				"No such file or directory", 127);
+	}
 	else if (!child->parser_cmd[0])
 		perror_exit_status(NULL, NULL, 0);
 	if (execve(child->command, child->parser_cmd, env->envp_bis) < 0)

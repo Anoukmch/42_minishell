@@ -16,7 +16,10 @@ static void	check_outside_quotes(t_lex *lex, int *j, int *i)
 			|| (lex->line[*i + 1] == '<' && lex->line[*i] != '<'
 				&& lex->line[*i] != ' ') || (lex->line[*i + 1] == '>'
 				&& lex->line[*i] != '>' && lex->line[*i] != ' '))
+		{
+			lex->line2[(*j)++] = lex->line[(*i)++];
 			lex->line2[(*j)++] = -1;
+		}
 	}
 }
 

@@ -35,3 +35,12 @@ int	perror_return_status(char *arg, char *str, int status)
 	}
 	return (status);
 }
+
+int	perror_return_export_unset(char *arg, char *ex_or_unset, int status)
+{
+	ft_putstr_fd(ex_or_unset, 2);
+	ft_putstr_fd(": '", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (status);
+}

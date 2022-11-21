@@ -8,16 +8,14 @@ static int	invalid_identifier(char *cmd)
 	if ((!ft_isalpha(cmd[0]) && cmd[0] != '_'))
 	{
 		g_exit_code = 1;
-		return (perror_return_status(NULL, "export: not a valid identifier",
-				0));
+		return (perror_return_export_unset(cmd, "export", 0));
 	}
 	while (cmd[i] && cmd[i] != '=')
 	{
 		if (!ft_isalnum(cmd[i]) && cmd[i] != '_')
 		{
 			g_exit_code = 1;
-			return (perror_return_status(NULL, "export: not a valid identifier",
-					0));
+			return (perror_return_export_unset(cmd, "export", 0));
 		}
 		i++;
 	}
