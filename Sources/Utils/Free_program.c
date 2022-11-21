@@ -8,7 +8,10 @@ void	free_array(char **array)
 	if (!array)
 		return ;
 	while (array[i])
+	{
 		free(array[i++]);
+
+	}
 	free(array);
 }
 

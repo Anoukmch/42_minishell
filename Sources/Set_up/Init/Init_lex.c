@@ -73,6 +73,7 @@ int	read_input(t_lex *lex, t_env *env)
 		if (isatty(STDERR_FILENO))
 		{
 			free_env(env);
+			rl_clear_history();
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 		}
 		exit (g_exit_code);

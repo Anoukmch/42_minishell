@@ -27,6 +27,7 @@ void	handle_signals_heredoc(void)
 	struct sigaction	sa;
 	struct termios		te;
 
+	ft_memset(&sa, 0, sizeof(sa));
 	ft_memset(&te, 0, sizeof(te));
 	tcgetattr(0, &te);
 	te.c_lflag &= ~ECHOCTL;
@@ -41,6 +42,7 @@ void	handle_signals(void)
 	struct sigaction	sa;
 	struct termios		te;
 
+	ft_memset(&sa, 0, sizeof(sa));
 	ft_memset(&te, 0, sizeof(te));
 	tcgetattr(0, &te);
 	te.c_lflag &= ~ECHOCTL;

@@ -4,6 +4,7 @@ void	exit_exit_builtin(t_child *child, t_exec *exec, t_env *env)
 {
 	free_child(child, exec, NULL);
 	free_env(env);
+	rl_clear_history();
 	perror_exit_status(NULL, "exit: numeric argument required", 255);
 }
 

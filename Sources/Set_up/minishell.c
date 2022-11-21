@@ -40,7 +40,8 @@ void	enter_shell(t_env *env)
 	lex = initialize_lex(env);
 	if (lex)
 	{
-		add_history(lex->line);
+		if (isatty(STDIN_FILENO))
+			add_history(lex->line);
 		initialize_struct(&child, &exec, lex);
 		if (!parser(lex, child, env))
 		{
@@ -64,6 +65,7 @@ int	main(int ac, char **ag, char **envp)
 		return (perror_return_status(NULL, "check init", 1));
 	while (1)
 		enter_shell(env);
+	rl_clear_history();
 	free_env(env);
 	return (0);
 }
