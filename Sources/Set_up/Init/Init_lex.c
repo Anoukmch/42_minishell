@@ -74,6 +74,8 @@ int	read_input(t_lex *lex, t_env *env)
 		{
 			free_env(env);
 			rl_clear_history();
+			if (lex)
+				free_struct(NULL, NULL, lex);
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 		}
 		exit (g_exit_code);

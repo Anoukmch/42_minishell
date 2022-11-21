@@ -1,6 +1,6 @@
 #include "../../../includes/minishell.h"
 
-static void	single_builtin_bis(int	infd_tmp, int outfd_tmp)
+static void	single_builtin_bis(int infd_tmp, int outfd_tmp)
 {
 	dup2(infd_tmp, STDIN_FILENO);
 	close (infd_tmp);
