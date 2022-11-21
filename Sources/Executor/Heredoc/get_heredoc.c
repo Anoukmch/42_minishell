@@ -22,7 +22,6 @@ int	heredoc_set_up(t_child *child, int i, char **temp, char	**file_buff)
 			| O_TRUNC, 0644);
 	if (child->file < 0)
 		return (-1);
-	}
 	*temp = ft_strjoin(child->parser_redirect_input[i + 1], "\n");
 	if (!*temp)
 	{
