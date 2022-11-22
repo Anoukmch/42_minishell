@@ -37,7 +37,7 @@ char	*convert_tabs_to_spaces(char *str)
 	if (quote == '\'' || quote == '\"')
 	{
 		free (str);
-		ft_putstr_fd( "Unclosed pair of quotes\n", 2);
+		ft_putstr_fd("Unclosed pair of quotes\n", 2);
 		return (NULL);
 	}
 	return (str);

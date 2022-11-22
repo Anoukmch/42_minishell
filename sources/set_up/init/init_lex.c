@@ -1,6 +1,10 @@
 #include "../../../includes/minishell.h"
 
-static char	*minishell_gnl_free_line(char *line);
+static char	*minishell_gnl_free_line(char *line)
+{
+	free(line);
+	return (NULL);
+}
 
 static char	*str_append_chr(char *str, char append)
 {
@@ -53,17 +57,10 @@ char	*minishell_get_next_line(int fd)
 	return (line);
 }
 
-static char	*minishell_gnl_free_line(char *line)
-{
-	free(line);
-	return (NULL);
-}
-
 int	read_input(t_lex *lex, t_env *env)
 {
 	if (isatty(STDIN_FILENO))
 	{
-		printf("READLINE\n");
 		lex->line = readline("input: ");
 		signal(SIGINT, SIG_IGN);
 	}
@@ -86,6 +83,21 @@ int	read_input(t_lex *lex, t_env *env)
 	return (0);
 }
 
+void	init_lex_bis(t_lex *lex, t_env *env)
+{
+	lex->counter = lexer_count_spaces(lex);
+	lex->iter = 0;
+	lex->no_processes = 0;
+	lex->line2 = ft_calloc((ft_strlen(lex->line) + 1)
+			+ lex->counter, sizeof(char));
+	if (!lex->line2)
+	{
+		free_struct_lex(lex);
+		free_env(env);
+		exit (g_exit_code);
+	}
+}
+
 t_lex	*initialize_lex(t_env *env)
 {
 	t_lex	*lex;
@@ -94,27 +106,17 @@ t_lex	*initialize_lex(t_env *env)
 	if (!lex)
 		return (NULL);
 	if (read_input(lex, env))
-		return (NULL);
+		return (free_struct_lex(lex));
 	lex->line = convert_tabs_to_spaces(lex->line);
 	if (!lex->line)
-	{
-		free (lex);
-		rl_clear_history();
-		return (NULL);
-	}
-	lex->counter = lexer_count_spaces(lex);
-	lex->iter = 0;
-	lex->no_processes = 0;
-	lex->line2 = ft_calloc((ft_strlen(lex->line) + 1)
-			+ lex->counter, sizeof(char));
-	if (!lex->line2)
-		exit (g_exit_code);
+		return (free_struct_lex(lex));
+	init_lex_bis(lex, env);
 	create_line2(lex);
 	lex->lexer = ft_split(lex->line2, -1);
 	if (!lex->lexer || !lex->lexer[0])
-		return (NULL);
+		return (free_struct_lex(lex));
 	lex->lexer_c = NULL;
 	if (check_syntax(lex))
-		return (NULL);
+		return (free_struct_lex(lex));
 	return (lex);
 }

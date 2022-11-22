@@ -190,6 +190,7 @@ void	free_struct(t_child **child, t_exec *exec, t_lex *lex);
 void	free_child(t_child *child, t_exec *exec, t_lex *lex);
 void	free_array(char **array);
 void	free_env(t_env *env);
+t_lex	*free_struct_lex(t_lex *lex);
 char	*ft_strapp(char *s1, char *s2);
 void	close_piping(t_child *child);
 #endif

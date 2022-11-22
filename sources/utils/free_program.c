@@ -68,3 +68,18 @@ void	free_env(t_env	*env)
 	free_array(env->envp_bis);
 	free(env);
 }
+
+t_lex	*free_struct_lex(t_lex *lex)
+{
+	if (!lex)
+		return (NULL);
+	if (lex->line)
+		free(lex->line);
+	if (lex->line2)
+		free(lex->line2);
+	if (lex->lexer)
+		free_array(lex->lexer);
+	if (lex)
+		free(lex);
+	return (NULL);
+}
