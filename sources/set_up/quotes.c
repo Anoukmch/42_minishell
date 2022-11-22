@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quotes.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/22 15:26:24 by jmatheis          #+#    #+#             */
+/*   Updated: 2022/11/22 15:26:29 by jmatheis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	mark_quotechar(char str, char *quote)
@@ -8,9 +20,6 @@ void	mark_quotechar(char str, char *quote)
 		*quote = '\"';
 }
 
-// 1. handle varaibles, then quotes
-// INT FUNCTION
-// Marking $ signs outside of quotes & in double quotes with -2
 int	mark_quotes_cmds_and_outdir(char *str)
 {
 	char	quote;

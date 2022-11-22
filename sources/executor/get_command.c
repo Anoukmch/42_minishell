@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_command.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/22 15:23:48 by jmatheis          #+#    #+#             */
+/*   Updated: 2022/11/22 15:24:03 by jmatheis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-// *** CHECK CURRENT DIRECTORY AS PATH ***
 static int	check_current_directorypath(t_child *child)
 {
 	char	*tmp;
@@ -28,7 +39,6 @@ static int	check_current_directorypath(t_child *child)
 	return (0);
 }
 
-// *** CHECK ABSOLUTE PATH ***
 static int	check_existing_path(t_env *env, t_child *child)
 {
 	if (env->envp_bis == NULL || env->envp_path == NULL
@@ -45,7 +55,6 @@ static int	check_existing_path(t_env *env, t_child *child)
 	return (0);
 }
 
-// *** FIND PATH TO COMMAND ***
 static int	find_command_path(t_env *env, t_child *child)
 {
 	int	i;
@@ -65,10 +74,6 @@ static int	find_command_path(t_env *env, t_child *child)
 	return (0);
 }
 
-// *** 1. CHECK CURRENT DIRECTORY AS PATH IF ITS NOT AN ABSOLUTE PATH ***
-// *** 2. CHECK ABSOLUTE PATH ***
-// *** 3. FIND PATH FOR COMMAND ***
-// *** 4. PATH NOT FOUND & ENVIRONMENT DISABLED ***
 static int	check_path(t_child *child, t_env *env)
 {
 	if (check_current_directorypath(child))
@@ -97,9 +102,6 @@ static int	check_path(t_child *child, t_env *env)
 	return (0);
 }
 
-// CHECK IF BUILT-IN
-// IF NOT BUILT-IN --> CHECK ABSOLUTE PATH/ FIND PATH
-// CHECK COMMAND OF EVERY PROCESS
 int	command_path(t_child *child, t_env *env)
 {
 	if (child->parser_cmd[0])

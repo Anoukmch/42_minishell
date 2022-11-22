@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/22 15:27:06 by jmatheis          #+#    #+#             */
+/*   Updated: 2022/11/22 15:27:07 by jmatheis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -109,6 +121,7 @@ char	**split_lexer(char const *s, char c);
 // PARSER
 int		parser(t_lex *lex, t_child	**child, t_env	*env);
 int		parse_commands(t_lex *lex, t_child **child);
+int		check_first_command(t_lex *lex, t_child *child, int *j);
 int		parser_redirection(t_lex *lex, t_child **child);
 int		check_redirection_table(char **array);
 

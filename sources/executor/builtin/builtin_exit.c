@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/22 15:22:14 by jmatheis          #+#    #+#             */
+/*   Updated: 2022/11/22 15:22:15 by jmatheis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 void	exit_exit_builtin(t_child *child, t_exec *exec, t_env *env)
@@ -42,7 +54,10 @@ int	command_exit(t_child *child, t_exec *exec, t_env *env)
 	if (exec->nbr_process == 1 && isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (child->parser_cmd[1])
-		define_exit_code(child, exec, env);
+	{
+		if (define_exit_code(child, exec, env))
+			return (1);
+	}
 	else if (!child->parser_cmd[1])
 	{
 		if (exec->nbr_process > 1)

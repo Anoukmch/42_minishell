@@ -1,8 +1,18 @@
-
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/11/22 15:27:44 by jmatheis          #+#    #+#              #
+#    Updated: 2022/11/22 15:27:45 by jmatheis         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include #-lreadline -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -I /goinfre/$(USER)/.brew/opt/readline/include
 
 NAME =  minishell
 
@@ -19,6 +29,7 @@ M_SRC = set_up/minishell.c \
 		lexer/create_lexline2.c \
 		parser/parser.c \
 		parser/parser_command.c \
+		parser/split_parser_command.c \
 		parser/parser_redirection.c \
 		parser/var_handler/count_size_var.c \
 		parser/var_handler/var_handler.c \

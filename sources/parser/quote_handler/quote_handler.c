@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote_handler.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/22 15:26:56 by jmatheis          #+#    #+#             */
+/*   Updated: 2022/11/22 15:26:57 by jmatheis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 int	mark_variables(char *str, char *str_before)
@@ -27,6 +39,17 @@ int	mark_variables(char *str, char *str_before)
 	return (0);
 }
 
+void	changeback_dollarsign(char *str, int i)
+{
+	if (str[i] == -2 && (str[i + 1] == -2
+			|| !str[i + 1] || str[i + 1] == ' '))
+		str[i] = '$';
+	if (str[i] == -2 && (!ft_isalnum(str[i + 1])
+			&& str[i + 1] != '_' && str[i + 1] != '?'
+			&& str[i + 1] != '\"' && str[i + 1] != '\''))
+		str[i] = '$';
+}
+
 int	check_dollarsign(char *str)
 {
 	char	tmp[4];
@@ -46,9 +69,7 @@ int	check_dollarsign(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == -2 && (str[i + 1] == -2
-				|| !str[i + 1] || str[i + 1] == ' '))
-			str[i] = '$';
+		changeback_dollarsign(str, i);
 		i++;
 	}
 	return (0);

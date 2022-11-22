@@ -1,4 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_command.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmatheis <jmatheis@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/22 15:25:32 by jmatheis          #+#    #+#             */
+/*   Updated: 2022/11/22 15:25:33 by jmatheis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
+
+int	split_first_command(t_lex *lex, t_child *child, int *j)
+{
+	int	z;
+
+	z = check_first_command(lex, child, j);
+	if (z == 1)
+		return (1);
+	if (z == 2)
+	{
+			child->parser_cmd[*j] = ft_strdup(lex->lexer[lex->iter]);
+		if (!child->parser_cmd[*j])
+			return (1);
+		if (mark_quotes_cmds_and_outdir(child->parser_cmd[*j]))
+			return (1);
+		child->parser_cmd[*j] = delete_quotes_cmds_and_outdir
+			(child->parser_cmd[*j]);
+	}
+	return (0);
+}
+
+int	add_lexcommand_to_child(t_lex *lex, t_child *child, int *j)
+{
+	child->parser_cmd[*j] = ft_strdup(lex->lexer[lex->iter]);
+	if (!child->parser_cmd[*j])
+		return (1);
+	if (mark_quotes_cmds_and_outdir(child->parser_cmd[*j]))
+		return (1);
+	child->parser_cmd[*j] = delete_quotes_cmds_and_outdir
+		(child->parser_cmd[*j]);
+	return (0);
+}
 
 int	commands(t_lex *lex, t_child *child, int j)
 {
@@ -12,12 +56,12 @@ int	commands(t_lex *lex, t_child *child, int j)
 			lex->iter += 2;
 		else
 		{
-			if (mark_quotes_cmds_and_outdir(lex->lexer[lex->iter]))
-				return (1);
-			lex->lexer[lex->iter] = delete_quotes_cmds_and_outdir
-				(lex->lexer[lex->iter]);
-			child->parser_cmd[j] = ft_strdup(lex->lexer[lex->iter]);
-			if (!child->parser_cmd[j])
+			if (j == 0)
+			{
+				if (split_first_command(lex, child, &j))
+					return (1);
+			}
+			else if (j != 0 && add_lexcommand_to_child(lex, child, &j))
 				return (1);
 			j++;
 			lex->iter++;
