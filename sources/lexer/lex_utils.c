@@ -19,7 +19,7 @@ char	*convert_tabs_to_spaces(char *str)
 	char	quote;
 	int		i;
 
-	quote = 's';
+	quote = '\0';
 	i = 0;
 	while (str[i] != '\0')
 	{
@@ -33,6 +33,12 @@ char	*convert_tabs_to_spaces(char *str)
 			}
 		}
 		i++;
+	}
+	if (quote == '\'' || quote == '\"')
+	{
+		free (str);
+		ft_putstr_fd( "Unclosed pair of quotes\n", 2);
+		return (NULL);
 	}
 	return (str);
 }

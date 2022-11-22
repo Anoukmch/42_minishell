@@ -63,6 +63,7 @@ int	read_input(t_lex *lex, t_env *env)
 {
 	if (isatty(STDIN_FILENO))
 	{
+		printf("READLINE\n");
 		lex->line = readline("input: ");
 		signal(SIGINT, SIG_IGN);
 	}
@@ -95,6 +96,12 @@ t_lex	*initialize_lex(t_env *env)
 	if (read_input(lex, env))
 		return (NULL);
 	lex->line = convert_tabs_to_spaces(lex->line);
+	if (!lex->line)
+	{
+		free (lex);
+		rl_clear_history();
+		return (NULL);
+	}
 	lex->counter = lexer_count_spaces(lex);
 	lex->iter = 0;
 	lex->no_processes = 0;
